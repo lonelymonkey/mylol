@@ -1,0 +1,5 @@
+<?php
+
+$myDB = Database::getConnection();
+
+?>
