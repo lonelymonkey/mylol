@@ -5,19 +5,38 @@
 //$riotAPI = new riotAPI();
 
 //$championListData = $riotAPI->championListData();
+include 'lolcache.inc';
 
 class lolWebAPIResource {
   private $path = 'https://na.api.pvp.net/';
   private $globalPath = 'https://global.api.pvp.net/';
   private $key = 'api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0';
+  private $apiKey = 'RGAPI-178a4b1c-107a-4509-85f1-9723084273f0';
+
+  public $config = array(
+    'expiredDate' => array(
+      '/api/lol//v1.3/game/by-summoner/{[\d]}/recent' => 7*24*60 , //unit in minutes
+    )
+  );
+
   public function __construct($dataPath = ''){
     if(!empty($dataPath)){
       $this->path = $dataPath;
     }
+    $this->cache = new lolWebAPICache();
   }
+
+
   //matchList: returns the stats for the last 10 games played
   public function matchList($region,$summonerId){
-    return json_decode(file_get_contents($this->path.'/api/lol/'.$region.'/v1.3/game/by-summoner/'.$summonerId.'/recent'.'?'.$this->key),true);
+    $command = $this->path.'/api/lol/'.$region.'/v1.3/game/by-summoner/'.$summonerId.'/recent'.'?' . http_build_query(array('api_key' => $this->apiKey));
+    $res = $this->cache->getCommand($command);
+    if (empty($res)) {
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
   //matchDetail: returns the detail information of one game by its gameId
   public function matchDetail($region,$matchId){

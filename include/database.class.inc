@@ -52,6 +52,7 @@ class Database {
           $this->currDBName = $this->dbname;
           $this->currPass = $this->pass;
           $this->currUser = $this->user;
+
           $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         }
         // Catch any errors
