@@ -41,7 +41,8 @@ class lolWebAPIResource {
   }
   //matchDetail: returns the detail information of one game by its gameId
   public function matchDetail($region,$matchId){
-    return json_decode(file_get_contents($this->path.'/api/lol/'.$region.'/v2.2/match/'.$matchId.'?'.$this->key),true);
+    $command = $this->path.'/api/lol/'.$region.'/v2.2/match/'.$matchId.'?'. http_build_query(array('api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
   //summonerName: return a list of summoner names by their respective ids
   public function summonerName($region,$idArraystring){
@@ -78,6 +79,10 @@ class lolWebAPIResource {
 
   public function summonerRunes($region,$summonerId){
     return json_decode(file_get_contents($this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/runes?'.$this->key),true);
+  }
+
+  public function summonerLeague($region,$summonerId){
+    return json_decode(file_get_contents($this->path.'api/lol/'.$region.'/v2.5/league/by-summoner/'.$summonerId.'?'.$this->key),true);
   }
 }
 
@@ -162,6 +167,10 @@ class lolAPI {
 
   public function getSummonerRunes($summonerId = 0){
     return $this->resource->webAPI->summonerRunes($this->config['region'],$summonerId);
+  }
+
+  public function getSummonerLeague($summonerId = 0){
+    return $this->resource->webAPI->summonerLeague($this->config['region'],$summonerId);
   }
 }
 

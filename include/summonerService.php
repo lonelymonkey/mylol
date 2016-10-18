@@ -14,35 +14,42 @@ class summonerService{
     $this->profiler = profiler::getConnection();
   }
 
-  private function getSummonerName($summonerIds){
-    $summonerNamesArray = [];
-    $maxNumOfId = 40;
-    $bufferArrray = array_chunk($summonerIds,$maxNumOfId);
-
-    foreach ($bufferArrray AS $buffer) {
-      $summonerIdString = implode(",",$buffer);
-      //var_dump($summonerIdString);
-      $summonerNames = $this->api->getSummonerName($summonerIdString);
-      foreach ($summonerNames AS $summonerName){
-      array_push($summonerNamesArray, $summonerName);
-    }
-    }
-    //var_dump($summonerNamesArray);
-    return $summonerNamesArray;
+  public function getSummonerIds($summonerNamesString){
+    return $this->api->getSummonerIds($summonerNamesString);
   }
 
   public function getSummonerRunes($summonerId){
+    //initialize api calls
+    $runes = $this->api->getRunes();
     $summonerRunes = $this->api->getSummonerRunes($summonerId);
+
+    foreach($summonerRunes[$summonerId]['pages'] AS $pageIndex => $page){
+      foreach($page['slots'] AS $slotsIndex => $slot){
+        $summonerRunes[$summonerId]['pages'][$pageIndex]['slots'][$slotsIndex]['runeName'] = $runes['data'][$slot['runeId']]['name'];
+        $summonerRunes[$summonerId]['pages'][$pageIndex]['slots'][$slotsIndex]['runeImage'] = $runes['data'][$slot['runeId']]['image']['full'];
+      }
+    }
+
     return $summonerRunes;
   }
 
   public function getSummonerMasteries($summonerId){
+    //initialize api calls
+    $masteries = $this->api->getMasteries();
     $summonerMasteries = $this->api->getSummonerMasteries($summonerId);
+
+    foreach($summonerMasteries[$summonerId]['pages'] AS $pageIndex => $page){
+      foreach($page['masteries'] AS $masteriesIndex => $mastery){
+          $summonerMasteries[$summonerId]['pages'][$pageIndex]['masteries'][$masteriesIndex]['MasteryName'] = $masteries['data'][$mastery['id']]['name'];
+      }
+    }
+
     return $summonerMasteries;
   }
 
-  public function getSummonerLeague(){
-
+  public function getSummonerLeague($summonerId){
+    $summonerLeague = $this->api->getSummonerLeague($summonerId);
+    return $summonerLeague;
   }
 
 }

@@ -1,5 +1,5 @@
 <?php
-//http://mylol.local/api/summoner.php?function=getRunes&summonerName=19732385
+//http://mylol.local/api/summoner.php?function=getLeague&summonerName=epiccookierawr
 include '../../global.inc';
 include INCLUDE_PATH . '/summonerService.php';
 
@@ -12,13 +12,21 @@ $response = array(
 
 try {
   $summonerName = $_GET['summonerName'];
+  $summonerId = $service->getSummonerIds($summonerName);
   if($_GET['function'] == 'getRunes'){
-    $data = $service->getSummonerRunes($summonerName);
+    $data = $service->getSummonerRunes($summonerId[$summonerName]['id']);
     $response['data'] = $data;
   }
   else if($_GET['function'] == 'getMasteries'){
-    $data = $service->getSummonerMasteries($summonerName);
+    $data = $service->getSummonerMasteries($summonerId[$summonerName]['id']);
     $response['data'] = $data;
+  }
+  else if($_GET['function'] == 'getLeague'){
+    $data = $service->getSummonerLeague($summonerId[$summonerName]['id']);
+    $response['data'] = $data;
+    echo '<pre>';
+    var_dump($data);
+    echo '</pre>';
   }
 
 } catch (Exception $e) {
@@ -29,7 +37,7 @@ try {
 }
 
 
-echo json_encode($response);
+//echo json_encode($response);
 
 
 
