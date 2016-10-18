@@ -1,5 +1,4 @@
 <?php
-//use matchHistoryService;
 
 include 'lolAPI.php';
 include 'profiler.inc';
@@ -14,13 +13,37 @@ class summonerService{
     ));
     $this->profiler = profiler::getConnection();
   }
+
+  private function getSummonerName($summonerIds){
+    $summonerNamesArray = [];
+    $maxNumOfId = 40;
+    $bufferArrray = array_chunk($summonerIds,$maxNumOfId);
+
+    foreach ($bufferArrray AS $buffer) {
+      $summonerIdString = implode(",",$buffer);
+      //var_dump($summonerIdString);
+      $summonerNames = $this->api->getSummonerName($summonerIdString);
+      foreach ($summonerNames AS $summonerName){
+      array_push($summonerNamesArray, $summonerName);
+    }
+    }
+    //var_dump($summonerNamesArray);
+    return $summonerNamesArray;
+  }
+
+  public function getSummonerRunes($summonerId){
+    $summonerRunes = $this->api->getSummonerRunes($summonerId);
+    return $summonerRunes;
+  }
+
+  public function getSummonerMasteries($summonerId){
+    $summonerMasteries = $this->api->getSummonerMasteries($summonerId);
+    return $summonerMasteries;
+  }
+
+  public function getSummonerLeague(){
+
+  }
+
 }
-
-/*$matchHistoryService = new matchHistoryService();
-echo '<pre>';
-var_dump($matchHistoryService->matchList(19732385));
-echo '</pre>';*/
-//var_dump($matchHistoryService->getSummonerIds('epiccookierawr'));
-
-
 ?>

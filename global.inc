@@ -1,6 +1,6 @@
 <?php
 
-include 'environment.inc';
+include 'local.environment.inc';
 include INCLUDE_PATH . '/database.class.inc';
 include INCLUDE_PATH . '/database.php';
 //include 'leagueConstant.inc';

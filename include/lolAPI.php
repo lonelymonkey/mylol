@@ -15,7 +15,7 @@ class lolWebAPIResource {
 
   public $config = array(
     'expiredDate' => array(
-      '/api/lol//v1.3/game/by-summoner/{[\d]}/recent' => 7*24*60 , //unit in minutes
+      '/api/lol//v1.3/game/by-summoner/{[\d]}/recent' => 10080 , //unit in minutes
     )
   );
 
@@ -30,17 +30,18 @@ class lolWebAPIResource {
   //matchList: returns the stats for the last 10 games played
   public function matchList($region,$summonerId){
     $command = $this->path.'/api/lol/'.$region.'/v1.3/game/by-summoner/'.$summonerId.'/recent'.'?' . http_build_query(array('api_key' => $this->apiKey));
-    $res = $this->cache->getCommand($command);
+    /*$res = $this->cache->getCommand($command);
     if (empty($res)) {
       $res = json_decode(file_get_contents($command),true);
       $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
       $this->cache->save($command, $res, $expDate);
-    }
+    }*/
+    $res = json_decode(file_get_contents($command),true);
     return $res;
   }
   //matchDetail: returns the detail information of one game by its gameId
   public function matchDetail($region,$matchId){
-    return file_get_contents($this->path.'/api/lol/'.$region.'/v2.2/match/'.$matchId.'?'.$this->key,true);
+    return json_decode(file_get_contents($this->path.'/api/lol/'.$region.'/v2.2/match/'.$matchId.'?'.$this->key),true);
   }
   //summonerName: return a list of summoner names by their respective ids
   public function summonerName($region,$idArraystring){
@@ -62,10 +63,26 @@ class lolWebAPIResource {
   public function summonerSpell($region){
     return json_decode(file_get_contents($this->globalPath.'api/lol/static-data/'.$region.'/v1.2/summoner-spell?dataById=true&spellData=all&'.$this->key),true);
   }
+  //masteries: retrieve mastery info by its id
+  public function masteries($region){
+    return json_decode(file_get_contents($this->globalPath.'api/lol/static-data/'.$region.'/v1.2/mastery?'.$this->key),true);
+  }
+  //runes: retrieve rune info by its id
+  public function runes($region){
+    return json_decode(file_get_contents($this->globalPath.'api/lol/static-data/'.$region.'/v1.2/rune?runeListData=all&'.$this->key),true);
+  }
+
+  public function summonerMasteries($region,$summonerId){
+    return json_decode(file_get_contents($this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/masteries?'.$this->key),true);
+  }
+
+  public function summonerRunes($region,$summonerId){
+    return json_decode(file_get_contents($this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/runes?'.$this->key),true);
+  }
 }
 
 class localFileResource {
-  private $path = '../localResource';
+  private $path = '../../localResource';
   public function __construct($dataPath = '') {
     if(!empty($dataPath)){
       $this->path = $dataPath;
@@ -77,7 +94,7 @@ class localFileResource {
   }
 
   public function matchDetail() {
-    return file_get_contents($this->path.'/matchDetail.json');
+    return json_decode(file_get_contents($this->path.'/matchDetail.json'),true);
   }
 }
 
@@ -107,8 +124,8 @@ class lolAPI {
   }
 
   public function getMatchDetail($matchId = 0){
-    return $this->resource->webAPI->matchDetail($this->config['region'],$matchId);
-    //return $this->resource->localFile->matchDetail();
+    //return $this->resource->webAPI->matchDetail($this->config['region'],$matchId);
+    return $this->resource->localFile->matchDetail();
   }
 
   public function getSummonerName($idArraystring = ''){
@@ -129,6 +146,22 @@ class lolAPI {
 
   public function getSummonerSpell(){
     return $this->resource->webAPI->summonerSpell($this->config['region']);
+  }
+
+  public function getMasteries(){
+    return $this->resource->webAPI->masteries($this->config['region']);
+  }
+
+  public function getRunes(){
+    return $this->resource->webAPI->runes($this->config['region']);
+  }
+
+  public function getSummonerMasteries($summonerId = 0){
+    return $this->resource->webAPI->summonerMasteries($this->config['region'],$summonerId);
+  }
+
+  public function getSummonerRunes($summonerId = 0){
+    return $this->resource->webAPI->summonerRunes($this->config['region'],$summonerId);
   }
 }
 

@@ -1,12 +1,13 @@
 #appWrapper{
-  background-image: url('images/common/background.jpg');
+
 }
 
 .nav-pills > li > a{
   color: white;
 }
 
-/*header css*/
+/*header css
+background-image: url('images/common/background.jpg');*/
 
 #header{
   background-color: rgb(36,36,36);

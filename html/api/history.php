@@ -1,6 +1,6 @@
 <?php
 //https://billchou.local/billchou/leagueOfLegend/api/history.php?function=matchList&summonerName=epiccookierawr
-//https://billchou.local/billchou/leagueOfLegend/api/history.php?function=matchDetail&matchId=2313821210
+//https://billchou.local/billchou/leagueOfLegend/api/history.php?function=matchDetail&matchId=2305801661
 
 include '../../global.inc';
 include INCLUDE_PATH . '/matchHistoryService.php';
@@ -11,20 +11,20 @@ $response = array(
   'data' => ''
 );
 
+//summonerId = {
+//'summonerName' => ['id','name','profileIconId','summonerlevel','revisionDate']
+//}
+
 try {
   if ($_GET['function'] == 'matchList') {
-    /*
-    summonerId = {
-    'summonerName' => ['id','name','profileIconId','summonerlevel','revisionDate']
-  }
-    */
+
     $summonerName = $_GET['summonerName'];
     $summonerId = $service->getSummonerIds($summonerName);
     $response['data'] = $service->matchList($summonerId[$summonerName]["id"]);
   }
   else if($_GET['function'] == 'matchDetail') {
     $matchId = $_GET['matchId'];
-    $response['data'] = json_decode($service->matchDetail($matchId),true);
+    $response['data'] = $service->matchDetail($matchId);
   }
 
 } catch (Exception $e) {

@@ -5,6 +5,7 @@
   var config;
   var dataModel = {
     matchList : [],
+    matchDetail : []
   };
 
   saveConfig  = function(cfg){
@@ -35,10 +36,11 @@
     return view;
   }
   buildView = function(){
-    var view = '';
-    var data = dataModel.matchList.slice(0,5);
+    var view = JSON.stringify(dataModel.matchDetail);
 
-    view = buildMatchListView(data);
+    //var data = dataModel.matchList.slice(0,5);
+
+    //view = buildMatchListView(data);
 
     $('#data-body').html(view);
   };
@@ -50,11 +52,16 @@
     console.log(dataAPI);
     buildUIFrame();
 
-    dataAPI.matchList('greenlemons',function(res){
+    /*dataAPI.matchList('greenlemons',function(res){
       dataModel.matchList = res.matchList.games;
       console.log(res);
       buildView();
-    });
+          });*/
+      dataAPI.matchDetail('2321498409',function(res){
+        dataModel.matchDetail = res;
+        console.log(res);
+        buildView();
+      });
 
 
   };

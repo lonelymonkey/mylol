@@ -44,9 +44,9 @@ class matchHistoryService{
     $output = array();
     //$summonerId = $this->api->getSummonerId($summonerName);
 
-    $this->profiler->mark('api->getMatchList','start');
+    //$this->profiler->mark('api->getMatchList','start');
     $matchList = $this->api->getMatchList($summonerId);
-    $this->profiler->mark('api->getMatchList','finish');
+    //$this->profiler->mark('api->getMatchList','finish');
 
     $summonerNameTranslation = [];
     foreach ($matchList['games'] AS $game) {
@@ -57,18 +57,18 @@ class matchHistoryService{
     }
     //array_keys($summonerNameTranslation);
     //finish $summonerNameTranslation  variable
-    $this->profiler->mark('$this->getSummonerName','start');
+  //  $this->profiler->mark('$this->getSummonerName','start');
     $summoners = $this->getSummonerName(array_keys($summonerNameTranslation));
-    $this->profiler->mark('$this->getSummonerName','finish');
+    //$this->profiler->mark('$this->getSummonerName','finish');
 
 
-    $this->profiler->mark('api->getNameAndImage','start');
+    //$this->profiler->mark('api->getNameAndImage','start');
     $championNameAndImage = $this->api->getNameAndImage();
-    $this->profiler->mark('api->getNameAndImage','finish');
+    //$this->profiler->mark('api->getNameAndImage','finish');
 
-    $this->profiler->mark('api->getItems','start');
+    //$this->profiler->mark('api->getItems','start');
     $items = $this->api->getItems();
-    $this->profiler->mark('api->getItems','finish');
+    //$this->profiler->mark('api->getItems','finish');
 
     $this->profiler->mark('api->getSummonerSpell','start');
     $spells = $this->api->getSummonerSpell();
@@ -99,11 +99,11 @@ class matchHistoryService{
           $matchList['games'][$gameIndex]['fellowPlayers'][$playerIndex]['teamColor'] = 'purple';
         }
       }
-
+      // only two spells
       for($i = 1; $i<=2; $i++){
         $matchList['games'][$gameIndex]['spellName'.$i] = $spells['data'][$game['spell'.$i]]['name'];
       }
-
+      //only 7 items
       for($i = 0; $i<=6; $i++){
         if(!empty($matchList['games'][$gameIndex]["stats"]['item'.$i])){
           $matchList['games'][$gameIndex]["stats"]['itemName'.$i] = $items['data'][$game['stats']['item'.$i]]['name'];
@@ -121,7 +121,52 @@ class matchHistoryService{
 
 
   public function matchDetail($matchId = 0){
-    return $this->api->getMatchDetail($matchId);
+    //initialize other api calls
+    $output = array();
+
+    $this->profiler->mark('Init','start');
+    $championNameAndImage = $this->api->getNameAndImage();
+    $items = $this->api->getItems();
+    $spells = $this->api->getSummonerSpell();
+    $runes = $this->api->getRunes();
+    $masteries = $this->api->getMasteries();
+    $this->profiler->mark('Init','finish');
+
+    $matchDetail = $this->api->getMatchDetail($matchId);
+    $matchDetail['GameDurationMin'] = gmdate("H:i:s", $matchDetail['matchDuration']);
+    foreach($matchDetail['participants'] AS $index => $participant){
+      //champion name and image
+      $matchDetail['participants'][$index]['championName'] = $championNameAndImage['data'][$participant['championId']]['name'];
+      $matchDetail['participants'][$index]["image"] = $championNameAndImage['data'][$participant['championId']]['image']['full'];
+      foreach($participant['masteries'] AS $masteryIndex => $mastery){ //masteries
+        $matchDetail['participants'][$index]['masteries'][$masteryIndex]['masteryName'] = $masteries['data'][$mastery['masteryId']]['name'];
+      }
+      foreach($participant['runes'] AS $runeIndex => $rune){ //runes
+        $matchDetail['participants'][$index]['runes'][$runeIndex]['runeName'] = $runes['data'][$rune['runeId']]['name'];
+        $matchDetail['participants'][$index]['runes'][$runeIndex]['runeImage'] = $runes['data'][$rune['runeId']]['image']['full'];
+      }
+
+      for($i = 0; $i<=6; $i++){//items
+        if(!empty($matchDetail['participants'][$index]["stats"]['item'.$i])){
+          $matchDetail['participants'][$index]["stats"]['itemName'.$i] = $items['data'][$participant['stats']['item'.$i]]['name'];
+          $matchDetail['participants'][$index]["stats"]['itemImage'.$i] = $items['data'][$participant['stats']['item'.$i]]['image']['full'];
+        }
+      }
+
+      for($i = 1; $i<=2; $i++){//spells
+        $matchDetail['participants'][$index]['spellName'.$i] = $spells['data'][$participant['spell'.$i.'Id']]['name'];
+      }
+    }
+
+    foreach($matchDetail['teams'] AS $teamIndex => $team){//banned champion Name
+      foreach($team['bans'] AS $banIndex => $ban){
+        $matchDetail['teams'][$teamIndex]['bans'][$banIndex]['championName'] = $championNameAndImage['data'][$ban['championId']]['name'];
+      }
+    }
+
+    $output['matchList'] = $matchDetail;
+    $output['profiler'] = $this->profiler->data;
+    return $output;
   }
 }
 

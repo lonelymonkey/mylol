@@ -8,18 +8,24 @@
       function(data, status){
        console.log(data);
    });*/
-
 </script>
+<script src="lolHistoryUI.js"></script>
+<script src="lolHistoryData.js"></script>
+
 
 <!DOCTYPE html>
 
 <html>
 
 <div id="appWrapper">
-go to hell
 </div>
 
 </html>
 
 <script>
+  $(document).ready(function(){
+    lolHistoryUI.load({
+      'containerId': 'appWrapper'
+    });
+  });
 </script>

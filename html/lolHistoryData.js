@@ -39,9 +39,25 @@ lolHistoryData = function(cfg){
     });
 
   };
-  matchDetail = function(){
+  matchDetail = function(matchId,callback){
+    $.ajax({
+      'type':'GET',
+      'dataType':'json',
+      'url':config.apiURL,
+      'data':{'function':'matchDetail','matchId':2321498409},
+      'success': function(res){
+        console.log(res);
+        if(typeof(callback) == 'function'){
+          callback(res.data);
+        }
+        else{
+          console.log('error');
+        }
+        }
+      });
     console.log('matchDetail');
   };
+
   return {
     matchDetail : matchDetail,
     matchList : matchList
