@@ -5,7 +5,7 @@ if (!class_exists('lolWebAPICache')) {
   class lolWebAPICache {
       private $db;
       public $config = array(
-        'maxBytesData' => 60000
+        'maxBytesData' => 6000
       );
       public function __construct() {
         $this->db = Database::getConnection();
@@ -28,19 +28,18 @@ if (!class_exists('lolWebAPICache')) {
                               ))
                             ->execute()
                             ->resultset();
-
         foreach ($results AS $row) {
           $output .= $row['results'];
         }
         return json_decode($output,true);
       }
       public function save($command, $results, $expDate) {
+        $index = 1;
         $this->deleteExpired();
         $results = json_encode($results);
         $dataSegment = substr($results, 0, $this->config['maxBytesData']);
         $now = date('Y-m-d H:i:s');
         while (strlen($dataSegment) > 0 ) {
-
           $query = 'insert into lolwebapicache (createdDate, expiredDate, command, results) values (:now, :expDate, :command, :results)';
           $this->db->query($query)
                 ->bindAll(array(
@@ -50,7 +49,7 @@ if (!class_exists('lolWebAPICache')) {
                   ':results' => $dataSegment //php data
                 ))
                 ->execute();
-          $dataSegment = substr($data, $index*$this->config['maxBytesData'], $this->config['maxBytesData']);
+          $dataSegment = substr($results, $index*$this->config['maxBytesData'], $this->config['maxBytesData']);
           $index++;
         }
       }

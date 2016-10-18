@@ -1,6 +1,6 @@
 <?php
-//https://billchou.local/billchou/leagueOfLegend/api/history.php?function=matchList&summonerName=epiccookierawr
-//https://billchou.local/billchou/leagueOfLegend/api/history.php?function=matchDetail&matchId=2305801661
+//mylol.local/api/history.php?function=matchList&summonerName=epiccookierawr
+//mylol.local/api/history.php?function=matchDetail&matchId=2305801661
 
 include '../../global.inc';
 include INCLUDE_PATH . '/matchHistoryService.php';

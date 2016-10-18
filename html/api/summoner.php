@@ -24,9 +24,6 @@ try {
   else if($_GET['function'] == 'getLeague'){
     $data = $service->getSummonerLeague($summonerId[$summonerName]['id']);
     $response['data'] = $data;
-    echo '<pre>';
-    var_dump($data);
-    echo '</pre>';
   }
 
 } catch (Exception $e) {

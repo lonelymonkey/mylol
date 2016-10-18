@@ -10,7 +10,7 @@ include 'lolcache.inc';
 class lolWebAPIResource {
   private $path = 'https://na.api.pvp.net/';
   private $globalPath = 'https://global.api.pvp.net/';
-  private $key = 'api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0';
+  //private $key = 'api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0';
   private $apiKey = 'RGAPI-178a4b1c-107a-4509-85f1-9723084273f0';
 
   public $config = array(
@@ -30,13 +30,13 @@ class lolWebAPIResource {
   //matchList: returns the stats for the last 10 games played
   public function matchList($region,$summonerId){
     $command = $this->path.'/api/lol/'.$region.'/v1.3/game/by-summoner/'.$summonerId.'/recent'.'?' . http_build_query(array('api_key' => $this->apiKey));
-    /*$res = $this->cache->getCommand($command);
+    echo $command;
+    $res = $this->cache->getCommand($command);
     if (empty($res)) {
       $res = json_decode(file_get_contents($command),true);
       $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
       $this->cache->save($command, $res, $expDate);
-    }*/
-    $res = json_decode(file_get_contents($command),true);
+    }
     return $res;
   }
   //matchDetail: returns the detail information of one game by its gameId
@@ -46,43 +46,53 @@ class lolWebAPIResource {
   }
   //summonerName: return a list of summoner names by their respective ids
   public function summonerName($region,$idArraystring){
-    return json_decode(file_get_contents($this->path.'/api/lol/'.$region.'/v1.4/summoner/'.$idArraystring.'?'.$this->key),true);
+    $command = $this->path.'/api/lol/'.$region.'/v1.4/summoner/'.$idArraystring.'?'.http_build_query(array('api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
   //summonerId: convert summonerName to summonerId
   public function summonerId($region,$nameArrayString){
-    return json_decode(file_get_contents($this->path.'/api/lol/'.$region.'/v1.4/summoner/by-name/'.$nameArrayString.'?'.$this->key),true);
+    $command = $this->path.'/api/lol/'.$region.'/v1.4/summoner/by-name/'.$nameArrayString.'?'.http_build_query(array('api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
   //championNameAndImage: retrieve champion's name and image by its id
   public function championNameAndImage($region){
-    return json_decode(file_get_contents($this->path.'api/lol/static-data/'.$region.'/v1.2/champion?champData=image&dataById=true&'.$this->key),true);
+    $command = $this->path.'api/lol/static-data/'.$region.'/v1.2/champion?'. http_build_query(array('champData' => 'image','dataById' => 'true','api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
   //item: retrieve item's name and image by its id
   public function items($region){
-    return json_decode(file_get_contents($this->path.'api/lol/static-data/'.$region.'/v1.2/item?itemListData=gold,image&'.$this->key),true);
+    $command = $this->path.'api/lol/static-data/'.$region.'/v1.2/item?'.http_build_query(array('itemListData' => 'gold,image', 'api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
   //summonerSpell: retrieve spell name and info by its id
   public function summonerSpell($region){
-    return json_decode(file_get_contents($this->globalPath.'api/lol/static-data/'.$region.'/v1.2/summoner-spell?dataById=true&spellData=all&'.$this->key),true);
+    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/summoner-spell?'.http_build_query(array('dataById' => 'true','spellData' => 'all', 'api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
   //masteries: retrieve mastery info by its id
   public function masteries($region){
-    return json_decode(file_get_contents($this->globalPath.'api/lol/static-data/'.$region.'/v1.2/mastery?'.$this->key),true);
+    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/mastery?'.http_build_query(array('api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
   //runes: retrieve rune info by its id
   public function runes($region){
-    return json_decode(file_get_contents($this->globalPath.'api/lol/static-data/'.$region.'/v1.2/rune?runeListData=all&'.$this->key),true);
+    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/rune?'. http_build_query(array('runeListData' => 'all', 'api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
 
   public function summonerMasteries($region,$summonerId){
-    return json_decode(file_get_contents($this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/masteries?'.$this->key),true);
+    $command = $this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/masteries?'.http_build_query(array('api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
 
   public function summonerRunes($region,$summonerId){
-    return json_decode(file_get_contents($this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/runes?'.$this->key),true);
+    $command = $this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/runes?'.http_build_query(array('api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
 
   public function summonerLeague($region,$summonerId){
-    return json_decode(file_get_contents($this->path.'api/lol/'.$region.'/v2.5/league/by-summoner/'.$summonerId.'?'.$this->key),true);
+    $command = $this->path.'api/lol/'.$region.'/v2.5/league/by-summoner/'.$summonerId.'?'.http_build_query(array('api_key' => $this->apiKey));
+    return json_decode(file_get_contents($command),true);
   }
 }
 

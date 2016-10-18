@@ -44,9 +44,9 @@ class matchHistoryService{
     $output = array();
     //$summonerId = $this->api->getSummonerId($summonerName);
 
-    //$this->profiler->mark('api->getMatchList','start');
+    $this->profiler->mark('api->getMatchList','start');
     $matchList = $this->api->getMatchList($summonerId);
-    //$this->profiler->mark('api->getMatchList','finish');
+    $this->profiler->mark('api->getMatchList','finish');
 
     $summonerNameTranslation = [];
     foreach ($matchList['games'] AS $game) {
@@ -70,9 +70,9 @@ class matchHistoryService{
     $items = $this->api->getItems();
     //$this->profiler->mark('api->getItems','finish');
 
-    $this->profiler->mark('api->getSummonerSpell','start');
+    //$this->profiler->mark('api->getSummonerSpell','start');
     $spells = $this->api->getSummonerSpell();
-    $this->profiler->mark('api->getSummonerSpell','finish');
+    //$this->profiler->mark('api->getSummonerSpell','finish');
     //var_dump($spells);
 
     foreach ($summoners AS $summoner) {
