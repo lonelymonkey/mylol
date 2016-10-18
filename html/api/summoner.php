@@ -1,5 +1,5 @@
 <?php
-//http://mylol.local/api/summoner.php?function=getLeague&summonerName=epiccookierawr
+//http://mylol.local/api/summoner.php?function=getRunes&summonerName=epiccookierawr
 include '../../global.inc';
 include INCLUDE_PATH . '/summonerService.php';
 
@@ -34,7 +34,7 @@ try {
 }
 
 
-//echo json_encode($response);
+echo json_encode($response);
 
 
 

@@ -19,9 +19,13 @@ class summonerService{
   }
 
   public function getSummonerRunes($summonerId){
+    $output = array();
     //initialize api calls
     $runes = $this->api->getRunes();
+
+    $this->profiler->mark('api->getSummonerRunes','start');
     $summonerRunes = $this->api->getSummonerRunes($summonerId);
+    $this->profiler->mark('api->getSummonerRunes','finish');
 
     foreach($summonerRunes[$summonerId]['pages'] AS $pageIndex => $page){
       foreach($page['slots'] AS $slotsIndex => $slot){
@@ -30,13 +34,19 @@ class summonerService{
       }
     }
 
-    return $summonerRunes;
+    $output['summonerRunes'] = $summonerRunes;
+    $output['profiler'] = $this->profiler->data;
+    return $output;
   }
 
   public function getSummonerMasteries($summonerId){
+    $output = array();
     //initialize api calls
     $masteries = $this->api->getMasteries();
+
+    $this->profiler->mark('api->getSummonerMasteries','start');
     $summonerMasteries = $this->api->getSummonerMasteries($summonerId);
+    $this->profiler->mark('api->getSummonerMasteries','finish');
 
     foreach($summonerMasteries[$summonerId]['pages'] AS $pageIndex => $page){
       foreach($page['masteries'] AS $masteriesIndex => $mastery){
@@ -44,12 +54,23 @@ class summonerService{
       }
     }
 
-    return $summonerMasteries;
+    $output['summonerMasteries'] = $summonerMasteries;
+    $output['profiler'] = $this->profiler->data;
+
+    return $output;
   }
 
   public function getSummonerLeague($summonerId){
+    $output = array();
+
+    $this->profiler->mark('api->getSummonerLeague','start');
     $summonerLeague = $this->api->getSummonerLeague($summonerId);
-    return $summonerLeague;
+    $this->profiler->mark('api->getSummonerLeague','finish');
+
+    $output['summonerLeague'] = $summonerLeague;
+    $output['profiler'] = $this->profiler->data;
+
+    return $output;
   }
 
 }

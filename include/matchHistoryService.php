@@ -57,22 +57,22 @@ class matchHistoryService{
     }
     //array_keys($summonerNameTranslation);
     //finish $summonerNameTranslation  variable
-  //  $this->profiler->mark('$this->getSummonerName','start');
+    $this->profiler->mark('$this->getSummonerName','start');
     $summoners = $this->getSummonerName(array_keys($summonerNameTranslation));
-    //$this->profiler->mark('$this->getSummonerName','finish');
+    $this->profiler->mark('$this->getSummonerName','finish');
 
 
-    //$this->profiler->mark('api->getNameAndImage','start');
+    $this->profiler->mark('api->getNameAndImage','start');
     $championNameAndImage = $this->api->getNameAndImage();
-    //$this->profiler->mark('api->getNameAndImage','finish');
+    $this->profiler->mark('api->getNameAndImage','finish');
 
-    //$this->profiler->mark('api->getItems','start');
+    $this->profiler->mark('api->getItems','start');
     $items = $this->api->getItems();
-    //$this->profiler->mark('api->getItems','finish');
+    $this->profiler->mark('api->getItems','finish');
 
-    //$this->profiler->mark('api->getSummonerSpell','start');
+    $this->profiler->mark('api->getSummonerSpell','start');
     $spells = $this->api->getSummonerSpell();
-    //$this->profiler->mark('api->getSummonerSpell','finish');
+    $this->profiler->mark('api->getSummonerSpell','finish');
     //var_dump($spells);
 
     foreach ($summoners AS $summoner) {
@@ -124,15 +124,21 @@ class matchHistoryService{
     //initialize other api calls
     $output = array();
 
-    $this->profiler->mark('Init','start');
     $championNameAndImage = $this->api->getNameAndImage();
     $items = $this->api->getItems();
     $spells = $this->api->getSummonerSpell();
-    $runes = $this->api->getRunes();
-    $masteries = $this->api->getMasteries();
-    $this->profiler->mark('Init','finish');
 
+    $this->profiler->mark('api->getRunes','start');
+    $runes = $this->api->getRunes();
+    $this->profiler->mark('api->getRunes','finish');
+
+    $this->profiler->mark('api->getMasteries','start');
+    $masteries = $this->api->getMasteries();
+    $this->profiler->mark('api->getMasteries','finish');
+
+    $this->profiler->mark('api->getMatchDetail','start');
     $matchDetail = $this->api->getMatchDetail($matchId);
+    $this->profiler->mark('api->getMatchDetail','finish');
     $matchDetail['GameDurationMin'] = gmdate("H:i:s", $matchDetail['matchDuration']);
     foreach($matchDetail['participants'] AS $index => $participant){
       //champion name and image

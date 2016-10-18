@@ -30,7 +30,6 @@ class lolWebAPIResource {
   //matchList: returns the stats for the last 10 games played
   public function matchList($region,$summonerId){
     $command = $this->path.'/api/lol/'.$region.'/v1.3/game/by-summoner/'.$summonerId.'/recent'.'?' . http_build_query(array('api_key' => $this->apiKey));
-    echo $command;
     $res = $this->cache->getCommand($command);
     if (empty($res)) {
       $res = json_decode(file_get_contents($command),true);
@@ -42,57 +41,124 @@ class lolWebAPIResource {
   //matchDetail: returns the detail information of one game by its gameId
   public function matchDetail($region,$matchId){
     $command = $this->path.'/api/lol/'.$region.'/v2.2/match/'.$matchId.'?'. http_build_query(array('api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
   //summonerName: return a list of summoner names by their respective ids
   public function summonerName($region,$idArraystring){
     $command = $this->path.'/api/lol/'.$region.'/v1.4/summoner/'.$idArraystring.'?'.http_build_query(array('api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
   //summonerId: convert summonerName to summonerId
   public function summonerId($region,$nameArrayString){
     $command = $this->path.'/api/lol/'.$region.'/v1.4/summoner/by-name/'.$nameArrayString.'?'.http_build_query(array('api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
   //championNameAndImage: retrieve champion's name and image by its id
   public function championNameAndImage($region){
     $command = $this->path.'api/lol/static-data/'.$region.'/v1.2/champion?'. http_build_query(array('champData' => 'image','dataById' => 'true','api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
   //item: retrieve item's name and image by its id
   public function items($region){
     $command = $this->path.'api/lol/static-data/'.$region.'/v1.2/item?'.http_build_query(array('itemListData' => 'gold,image', 'api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
   //summonerSpell: retrieve spell name and info by its id
   public function summonerSpell($region){
     $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/summoner-spell?'.http_build_query(array('dataById' => 'true','spellData' => 'all', 'api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
   //masteries: retrieve mastery info by its id
   public function masteries($region){
     $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/mastery?'.http_build_query(array('api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
   //runes: retrieve rune info by its id
   public function runes($region){
     $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/rune?'. http_build_query(array('runeListData' => 'all', 'api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
 
   public function summonerMasteries($region,$summonerId){
     $command = $this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/masteries?'.http_build_query(array('api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
 
   public function summonerRunes($region,$summonerId){
     $command = $this->path.'api/lol/'.$region.'/v1.4/summoner/'.$summonerId.'/runes?'.http_build_query(array('api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
 
   public function summonerLeague($region,$summonerId){
     $command = $this->path.'api/lol/'.$region.'/v2.5/league/by-summoner/'.$summonerId.'?'.http_build_query(array('api_key' => $this->apiKey));
-    return json_decode(file_get_contents($command),true);
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
   }
 }
 
@@ -139,8 +205,8 @@ class lolAPI {
   }
 
   public function getMatchDetail($matchId = 0){
-    //return $this->resource->webAPI->matchDetail($this->config['region'],$matchId);
-    return $this->resource->localFile->matchDetail();
+    return $this->resource->webAPI->matchDetail($this->config['region'],$matchId);
+    //return $this->resource->localFile->matchDetail();
   }
 
   public function getSummonerName($idArraystring = ''){

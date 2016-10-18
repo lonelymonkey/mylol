@@ -24,7 +24,7 @@ if (!class_exists('lolWebAPICache')) {
         $query = 'select * from lolwebapicache where command = :cmd order by id asc';
         $results = $this->db->query($query)
                             ->bindAll(array(
-                                ':cmd' => $command
+                                ':cmd' => substr($command,0,256)
                               ))
                             ->execute()
                             ->resultset();
