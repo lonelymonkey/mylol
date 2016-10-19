@@ -52,16 +52,17 @@
     console.log(dataAPI);
     buildUIFrame();
 
-    /*dataAPI.matchList('greenlemons',function(res){
+    dataAPI.matchList('greenlemons',function(res){
       dataModel.matchList = res.matchList.games;
       console.log(res);
       buildView();
-          });*/
+          });
+          /*
       dataAPI.matchDetail('2321498409',function(res){
         dataModel.matchDetail = res;
         console.log(res);
         buildView();
-      });
+      });*/
 
 
   };

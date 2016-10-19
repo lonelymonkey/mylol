@@ -6,6 +6,7 @@
 
 //$championListData = $riotAPI->championListData();
 include 'lolcache.inc';
+include 'API2LocalDBInterface.inc';
 
 class lolWebAPIResource {
   //private $path = 'https://na.api.pvp.net/';
@@ -18,18 +19,19 @@ class lolWebAPIResource {
 
   public $config = array( //unit in min
     'expiredDate' => array(
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/game/by-summoner/\d{8}/recent#' => '+ 1 day', //matchList
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.2/match/\d{4,}#' => 1, //matchDetail
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/[\d,]{8,}#' => 2, //summonerName
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/by-name/\w{2,}#' => 3, //summonerId
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/champion#' => 4, //championNameAndImage
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/item#' => 5, //items
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/summoner-spell#' => 6,//summonerSpell
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/mastery#' => 7, //masteries
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/rune#' => 8, // runes
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/masteries#' => 9, //summonerMasteries
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/runes#' => 10, //summonerRunes
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.5/league/by-summoner/\d{8}#' => 11 //summonerLeague
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/game/by-summoner/\d{8}/recent#' => 86400, //matchList  1 day
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.2/match/\d{4,}#' => 86400, //matchDetail
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/[\d,]{8,}#' => 86400, //summonerName
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/by-name/\w{2,}#' => 86400, //summonerId
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/champion#' => 86400, //championNameAndImage
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/item#' => 86400, //items
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/summoner-spell#' => 86400,//summonerSpell
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/mastery#' => 86400, //masteries
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/rune#' => 86400, // runes
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/masteries#' => 86400, //summonerMasteries
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/runes#' => 86400, //summonerRunes
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.5/league/by-summoner/\d{8}#' => 86400 //summonerLeague
+      //'#*#'
     )
   );
 
@@ -39,21 +41,30 @@ class lolWebAPIResource {
     }
     $this->cache = new lolWebAPICache();
   }
+  private function getExpiredTime($command) {
+    foreach($this->config['expiredDate'] AS $expiredDateIndex => $expiredDate){
+      if(preg_match($expiredDateIndex,$command)){
+        $expirationPeriod = date('Y-m-d H:i:s',strtotime($expiredDate));
+        break;
+      }
+    }
+    return $expirationPeriod;
+  }
 
 
   //matchList: returns the stats for the last 10 games played
   public function matchList($region,$summonerId){
+    $interface = new API2LocalDBInterface(array('region'=>$region));
+
     $command = $this->path($region).'api/lol/'.$region.'/v1.3/game/by-summoner/'.$summonerId.'/recent'.'?' . http_build_query(array('api_key' => $this->apiKey));
     $res = $this->cache->getCommand($command);
     if (empty($res)) {
       $res = json_decode(file_get_contents($command),true);
-      foreach($this->config['expiredDate'] AS $expiredDateIndex => $expiredDate){
-        if(preg_match($expiredDateIndex,$command)){
-          $expDate = date('Y-m-d H:i:s',strtotime($expiredDate));
-        }
-      }
-      $this->cache->save($command, $res, $expDate);
+      $expTime = $this->getExpiredTime($command);
+
+      $this->cache->save($command, $res, date('Y-m-d H:i:s', time()+$expTime));
     }
+    $interface->savematchList($res);
     return $res;
   }
   //matchDetail: returns the detail information of one game by its gameId
@@ -63,8 +74,8 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
-      $this->cache->save($command, $res, $expDate);
+      $expTime = $this->getExpiredTime($command);
+      $this->cache->save($command, $res, date('Y-m-d H:i:s', time()+$expTime));
     }
     return $res;
   }

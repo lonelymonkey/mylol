@@ -9,6 +9,22 @@ CREATE TABLE `lolWEBAPICache` (
     KEY `command` (`command`)
 ) ENGINE=INNODB CHARACTER SET=utf8;
 
+
+CREATE TABLE `NA_Games` (
+    `gameId` bigInt not null,
+    `invalid` boolean default null,
+    `gameMode` enum('CLASSIC') default null,
+    `gameType` enum('MATCHED_GAME','CUSTOM_GAME') default null,
+    `subType` enum('RANKED_SOLO_5x5') default null,
+    `createdDate` datetime default null,
+    `endDate` datetime default null,
+    `gameVersion` varchar(256) default null,
+    `platformId` int default null,
+    PRIMARY KEY  (`gameId`)
+) ENGINE=INNODB CHARACTER SET=utf8;
+
+
+
 CREATE TABLE `champion` (
     `championId` int(11) not null,
     `championName` varchar(32) not null default '',
