@@ -34,7 +34,6 @@ try {
     $response['errMsg'] = $e->getMessage();
 }
 
-
 echo json_encode($response);
 
 

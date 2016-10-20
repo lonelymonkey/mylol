@@ -36,11 +36,11 @@
     return view;
   }
   buildView = function(){
-    var view = JSON.stringify(dataModel.matchDetail);
+    var view = '';
 
-    //var data = dataModel.matchList.slice(0,5);
+    var data = dataModel.matchList.slice(0,5);
 
-    //view = buildMatchListView(data);
+    view = buildMatchListView(data);
 
     $('#data-body').html(view);
   };
@@ -52,7 +52,7 @@
     console.log(dataAPI);
     buildUIFrame();
 
-    dataAPI.matchList('greenlemons',function(res){
+    dataAPI.matchList('epiccookierawr',function(res){
       dataModel.matchList = res.matchList.games;
       console.log(res);
       buildView();

@@ -4,7 +4,7 @@ lolHistoryData = function(cfg){
   },cfg);
 
   matchList = function(summonerName,callback){
-    console.log('matchList3242342332234');
+    console.log('matchList'+summonerName);
     /*$.get(
       config.apiURL,
       {'function': 'matchList', 'summonerName' : 'epiccookierawr'},

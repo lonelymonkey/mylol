@@ -54,7 +54,7 @@ class lolWebAPIResource {
 
   //matchList: returns the stats for the last 10 games played
   public function matchList($region,$summonerId){
-    $interface = new API2LocalDBInterface(array('region'=>$region));
+    //$interface = new API2LocalDBInterface(array('region'=>$region));
 
     $command = $this->path($region).'api/lol/'.$region.'/v1.3/game/by-summoner/'.$summonerId.'/recent'.'?' . http_build_query(array('api_key' => $this->apiKey));
     $res = $this->cache->getCommand($command);
@@ -64,7 +64,7 @@ class lolWebAPIResource {
 
       $this->cache->save($command, $res, date('Y-m-d H:i:s', time()+$expTime));
     }
-    $interface->savematchList($res);
+    //$interface->savematchList($res);
     return $res;
   }
   //matchDetail: returns the detail information of one game by its gameId

@@ -1,111 +1,62 @@
-#appWrapper{
-
+#appWrapper {
+    margin: 0 auto;
 }
 
-.nav-pills > li > a{
-  color: white;
+#summoner {
+    width: 1000px;
+    height: 200px;
+    background: grey;
+    margin: 0 auto;
 }
 
-/*header css
-background-image: url('images/common/background.jpg');*/
-
-#header{
-  background-color: rgb(36,36,36);
+#menu {
+  width: 1000px;
+  height: 54px;
+  background: purple;
+  margin: 0 auto;
 }
 
-#sfuIconDiv{
-  padding: 0px;
+#summoner-info {
+  width: 1000px;
+  height: 1000px;
+  margin: 0 auto;
 }
 
-#sfuIcon{
-  max-height: 100px;
+#summary {
+  width: 250px;
+  height: 200px;
+  background: red;
   float: left;
 }
 
-#sfuLogo{
-  font-family: 'Bungee', cursive;
-      color: rgb(191,28,45);
-      margin: 10px 0 10px 30px;
-      float: left;
+#champion-summary {
+  width: 250px;
+    height: 800px;
+    background: blue;
+    /* margin: 0; */
+    /* display: inline; */
+    float: left;
+    position: relative;
+    top: 200px;
+    right: 250px;
 }
 
-#searchDiv{
-  padding-top: 15px;
+#summoner-average {
+  width: 750px;
+    height: 150px;
+    background: yellow;
+    float: left;
+    position: relative;
+    bottom: 800px;
+    left: 250px;
 }
 
-#search{
-  width: 210px;
+#game-stat {
+  width: 750px;
+  height: 850px;
+  background: aqua;
+  position: relative;
   float: left;
-  margin-right: 10px
-}
-
-/*pills*/
-
-#pills{
-  background-color:rgb(17,17,17);
-}
-
-/*contents*/
-
-#midSection{
-  background-color: rgb(36,36,36);
-}
-
-#content{
-  padding: 20px;
-}
-
-/*menu*/
-
-#menu{
-  padding:10px 0px 0px 0px;
-  height: 700px;
-}
-
-#menu > ul > li > a {
-  color: rgb(136,136,136);
-}
-
-#menuContent{
-  padding: 0px;
-  margin: 0px;
-  list-style-type: none;
-  height: 600px;
-}
-
-.option{
-  padding: 10px;
-  border-bottom: solid rgb(136,136,136) 1px;
-  font-family: 'Bungee', cursive;
-}
-
-#currentPatch{
-  font-family: 'Bungee', cursive;
-  text-align: center;
-  color: rgb(136,136,110);
-  font-size: 15px;
-}
-
-.smallFont{
-  font-size: 8px;
-}
-
-/*footer*/
-
-#footer{
-  background-color: black;
-}
-
-#webInfo{
-  color:white;
-  padding: 30px 0px 50px 20px;
-}
-
-/*Css for championList*/
-
-.champion{
-  color: white;
-  padding: 10px 0px 10px 0px;
-  text-align: center;
-  width: 100px;
+  bottom: 799px;
+  left: 250px;
 }
