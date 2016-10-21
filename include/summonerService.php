@@ -73,5 +73,24 @@ class summonerService{
     return $output;
   }
 
+  public function getRankedStats($summonerId){
+    $output = array();
+    //initialize api calls
+    $championNameAndImage = $this->api->getNameAndImage();
+
+    $this->profiler->mark('api->getRankedStats','start');
+    $rankedStats = $this->api->getRankedStats($summonerId);
+    $this->profiler->mark('api->getRankedStats','finish');
+
+    foreach($rankedStats['champions'] AS $championIndex => $champion){
+      $rankedStats['champions'][$championIndex]['name'] = $championNameAndImage['data'][$champion['id']]['name'];
+    }
+
+    $output['rankedStats'] = $rankedStats;
+    $output['profiler'] = $this->profiler->data;
+
+    return $output;
+  }
+
 }
 ?>

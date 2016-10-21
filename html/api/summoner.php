@@ -25,6 +25,13 @@ try {
     $data = $service->getSummonerLeague($summonerId[$summonerName]['id']);
     $response['data'] = $data;
   }
+  else if($_GET['function'] == 'summonerInfo'){
+    $response['data'] = $summonerId;
+  }
+  else if($_GET['function'] == 'getRankedStats'){
+    $data = $service->getRankedStats($summonerId[$summonerName]['id']);
+    $response['data'] = $data;
+  }
 
 } catch (Exception $e) {
     if ($response['status'] >= 1) {

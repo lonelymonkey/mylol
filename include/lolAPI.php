@@ -189,6 +189,19 @@ class lolWebAPIResource {
     }
     return $res;
   }
+
+  public function rankedStats($region,$summonerId){
+    $command = $this->path($region).'api/lol/'.$region.'/v1.3/stats/by-summoner/'.$summonerId.'/ranked?'.http_build_query(array('season' => 'SEASON2016','api_key' => $this->apiKey));
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = json_decode(file_get_contents($command),true);
+      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
+  }
+
+
 }
 
 class localFileResource {
@@ -276,6 +289,10 @@ class lolAPI {
 
   public function getSummonerLeague($summonerId = 0){
     return $this->resource->webAPI->summonerLeague($this->config['region'],$summonerId);
+  }
+
+  public function getrankedStats($summonerId = 0){
+    return $this->resource->webAPI->rankedStats($this->config['region'],$summonerId);
   }
 }
 

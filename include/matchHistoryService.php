@@ -170,7 +170,7 @@ class matchHistoryService{
       }
     }
 
-    $output['matchList'] = $matchDetail;
+    $output['matchDetail'] = $matchDetail;
     $output['profiler'] = $this->profiler->data;
     return $output;
   }

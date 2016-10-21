@@ -11,7 +11,8 @@
 </script>
 <script src="lolHistoryUI.js"></script>
 <script src="lolHistoryData.js"></script>
-
+<script src="lolSummonerUI.js"></script>
+<script src="lolSummonerData.js"></script>
 
 <!DOCTYPE html>
 
@@ -42,4 +43,12 @@
       'containerId': 'appWrapper'
     });
   });*/
+  $(document).ready(function(){
+    lolSummonerUI.load({
+      containerId : 'summoner'
+    });
+    lolHistoryUI.load({
+      containerId : 'game-stat'
+    });
+  });
 </script>

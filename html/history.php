@@ -17,8 +17,8 @@ hello history.php
   });
   */
   $(document).ready(function(){
-    lolHistoryUI.load({
-      containerId : 'lol-history'
+    lolsummonerUI.load({
+      containerId : 'summoner'
     });
   });
   </script>
