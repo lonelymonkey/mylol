@@ -2,6 +2,16 @@
     margin: 0 auto;
 }
 
+.menu {
+  list-style: none;
+  float: left;
+  margin: 0px;
+}
+
+/**/
+
+/*summary*/
+
 #summoner {
     width: 1000px;
     height: 200px;

@@ -22,16 +22,16 @@
   <div id='summoner'>
   </div>
   <div id='menu'>
+    <ul class='menu'>
+      <li class='menu'><a href="#" class="btn btn-info" role="button" id='summary-button'>Summary</a></li>
+      <li class='menu'><a href="#" class="btn btn-info" role="button" id='champions-button'>Champions</a></li>
+      <li class='menu'><a href="#" class="btn btn-info" role="button" id='league-button'>League</a></li>
+      <li class='menu'><a href="#" class="btn btn-info" role="button" id='matches-button'>Matches</a></li>
+      <li class='menu'><a href="#" class="btn btn-info" role="button" id='runes-button'>Runes</a></li>
+      <li class='menu'><a href="#" class="btn btn-info" role="button" id='masteries-button'>Masteries</a></li>
+    </ul>
   </div>
-  <div id='summoner-info'>
-    <div id='summary'>
-    </div>
-    <div id='champion-summary'>
-    </div>
-    <div id='summoner-average'>
-    </div>
-    <div id='game-stat'>
-    </div>
+  <div id='content'>
   </div>
 </div>
 
@@ -43,12 +43,47 @@
       'containerId': 'appWrapper'
     });
   });*/
+
   $(document).ready(function(){
+    buildUIFrame();
+    webpage('summary-info');
+    bindevent();
+  });
+
+  function webpage(page){
     lolSummonerUI.load({
-      containerId : 'summoner'
+      containerId : page
     });
     lolHistoryUI.load({
-      containerId : 'game-stat'
+      containerId : page
     });
-  });
+  }
+
+  function bindevent(){
+    $('#summary-button').click(function(){
+      console.log('summary is clicked');
+      $('#summoner-info').remove();
+      $('#summoner').empty();
+      buildUIFrame();
+      webpage('summary-info');
+    });
+
+  }
+
+  function buildUIFrame() {
+    var view = '';
+    view += '' +
+    '<div id="summoner-info">'+
+      '<div id="summary">'+
+      '</div>'+
+      '<div id="champion-summary">'+
+      '</div>'+
+      '<div id="summoner-average">'+
+      '</div>'+
+      '<div id="game-stat">'+
+      '</div>'+
+    '</div>';
+
+    $('#content').append(view);
+  };
 </script>

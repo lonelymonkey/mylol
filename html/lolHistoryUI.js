@@ -16,17 +16,28 @@
   lolHistoryUI.matchDetail = function(matchId){
     dataAPI.matchDetail(matchId,function(res){
       dataModel.matchDetail = res;
-      console.log(res);
+      //console.log(res);
       $('#game'+matchId).append(JSON.stringify(dataModel.matchDetail));
   });
 }
 
 
-  function buildUIFrame () {
-    $('#'+config.containerId).html(
-      '<div id="data-body"></div>'
-    );
-  };
+  /*function buildUIFrame() {
+    var view += '' +
+    '<div id="summoner-info">'+
+      '<div id="summary">'+
+      '</div>'+
+      '<div id="champion-summary">'+
+      '</div>'+
+      '<div id="summoner-average">'+
+      '</div>'+
+      '<div id="game-stat">'+
+      '</div>'+
+    '</div>';
+
+    $('#content').append(view);
+  };*/
+
   function buildMatchListView(data) {
     var view = '';
     data.forEach(function(match){
@@ -87,7 +98,7 @@
         total.loss += 1;
       }
     });
-    console.log(total);
+    //console.log(total);
 
     view = ''+
     '<div>'+total.Kill/MAXGAME+'</div>' +
@@ -105,25 +116,27 @@
     var data = dataModel.matchList.slice(0,5);
 
     view = buildMatchListView(data);
-    console.log(view);
-    $('#'+config.containerId).html(view);
+    //console.log(view);
+    $('#game-stat').html(view);
   };
 
+  function dataAPICall(){
+    dataAPI.matchList('epiccookierawr',function(res){
+      dataModel.matchList = res.matchList.games;
+      //console.log(res);
+      buildView();
+      buildSummonerAverageView();
+    });
+  }
 
   lolHistoryUI.load = function(cfg){
     saveConfig(cfg);
     console.log(config);
 
     dataAPI = lolHistoryData(cfg);
-    console.log(dataAPI);
-    buildUIFrame();
+    //console.log(dataAPI);
+    dataAPICall();
 
-    dataAPI.matchList('epiccookierawr',function(res){
-      dataModel.matchList = res.matchList.games;
-      console.log(res);
-      buildView();
-      buildSummonerAverageView();
-          });
 
   };
   return lolHistoryUI;

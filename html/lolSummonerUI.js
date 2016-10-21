@@ -17,24 +17,28 @@
     config = $.extend({},cfg);
   }
 
-  function buildUIFrame () {
+  /*function buildUIFrame () {
     $('#'+config.containerId).html(
       '<div id="data-body"></div>'
     );
-  };
+  };*/
 
-  function buildSummonerView(data) {
-    console.log(data);
+  //views for summary page
+
+  function buildSummonerView() {
+    var data = dataModel.summonerInfo;
+    //console.log(data);
     var view = '';
       var iconImage = 'http://ddragon.leagueoflegends.com/cdn/6.21.1/img/profileicon/'+data.profileIconId+'.png';
       view += ''+
               '<div><img src='+iconImage+'></div>'+
               '<div>'+data.name+'</div>' +
               '<div>'+data.summonerLevel+'</div>';
-    return view;
+    $('#summoner').append(view);
   }
 
-  function buildLeagueView(data){
+  function buildLeagueView(){
+    var data = dataModel.league;
     console.log(data);
     var playerInfo = {};
     var summary='';
@@ -49,7 +53,7 @@
           playerInfo = league;
         }
       });
-      console.log(playerInfo);
+      //console.log(playerInfo);
     });
     summary += ''+
     '<div>'+playerInfo.isHotStreak+'</div>' +
@@ -64,7 +68,7 @@
   function buildRankedStatsView(){
     var data = dataModel.rankedStats.slice(0,10);
     var championStats = '';
-    console.log(data);
+    //console.log(data);
     $.each(data,function(key,rankedStats){
       championStats += ''+
       '<div>'+rankedStats.name+'</div>' +
@@ -77,47 +81,44 @@
     $('#champion-summary').append(championStats);
   }
 
-  buildView = function(){
-    var view = '';
+  buildView = function(containerId){
+    console.log(containerId);
+    console.log(dataModel);
 
-    var data = dataModel.summonerInfo;
-    view = buildSummonerView(data);
-
-    $('#data-body').html(view);
   };
 
-  lolSummonerUI.load = function(cfg){
-    console.log('init from lolSummonerUI');
-    saveConfig(cfg);
+  //views for summary page
 
-    dataAPI = lolSummonerData(cfg);
-    console.log(dataAPI);
-    buildUIFrame();
-    //this goes first to get the necessary info for the other api calls
+
+  function dataAPICall(containerId){
+    console.log(containerId);
     dataAPI.summonerInfo(search,function(res){
       dataModel.summonerInfo = res[search];
-      console.log(dataModel.summonerInfo);
-      buildView();
+      //console.log(dataModel.summonerInfo);
+        buildSummonerView();
           });
-
     dataAPI.league(search, function(res){
       dataModel.league = res.summonerLeague[[dataModel.summonerInfo.id]];
-      console.log(res);
-      buildLeagueView(dataModel.league);
-    })
-
+      //console.log(res);
+      if(containerId == 'summary-info'){
+        buildLeagueView();
+      }
+    });
     dataAPI.rankedStats(search, function(res){
-      console.log(res);
+      //console.log(res);
       dataModel.rankedStats = res.rankedStats.champions;
-      buildRankedStatsView();
-    })
-          /*
-      dataAPI.matchDetail('2321498409',function(res){
-        dataModel.matchDetail = res;
-        console.log(res);
-        buildView();
-      });*/
+      if(containerId == 'summary-info'){
+        buildRankedStatsView();
+      }
+    });
+  }
 
+  lolSummonerUI.load = function(cfg){
+    //console.log('init from lolSummonerUI');
+    saveConfig(cfg);
+    //this goes first to get the necessary info for the other api calls
+    dataAPI = lolSummonerData(cfg);
+    dataAPICall(config.containerId);
 
   };
   return lolSummonerUI;
