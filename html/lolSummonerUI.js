@@ -81,14 +81,34 @@
     $('#champion-summary').append(championStats);
   }
 
-  buildView = function(containerId){
-    console.log(containerId);
-    console.log(dataModel);
-
-  };
-
   //views for summary page
 
+  //views for champions page
+  function buildChampionList(){
+    var data = dataModel.rankedStats;
+    var view = '';
+    console.log(data);
+    $.each(data,function(key,rankedStats){
+      view += '<ul class="champion-column">'+
+      '<li class="champion-stats">'+rankedStats.name+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalChampionKills+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.maxNumDeaths+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalAssists+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalDamageDealt+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalDamageTaken+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalDoubleKills+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalGoldEarned+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalMagicDamageDealt+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalQuadraKills+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalSessionsWon+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalSessionsLost+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalTurretsKilled+'</li>' +
+      '<li class="champion-stats">'+rankedStats.stats.totalTripleKills+'</li>' +
+      '</ul>';
+    });
+    $('#champion-list').append(view);
+  }
+  //views for champions page
 
   function dataAPICall(containerId){
     console.log(containerId);
@@ -109,6 +129,9 @@
       dataModel.rankedStats = res.rankedStats.champions;
       if(containerId == 'summary-info'){
         buildRankedStatsView();
+      }
+      else if(containerId == 'champions'){
+        buildChampionList();
       }
     });
   }

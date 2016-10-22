@@ -70,3 +70,32 @@
   bottom: 799px;
   left: 250px;
 }
+
+/*season stats*/
+#season-menu {
+  width: inherit;
+  height: 50px;
+  background: green;
+}
+
+#champion-list {
+  width: inherit;
+  height: 950px;
+  background: blue;
+}
+
+.champion-column {
+  list-style: none;
+  float: left;
+  padding: 0px;
+  margin: 0px;
+}
+
+ul.champion-column > li:last-Child {
+  margin-right: 0px;
+}
+
+.champion-stats {
+  float:left;
+  margin-right: 5px;
+}

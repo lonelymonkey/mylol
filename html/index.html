@@ -32,7 +32,34 @@
     </ul>
   </div>
   <div id='content'>
-  </div>
+    <div id='summoner-info'>
+      <div id='season-menu'>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary">Season 6</button>
+          <button type="button" class="btn btn-primary">Season 5</button>
+          <button type="button" class="btn btn-primary">Season 4</button>
+          <button type="button" class="btn btn-primary">Season 3</button>
+        </div>
+      </div>
+      <div id='champion-list'>
+        <ul class='champion-column'>
+          <li class='champion-stats'>#</li>
+          <li class='champion-stats'>Champion</li>
+          <li class='champion-stats'>Played</li>
+          <li class='champion-stats'>KDA</li>
+          <li class='champion-stats'>Gold</li>
+          <li class='champion-stats'>CS</li>
+          <li class='champion-stats'>Turrets Killed</li>
+          <li class='champion-stats'>Max Kills</li>
+          <li class='champion-stats'>Max Deaths</li>
+          <li class='champion-stats'>Average Damage Dealt</li>
+          <li class='champion-stats'>Average Damage Taken</li>
+          <li class='champion-stats'>Double Kill</li>
+          <li class='champion-stats'>Triple Kill</li>
+          <li class='champion-stats'>Quadra Kill</li>
+        </ul>
+      </div>
+    </div>
 </div>
 
 </html>
@@ -45,8 +72,8 @@
   });*/
 
   $(document).ready(function(){
-    buildUIFrame();
-    webpage('summary-info');
+    //buildUIFrame();
+    webpage('champions');
     bindevent();
   });
 
@@ -68,6 +95,31 @@
       webpage('summary-info');
     });
 
+    $('#champions-button').click(function(){
+      console.log('champions is clicked');
+      $('#summoner-info').remove();
+      $('#summoner').empty();
+    });
+
+    $('#league-button').click(function(){
+      console.log('league is clicked');
+
+    });
+
+    $('#matches-button').click(function(){
+      console.log('matches is clicked');
+
+    });
+
+    $('#runes-button').click(function(){
+      console.log('runes is clicked');
+
+    });
+
+    $('#masteries-button').click(function(){
+      console.log('masteries is clicked');
+
+    });
   }
 
   function buildUIFrame() {
