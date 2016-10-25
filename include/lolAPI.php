@@ -18,7 +18,7 @@ class lolWebAPIResource {
     'expiredDate' => array(
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/game/by-summoner/\d{8}/recent#' => 7200, //matchList  1 day
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.2/match/\d{4,}#' => 7200, //matchDetail
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/[\d,]{8,}#' => 7200, //summonerName
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/[\d,]{8,}#' => 2592000, //summonerName
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/by-name/\w{2,}#' => 7200, //summonerId
       '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/champion#' => 2592000, //championNameAndImage
       '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/item#' => 2592000, //items
@@ -27,8 +27,8 @@ class lolWebAPIResource {
       '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/rune#' => 2592000, // runes
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/masteries#' => 86400, //summonerMasteries
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/runes#' => 86400, //summonerRunes
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.5/league/by-summoner/\d{8}#' => 86400 //summonerLeague
-      //'#*#'
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.5/league/by-summoner/\d{8}#' => 86400, //summonerLeague
+      '#.*#' => 3600 //if nothing matches
     )
   );
 
@@ -44,9 +44,6 @@ class lolWebAPIResource {
         $expirationPeriod = $expiredDate;
         break;
       }
-    }
-    if(!empty($expirationPeriod)){
-      $expirationPeriod = 86400;
     }
     return date('Y-m-d H:i:s', time()+$expirationPeriod);
   }

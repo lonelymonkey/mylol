@@ -8,6 +8,8 @@
 *.so
 
 environment.inc
+html/api/test.php
+
 
 
 # App_Data #

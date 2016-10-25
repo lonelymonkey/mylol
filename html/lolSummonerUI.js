@@ -293,7 +293,7 @@
     console.log(containerId);
     dataAPI.summonerInfo(search,function(res){
       dataModel.summonerInfo = res[search];
-      //console.log(dataModel.summonerInfo);
+      console.log(res);
         buildSummonerView();
           });
     dataAPI.league(search, function(res){

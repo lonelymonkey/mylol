@@ -1,7 +1,7 @@
 <?php
 
 
-$testStr = 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/item?itemListData=all&api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0';
+$testStr = 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/gdsfgjdfl;kgjdf;slgkdjf?itemListData=all&api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0';
 //https://na.api.pvp.net/api/lol/na/v1.3/game/by-summoner/19732385/recent?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0
 //https://global.api.pvp.net/api/lol/static-data/na/v1.2/item?itemListData=all&api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0
 
@@ -23,7 +23,7 @@ $config = array( //unit in min
   )
 );
 
-echo preg_match('#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/item#',$testStr,$match);
+echo preg_match('#.*#',$testStr,$match);
 var_dump($match);
 /*$expirationPeriod = time();
 echo $expirationPeriod;
