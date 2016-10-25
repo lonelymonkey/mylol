@@ -5,8 +5,8 @@
   var config;
   var dataModel = {
     summonerInfo : [],
-    runes : [],
-    masteries : [],
+    runes : {},
+    masteries : {},
     league : [],
     rankedStats : []
   };
@@ -48,7 +48,7 @@
 
   function buildLeagueView(){
     var data = dataModel.league;
-    console.log(data);
+    //console.log(data);
     var playerInfo = {};
     var summary='';
 
@@ -96,7 +96,7 @@
   function buildChampionList(){
     var data = dataModel.rankedStats;
     var view = '';
-    console.log(data);
+  //  console.log(data);
     $.each(data,function(key,rankedStats){
       view += '<ul class="champion-column">'+
       '<li class="champion-stats">'+rankedStats.name+'</li>' +
@@ -121,7 +121,7 @@
   function buildLeagueListView(){
     var data = dataModel.league;
     console.log(data);
-    console.log(data.entries);
+    //console.log(data.entries);
     var generalInfo = '';
 
     $.each(data,function(key,summoner){
@@ -257,7 +257,7 @@
     var detail = '';
     var sum = [];
 
-    console.log(data);
+  //  console.log(data);
     $.each(data,function(key, runePage){
       list += '<li class="list-group-item">'+runePage.name+'</li>';
       $.each(runePage.slots,function(key,rune){
@@ -277,7 +277,7 @@
     var detail = '';
 
     $.each(data,function(key, masteriesPage){
-      console.log(masteriesPage);
+      //console.log(masteriesPage);
       list += '<div>'+masteriesPage.name+'</div>';
       $.each(masteriesPage.masteries,function(key,mastery){
         detail += '<div>'+mastery.masteryName+mastery.rank+'</div>';
@@ -290,7 +290,8 @@
   }
 
   function dataAPICall(containerId){
-    console.log(containerId);
+    var containerId = containerId;
+    //console.log(containerId);
     dataAPI.summonerInfo(search,function(res){
       dataModel.summonerInfo = res[search];
       console.log(res);
@@ -301,7 +302,7 @@
     });
     dataAPI.league(search, function(res){
       dataModel.league = res.summonerLeague[[dataModel.summonerInfo.id]];
-      console.log(res);
+      console.log(dataModel.league);
       if(containerId == 'summary-info'){
         buildLeagueView();
       }
@@ -329,11 +330,15 @@
 
     dataAPI.masteries(search,function(res){
       dataModel.masteries = res.summonerMasteries[[dataModel.summonerInfo.id]];
-      console.log(res);
-      if(containerId == 'masteries'){
-        buildMasteriesView();
-      }
+      //console.log(res);
+      console.log(dataModel);
     });
+  }
+
+  function buildView(){
+    console.log(dataModel);
+
+      buildMasteriesView();
   }
 
   lolSummonerUI.load = function(cfg){
@@ -343,6 +348,8 @@
     dataAPI = lolSummonerData(cfg);
     //console.log(dataAPI);
     dataAPICall(config.containerId);
+    buildView();
+    console.log(dataModel);
     //responsible for all the buttons within the content
     bindevent(config.containerId);
 

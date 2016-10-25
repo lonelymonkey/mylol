@@ -5,7 +5,7 @@ if (!class_exists('lolWebAPICache')) {
   class lolWebAPICache {
       private $db;
       public $config = array(
-        'maxBytesData' => 6000
+        'maxBytesData' => 60000
       );
       public function __construct() {
         $this->db = Database::getConnection();

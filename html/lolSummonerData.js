@@ -4,7 +4,7 @@ lolSummonerData = function(cfg){
   },cfg);
 
   summonerInfo = function(summonerName,callback){
-    console.log('summonerInfo');
+    //console.log('summonerInfo');
     /*$.get(
       config.apiURL,
       {'function': 'matchList', 'summonerName' : 'epiccookierawr'},
@@ -38,7 +38,7 @@ lolSummonerData = function(cfg){
 
   };
   runes = function(summonerName,callback){
-        console.log('runes');
+    //console.log('runes');
     $.ajax({
       'type':'GET',
       'dataType':'json',
@@ -56,7 +56,7 @@ lolSummonerData = function(cfg){
   };
 
   masteries = function(summonerName,callback){
-        console.log('masteries123');
+      //  console.log('masteries');
     $.ajax({
       'type':'GET',
       'dataType':'json',
@@ -74,7 +74,7 @@ lolSummonerData = function(cfg){
   };
 
   league = function(summonerName,callback){
-        console.log('league');
+      //  console.log('league');
     $.ajax({
       'type':'GET',
       'dataType':'json',
@@ -92,7 +92,7 @@ lolSummonerData = function(cfg){
   };
 
   rankedStats = function(summonerName,season,callback){
-    console.log('rankedStats');
+    //console.log('rankedStats');
     $.ajax({
       'type':'GET',
       'dataType':'json',

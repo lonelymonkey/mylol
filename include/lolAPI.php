@@ -28,6 +28,7 @@ class lolWebAPIResource {
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/masteries#' => 86400, //summonerMasteries
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/runes#' => 86400, //summonerRunes
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.5/league/by-summoner/\d{8}#' => 86400, //summonerLeague
+      //'#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/stats/by-summoner/\d{8}/ranked#' => 7200, //rankedStats
       '#.*#' => 3600 //if nothing matches
     )
   );

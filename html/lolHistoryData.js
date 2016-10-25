@@ -4,7 +4,7 @@ lolHistoryData = function(cfg){
   },cfg);
 
   matchList = function(summonerName,callback){
-    console.log('matchList'+summonerName);
+    //console.log('matchList'+summonerName);
     /*$.get(
       config.apiURL,
       {'function': 'matchList', 'summonerName' : 'epiccookierawr'},
@@ -25,7 +25,7 @@ lolHistoryData = function(cfg){
         'url': config.apiURL,
         'data': {'function': 'matchList', 'summonerName' : summonerName},
         'success': function(res){
-          console.log(res);
+          //console.log(res);
           if (res.status > 0) {
             console.log(res.data);
             if (typeof(callback) == 'function') {
@@ -46,7 +46,7 @@ lolHistoryData = function(cfg){
       'url':config.apiURL,
       'data':{'function':'matchDetail','matchId':matchId},
       'success': function(res){
-        console.log(res);
+        //console.log(res);
         if(typeof(callback) == 'function'){
           callback(res.data);
         }
@@ -55,7 +55,7 @@ lolHistoryData = function(cfg){
         }
         }
       });
-    console.log('matchDetail');
+    //console.log('matchDetail');
   };
 
   return {

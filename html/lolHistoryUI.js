@@ -15,6 +15,7 @@
 
   lolHistoryUI.matchDetail = function(matchId){
     dataAPI.matchDetail(matchId,function(res){
+      console.log(res);
       dataModel.matchDetail = res;
       //console.log(res);
       $('#game'+matchId).append(JSON.stringify(dataModel.matchDetail));
@@ -123,7 +124,7 @@
   function dataAPICall(){
     dataAPI.matchList('epiccookierawr',function(res){
       dataModel.matchList = res.matchList.games;
-      //console.log(res);
+      console.log(res);
       buildView();
       buildSummonerAverageView();
     });
@@ -131,7 +132,7 @@
 
   lolHistoryUI.load = function(cfg){
     saveConfig(cfg);
-    console.log(config);
+    //console.log(config);
 
     dataAPI = lolHistoryData(cfg);
     //console.log(dataAPI);
