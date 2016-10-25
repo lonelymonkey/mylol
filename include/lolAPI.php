@@ -2,9 +2,6 @@
 
 //include 'global.inc';
 
-//$riotAPI = new riotAPI();
-
-//$championListData = $riotAPI->championListData();
 include 'lolcache.inc';
 include 'API2LocalDBInterface.inc';
 
@@ -19,15 +16,15 @@ class lolWebAPIResource {
 
   public $config = array( //unit in min
     'expiredDate' => array(
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/game/by-summoner/\d{8}/recent#' => 86400, //matchList  1 day
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.2/match/\d{4,}#' => 86400, //matchDetail
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/[\d,]{8,}#' => 86400, //summonerName
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/by-name/\w{2,}#' => 86400, //summonerId
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/champion#' => 86400, //championNameAndImage
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/item#' => 86400, //items
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/summoner-spell#' => 86400,//summonerSpell
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/mastery#' => 86400, //masteries
-      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/rune#' => 86400, // runes
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/game/by-summoner/\d{8}/recent#' => 7200, //matchList  1 day
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.2/match/\d{4,}#' => 7200, //matchDetail
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/[\d,]{8,}#' => 7200, //summonerName
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/by-name/\w{2,}#' => 7200, //summonerId
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/champion#' => 2592000, //championNameAndImage
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/item#' => 2592000, //items
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/summoner-spell#' => 2592000,//summonerSpell
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/mastery#' => 2592000, //masteries
+      '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/rune#' => 2592000, // runes
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/masteries#' => 86400, //summonerMasteries
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/runes#' => 86400, //summonerRunes
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.5/league/by-summoner/\d{8}#' => 86400 //summonerLeague
@@ -44,11 +41,14 @@ class lolWebAPIResource {
   private function getExpiredTime($command) {
     foreach($this->config['expiredDate'] AS $expiredDateIndex => $expiredDate){
       if(preg_match($expiredDateIndex,$command)){
-        $expirationPeriod = date('Y-m-d H:i:s',strtotime($expiredDate));
+        $expirationPeriod = $expiredDate;
         break;
       }
     }
-    return $expirationPeriod;
+    if(!empty($expirationPeriod)){
+      $expirationPeriod = 86400;
+    }
+    return date('Y-m-d H:i:s', time()+$expirationPeriod);
   }
 
 
@@ -60,9 +60,8 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if (empty($res)) {
       $res = json_decode(file_get_contents($command),true);
-      $expTime = $this->getExpiredTime($command);
-
-      $this->cache->save($command, $res, date('Y-m-d H:i:s', time()+$expTime));
+      $expDate = $this->getExpiredTime($command);
+      $this->cache->save($command, $res, $expDate);
     }
     //$interface->savematchList($res);
     return $res;
@@ -74,8 +73,8 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expTime = $this->getExpiredTime($command);
-      $this->cache->save($command, $res, date('Y-m-d H:i:s', time()+$expTime));
+      $expDate = $this->getExpiredTime($command);
+      $this->cache->save($command, $res, $expDate);
     }
     return $res;
   }
@@ -85,7 +84,7 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate =  $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -96,29 +95,29 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
   }
   //championNameAndImage: retrieve champion's name and image by its id
   public function championNameAndImage($region){
-    $command = $this->path($region).'api/lol/static-data/'.$region.'/v1.2/champion?'. http_build_query(array('champData' => 'image','dataById' => 'true','api_key' => $this->apiKey));
+    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/champion?'. http_build_query(array('champData' => 'image','dataById' => 'true','api_key' => $this->apiKey));
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
   }
   //item: retrieve item's name and image by its id
   public function items($region){
-    $command = $this->path($region).'api/lol/static-data/'.$region.'/v1.2/item?'.http_build_query(array('itemListData' => 'gold,image', 'api_key' => $this->apiKey));
+    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/item?'.http_build_query(array('itemListData' => 'gold,image', 'api_key' => $this->apiKey));
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -129,7 +128,7 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -140,7 +139,7 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -151,7 +150,7 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -162,7 +161,7 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -173,7 +172,7 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -184,7 +183,7 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -195,7 +194,7 @@ class lolWebAPIResource {
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);
-      $expDate = date('Y-m-d H:i:s',strtotime('+7 day'));
+      $expDate = $this->getExpiredTime($command);
       $this->cache->save($command, $res, $expDate);
     }
     return $res;
@@ -296,10 +295,4 @@ class lolAPI {
   }
 }
 
-//$matchDetail = $lolAPI->getMatchDetail();
-//var_dump($matchDetail);
-//'summonerId' => '19732385'
-//'matchId' => '2313821210'
-//https://na.api.pvp.net//api/lol/NA/v2.2/match/2313821210?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0
-//https://na.api.pvp.net/api/lol/na/v2.2/match/2313821210?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0
 ?>
