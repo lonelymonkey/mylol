@@ -294,8 +294,11 @@
     dataAPI.summonerInfo(search,function(res){
       dataModel.summonerInfo = res[search];
       console.log(res);
-        buildSummonerView();
-          });
+        if($.trim( $('#summoner').html() ).length == 0){
+          buildSummonerView();
+        }
+
+    });
     dataAPI.league(search, function(res){
       dataModel.league = res.summonerLeague[[dataModel.summonerInfo.id]];
       console.log(res);

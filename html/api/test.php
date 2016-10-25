@@ -22,7 +22,7 @@ $config = array( //unit in min
     //'#*#'
   )
 );
-
+//sdfsfds
 echo preg_match('#.*#',$testStr,$match);
 var_dump($match);
 /*$expirationPeriod = time();
