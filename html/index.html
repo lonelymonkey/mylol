@@ -31,35 +31,10 @@
       <li class='menu'><a href="#" class="btn btn-info" role="button" id='masteries-button'>Masteries</a></li>
     </ul>
   </div>
-  <div id='content'>
-    <div id='summoner-info'>
-      <div id='season-menu'>
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary">Season 6</button>
-          <button type="button" class="btn btn-primary">Season 5</button>
-          <button type="button" class="btn btn-primary">Season 4</button>
-          <button type="button" class="btn btn-primary">Season 3</button>
-        </div>
-      </div>
-      <div id='champion-list'>
-        <ul class='champion-column'>
-          <li class='champion-stats'>#</li>
-          <li class='champion-stats'>Champion</li>
-          <li class='champion-stats'>Played</li>
-          <li class='champion-stats'>KDA</li>
-          <li class='champion-stats'>Gold</li>
-          <li class='champion-stats'>CS</li>
-          <li class='champion-stats'>Turrets Killed</li>
-          <li class='champion-stats'>Max Kills</li>
-          <li class='champion-stats'>Max Deaths</li>
-          <li class='champion-stats'>Average Damage Dealt</li>
-          <li class='champion-stats'>Average Damage Taken</li>
-          <li class='champion-stats'>Double Kill</li>
-          <li class='champion-stats'>Triple Kill</li>
-          <li class='champion-stats'>Quadra Kill</li>
-        </ul>
-      </div>
-    </div>
+  <div id="content">
+
+  </div>
+
 </div>
 
 </html>
@@ -72,8 +47,9 @@
   });*/
 
   $(document).ready(function(){
-    //buildUIFrame();
-    webpage('champions');
+    buildUIFrame('summary-info');
+    //buildgeneralview();
+    webpage('summary-info');
     bindevent();
   });
 
@@ -91,7 +67,7 @@
       console.log('summary is clicked');
       $('#summoner-info').remove();
       $('#summoner').empty();
-      buildUIFrame();
+      buildUIFrame('summary-info');
       webpage('summary-info');
     });
 
@@ -99,11 +75,16 @@
       console.log('champions is clicked');
       $('#summoner-info').remove();
       $('#summoner').empty();
+      buildUIFrame('champions');
+      webpage('champions');
     });
 
     $('#league-button').click(function(){
       console.log('league is clicked');
-
+      $('#summoner-info').remove();
+      $('#summoner').empty();
+      buildUIFrame('league-list');
+      webpage('league-list');
     });
 
     $('#matches-button').click(function(){
@@ -113,28 +94,110 @@
 
     $('#runes-button').click(function(){
       console.log('runes is clicked');
-
+      $('#summoner-info').remove();
+      $('#summoner').empty();
+      buildUIFrame('runes');
+      webpage('runes');
     });
 
     $('#masteries-button').click(function(){
       console.log('masteries is clicked');
-
+      $('#summoner-info').remove();
+      $('#summoner').empty();
+      buildUIFrame('masteries');
+      webpage('masteries');
     });
   }
 
-  function buildUIFrame() {
+  function buildUIFrame(page) {
     var view = '';
-    view += '' +
-    '<div id="summoner-info">'+
-      '<div id="summary">'+
-      '</div>'+
-      '<div id="champion-summary">'+
-      '</div>'+
-      '<div id="summoner-average">'+
-      '</div>'+
-      '<div id="game-stat">'+
+    if(page == 'summary-info'){
+      view += '' +
+      '<div id="summoner-info">'+
+        '<div id="summary">'+
+        '</div>'+
+        '<div id="champion-summary">'+
+        '</div>'+
+        '<div id="summoner-average">'+
+        '</div>'+
+        '<div id="game-stat">'+
+        '</div>'+
+      '</div>';
+    }
+    else if(page == 'champions') {
+      view += '' +
+      '<div id="summoner-info">'+
+        '<div class="btn-group">'+
+          '<button type="button" class="btn btn-primary" id="season6-button">Season 6</button>'+
+          '<button type="button" class="btn btn-primary" id="season5-button">Season 5</button>'+
+          '<button type="button" class="btn btn-primary" id="season4-button">Season 4</button>'+
+          '<button type="button" class="btn btn-primary" id="season3-button">Season 3</button>'+
+        '</div>'+
+      '<div id="champion-list">'+
+        '<ul class="champion-column">'+
+          '<li class="champion-stats">#</li>'+
+          '<li class="champion-stats">Champion</li>'+
+          '<li class="champion-stats">Played</li>'+
+          '<li class="champion-stats">KDA</li>'+
+          '<li class="champion-stats">Gold</li>'+
+          '<li class="champion-stats">CS</li>'+
+          '<li class="champion-stats">Turrets Killed</li>'+
+          '<li class="champion-stats">Max Kills</li>'+
+          '<li class="champion-stats">Max Deaths</li>'+
+          '<li class="champion-stats">Average Damage Dealt</li>'+
+          '<li class="champion-stats">Average Damage Taken</li>'+
+          '<li class="champion-stats">Double Kill</li>'+
+          '<li class="champion-stats">Triple Kill</li>'+
+          '<li class="champion-stats">Quadra Kill</li>'+
+        '</ul>'+
       '</div>'+
     '</div>';
+  }
+    else if(page == 'league-list'){
+      view += '' +
+        '<div id="summoner-info">'+
+          '<div id="search-league">'+
+            '<div id="league-icon">'+
+            '</div>'+
+            '<div id="league-menu">'+
+              '<div class="btn-group">'+
+                '<button type="button" class="btn btn-primary" id="rank1-button">I</button>'+
+                '<button type="button" class="btn btn-primary" id="rank2-button">II</button>'+
+                '<button type="button" class="btn btn-primary" id="rank3-button">III</button>'+
+                '<button type="button" class="btn btn-primary" id="rank4-button">IV</button>'+
+                '<button type="button" class="btn btn-primary" id="rank5-button">V</button>'+
+              '</div>'+
+            '</div>'+
+          '</div>'+
+          '<div id="league-list">'+
+            '<ul class="league-column">'+
+              '<li class="league-stats">Summoners</li>'+
+              '<li class="league-stats">Emblems</li>'+
+              '<li class="league-stats">Victory</li>'+
+              '<li class="league-stats">Promotion series/Point</li>'+
+            '</ul>'+
+          '</div>'+
+        '</div>';
+    }
+    else if(page == 'runes'){
+      view += '' +
+      '<div id="summoner-info">'+
+        '<div id="runes-list">'+
+        '</div>'+
+        '<div id="runes-detail">'+
+        '</div>'+
+      '</div>';
+    }
+
+    else if (page == 'masteries') {
+      view += '' +
+      '<div id="summoner-info">'+
+        '<div id="masteries-list">'+
+        '</div>'+
+        '<div id="masteries-detail">'+
+        '</div>'+
+      '</div>';
+    }
 
     $('#content').append(view);
   };

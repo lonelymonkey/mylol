@@ -49,8 +49,10 @@ class summonerService{
     $this->profiler->mark('api->getSummonerMasteries','finish');
 
     foreach($summonerMasteries[$summonerId]['pages'] AS $pageIndex => $page){
-      foreach($page['masteries'] AS $masteriesIndex => $mastery){
-          $summonerMasteries[$summonerId]['pages'][$pageIndex]['masteries'][$masteriesIndex]['MasteryName'] = $masteries['data'][$mastery['id']]['name'];
+      if(!empty($page['masteries'])){
+        foreach($page['masteries'] AS $masteriesIndex => $mastery){
+          $summonerMasteries[$summonerId]['pages'][$pageIndex]['masteries'][$masteriesIndex]['masteryName'] = $masteries['data'][$mastery['id']]['name'];
+        }
       }
     }
 
@@ -73,13 +75,13 @@ class summonerService{
     return $output;
   }
 
-  public function getRankedStats($summonerId){
+  public function getRankedStats($summonerId,$season){
     $output = array();
     //initialize api calls
     $championNameAndImage = $this->api->getNameAndImage();
 
     $this->profiler->mark('api->getRankedStats','start');
-    $rankedStats = $this->api->getRankedStats($summonerId);
+    $rankedStats = $this->api->getRankedStats($summonerId,$season);
     $this->profiler->mark('api->getRankedStats','finish');
 
     foreach($rankedStats['champions'] AS $championIndex => $champion){

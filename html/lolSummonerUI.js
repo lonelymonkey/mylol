@@ -11,7 +11,16 @@
     rankedStats : []
   };
 
+  var leagueList = {
+    one : '',
+    two : '',
+    three : '',
+    four : '',
+    five : ''
+  }
+
   var search = 'epiccookierawr';
+  var season = 'SEASON2016';
 
   saveConfig  = function(cfg){
     config = $.extend({},cfg);
@@ -108,7 +117,177 @@
     });
     $('#champion-list').append(view);
   }
+
+  function buildLeagueListView(){
+    var data = dataModel.league;
+    console.log(data);
+    console.log(data.entries);
+    var generalInfo = '';
+
+    $.each(data,function(key,summoner){
+      generalInfo += '' +
+      '<div>'+summoner.name+'</div>'+
+      '<div>'+summoner.queue+'</div>'+
+      '<div>'+summoner.tier+'</div>';
+      $.each(summoner.entries,function(key,otherSummoner){
+        if(otherSummoner.division == 'I'){
+          leagueList.one += '<ul class="league-column">'+
+          '<li class="league-stats">'+otherSummoner.division+'</li>' +
+          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
+          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
+          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
+          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
+          '</ul>';
+        }
+        else if(otherSummoner.division == 'II'){
+          leagueList.two += '<ul class="league-column">'+
+          '<li class="league-stats">'+otherSummoner.division+'</li>' +
+          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
+          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
+          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
+          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
+          '</ul>';
+        }
+        else if(otherSummoner.division == 'III'){
+          leagueList.three += '<ul class="league-column">'+
+          '<li class="league-stats">'+otherSummoner.division+'</li>' +
+          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
+          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
+          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
+          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
+          '</ul>';
+        }
+        else if(otherSummoner.division == 'IV'){
+          leagueList.four += '<ul class="league-column">'+
+          '<li class="league-stats">'+otherSummoner.division+'</li>' +
+          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
+          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
+          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
+          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
+          '</ul>';
+        }
+        else if(otherSummoner.division == 'V'){
+          leagueList.five += '<ul class="league-column">'+
+          '<li class="league-stats">'+otherSummoner.division+'</li>' +
+          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
+          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
+          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
+          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
+          '</ul>';
+        }
+
+      });
+    });
+
+    $('#league-icon').append(generalInfo);
+    $('#league-list').append(leagueList.two);
+
+  }
+
+  function bindevent(page){
+    if(page == 'champions'){
+      $('#season6-button').click(function(){
+        season = 'SEASON2016';
+        $('#champion-list').empty();
+        dataAPI.rankedStats(search,season, function(res){
+          dataModel.rankedStats = res.rankedStats.champions;
+            buildChampionList();
+          });
+      });
+      $('#season5-button').click(function(){
+        season = 'SEASON2015';
+        $('#champion-list').empty();
+        dataAPI.rankedStats(search,season, function(res){
+          dataModel.rankedStats = res.rankedStats.champions;
+            buildChampionList();
+          });
+      });
+      $('#season4-button').click(function(){
+        season = 'SEASON2014';
+        $('#champion-list').empty();
+        dataAPI.rankedStats(search,season, function(res){
+          dataModel.rankedStats = res.rankedStats.champions;
+            buildChampionList();
+          });
+      });
+      $('#season3-button').click(function(){
+        season = 'SEASON3';
+        $('#champion-list').empty();
+        dataAPI.rankedStats(search,season, function(res){
+          dataModel.rankedStats = res.rankedStats.champions;
+            buildChampionList();
+          });
+      });
+    }
+    else if(page == 'league-list'){
+      $('#rank1-button').click(function(){
+        console.log('1');
+        $('#league-list').empty();
+        $('#league-list').append(leagueList.one);
+      });
+      $('#rank2-button').click(function(){
+        console.log('2');
+        $('#league-list').empty();
+        $('#league-list').html(leagueList.two);
+      });
+      $('#rank3-button').click(function(){
+        console.log('3');
+        $('#league-list').empty();
+        $('#league-list').html(leagueList.three);
+      });
+      $('#rank4-button').click(function(){
+        console.log('4');
+        $('#league-list').empty();
+        $('#league-list').html(leagueList.four);
+      });
+      $('#rank5-button').click(function(){
+        console.log('5');
+        $('#league-list').empty();
+        $('#league-list').html(leagueList.five);
+      });
+    }
+
+
+  }
   //views for champions page
+
+  function buildRunesView(){
+    var data = dataModel.runes.pages;
+    var list = '<ul class="list-group">';
+    var detail = '';
+    var sum = [];
+
+    console.log(data);
+    $.each(data,function(key, runePage){
+      list += '<li class="list-group-item">'+runePage.name+'</li>';
+      $.each(runePage.slots,function(key,rune){
+        detail += '<div>'+rune.runeName+'</div>';
+      });
+    });
+    list += '</ul>';
+
+    $('#runes-list').append(list);
+    $('#runes-detail').append(detail);
+  }
+
+  function buildMasteriesView(){
+    var data = dataModel.masteries.pages;
+    console.log(data);
+    var list = '';
+    var detail = '';
+
+    $.each(data,function(key, masteriesPage){
+      console.log(masteriesPage);
+      list += '<div>'+masteriesPage.name+'</div>';
+      $.each(masteriesPage.masteries,function(key,mastery){
+        detail += '<div>'+mastery.masteryName+mastery.rank+'</div>';
+      });
+    });
+
+
+    $('#masteries-list').append(list);
+    $('#masteries-detail').append(detail);
+  }
 
   function dataAPICall(containerId){
     console.log(containerId);
@@ -119,19 +298,37 @@
           });
     dataAPI.league(search, function(res){
       dataModel.league = res.summonerLeague[[dataModel.summonerInfo.id]];
-      //console.log(res);
+      console.log(res);
       if(containerId == 'summary-info'){
         buildLeagueView();
       }
+      else if(containerId =='league-list'){
+        buildLeagueListView();
+      }
     });
-    dataAPI.rankedStats(search, function(res){
-      //console.log(res);
+    dataAPI.rankedStats(search,season, function(res){
+      console.log(res);
       dataModel.rankedStats = res.rankedStats.champions;
       if(containerId == 'summary-info'){
         buildRankedStatsView();
       }
       else if(containerId == 'champions'){
         buildChampionList();
+      }
+    });
+    dataAPI.runes(search,function(res){
+      dataModel.runes = res.summonerRunes[[dataModel.summonerInfo.id]];
+      console.log(dataModel.runes);
+      if(containerId == 'runes'){
+        buildRunesView();
+      }
+    });
+
+    dataAPI.masteries(search,function(res){
+      dataModel.masteries = res.summonerMasteries[[dataModel.summonerInfo.id]];
+      console.log(res);
+      if(containerId == 'masteries'){
+        buildMasteriesView();
       }
     });
   }
@@ -141,7 +338,10 @@
     saveConfig(cfg);
     //this goes first to get the necessary info for the other api calls
     dataAPI = lolSummonerData(cfg);
+    //console.log(dataAPI);
     dataAPICall(config.containerId);
+    //responsible for all the buttons within the content
+    bindevent(config.containerId);
 
   };
   return lolSummonerUI;

@@ -56,7 +56,7 @@ lolSummonerData = function(cfg){
   };
 
   masteries = function(summonerName,callback){
-        console.log('masteries');
+        console.log('masteries123');
     $.ajax({
       'type':'GET',
       'dataType':'json',
@@ -91,13 +91,13 @@ lolSummonerData = function(cfg){
       });
   };
 
-  rankedStats = function(summonerName,callback){
+  rankedStats = function(summonerName,season,callback){
     console.log('rankedStats');
     $.ajax({
       'type':'GET',
       'dataType':'json',
       'url':config.apiURL,
-      'data':{'function':'getRankedStats','summonerName' : summonerName},
+      'data':{'function':'getRankedStats','summonerName' : summonerName,'season' : season},
       'success': function(res){
         if(typeof(callback) == 'function'){
           callback(res.data);

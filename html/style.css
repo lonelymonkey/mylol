@@ -99,3 +99,66 @@ ul.champion-column > li:last-Child {
   float:left;
   margin-right: 5px;
 }
+
+/*league-stats*/
+.league-column {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+.league-stats {
+  float:left;
+  padding: 10px;
+}
+
+#search-league{
+  width: inherit;
+  height: 175px;
+  background: red;
+}
+
+#league-icon{
+  width: 250px;
+  height: inherit;
+  background: green;
+  float: left;
+}
+
+#league-list{
+  width: inherit;
+  height: 825px;
+  background: yellow;
+}
+
+/*runes*/
+#runes-list{
+  width: 300px;
+  height: inherit;
+  background: antiquewhite;
+  float: left;
+}
+
+#runes-detail{
+  width: 700px;
+  height: inherit;
+  background: coral;
+  position: relative;
+  left: 300px;
+}
+
+/*masteries*/
+#masteries-list{
+  height: 250px;
+  width: inherit;
+  background: antiquewhite;
+  float: left;
+}
+
+#masteries-detail{
+  height: 750px;
+  width: inherit;
+  background: coral;
+  position: relative;
+  top: 250px;
+}

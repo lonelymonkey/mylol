@@ -1,5 +1,6 @@
 <?php
 //http://mylol.local/api/summoner.php?function=getRunes&summonerName=epiccookierawr
+//http://mylol.local/api/summoner.php?function=getRankedStats&summonerName=epiccookierawr&season=SEASON2015
 include '../../global.inc';
 include INCLUDE_PATH . '/summonerService.php';
 
@@ -13,6 +14,7 @@ $response = array(
 try {
   $summonerName = $_GET['summonerName'];
   $summonerId = $service->getSummonerIds($summonerName);
+  $season = $_GET['season'];
   if($_GET['function'] == 'getRunes'){
     $data = $service->getSummonerRunes($summonerId[$summonerName]['id']);
     $response['data'] = $data;
@@ -29,8 +31,9 @@ try {
     $response['data'] = $summonerId;
   }
   else if($_GET['function'] == 'getRankedStats'){
-    $data = $service->getRankedStats($summonerId[$summonerName]['id']);
+    $data = $service->getRankedStats($summonerId[$summonerName]['id'],$season);
     $response['data'] = $data;
+    $response['season'] = $season;
   }
 
 } catch (Exception $e) {
