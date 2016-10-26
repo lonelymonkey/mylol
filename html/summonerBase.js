@@ -5,7 +5,7 @@
   var dataModel = {
     summonerSummary : []
   }
-  summonerBase.dataModel = dataModel;
+  var dataFlag = false;
 
   var search = 'epiccookierawr';
 
@@ -18,10 +18,15 @@
     saveConfig(cfg);
     dataAPISummoner.summonerSummary(search,'SEASON2016',function(res){
       dataModel.summonerSummary = res;
-      console.log(JSON.stringify(summonerBase.dataModel));
-      console.log(JSON.stringify(dataModel));
+      summonerBase.buildView(res);
+      //console.log(JSON.stringify(summonerBase.dataModel));
+      //console.log(JSON.stringify(dataModel));
     });
   };
+
+
+
+  //console.log(JSON.stringify(summonerBase.dataModel));
 
   return summonerBase;
 }));
