@@ -22,12 +22,32 @@
 
   function executeRegisteredCallbacks(event,data) {
     eventsCallback[event].forEach(function(callback, index){
-      callback(data);
+      callback();
     });
   }
   summonerBase.registerEvent = function(event, callback) {
     if (typeof(callback) != 'function') return;
     eventsCallback[event].push(callback);
+  }
+
+  function buildUIFrame(){
+    var view = '';
+    view += '' +
+    '<div id="summoner">'
+    '</div>'
+    '<div id="menu">'
+      '<ul class="menu">'
+        <li class="menu"><a href="#" class="btn btn-info" role="button" id="summary-button">Summary</a></li>
+        <li class="menu"><a href="#" class="btn btn-info" role="button" id="champions-button">Champions</a></li>
+        <li class="menu"><a href="#" class="btn btn-info" role="button" id="league-button">League</a></li>
+        <li class="menu"><a href="#" class="btn btn-info" role="button" id="matches-button">Matches</a></li>
+        <li class="menu"><a href="#" class="btn btn-info" role="button" id="runes-button">Runes</a></li>
+        <li class="menu"><a href="#" class="btn btn-info" role="button" id="masteries-button">Masteries</a></li>
+      </ul>
+    </div>
+    <div id="content">
+
+    </div>
   }
 
 
@@ -41,6 +61,7 @@
       //console.log(JSON.stringify(summonerBase.dataModel));
       //console.log(JSON.stringify(dataModel));
     });
+    buildUIFrame();
   };
 
 

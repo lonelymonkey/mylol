@@ -3,15 +3,16 @@
 }(function(summonerBase){
   var dataModel = summonerBase.dataModel;
 
-  function buildView(data) {
+  function buildSummonerView() {
     //check if dataModel changed?
     //if unchanged return
     console.log(dataModel);
+    
   }
 
   summonerBase.registerEvent('onLoad',function(data){
     console.log('build Summoner Summary view');
-    buildView(data);
+    buildSummonerView();
   });
   //summonerBase.registerEvent('onLoad',buildView);
   /*
