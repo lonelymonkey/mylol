@@ -291,6 +291,7 @@
 
   function dataAPICall(containerId){
     var containerId = containerId;
+
     //console.log(containerId);
     dataAPI.summonerInfo(search,function(res){
       dataModel.summonerInfo = res[search];
@@ -346,10 +347,12 @@
     saveConfig(cfg);
     //this goes first to get the necessary info for the other api calls
     dataAPI = lolSummonerData(cfg);
-    //console.log(dataAPI);
-    dataAPICall(config.containerId);
-    buildView();
-    console.log(dataModel);
+    console.log(dataAPI);
+    //dataAPICall(config.containerId);
+    dataAPI.summonerSummary(search,'SEASON2016',function(res){
+      dataModel.summonerInfo = res;
+      console.log(dataModel.summonerInfo);
+    });
     //responsible for all the buttons within the content
     bindevent(config.containerId);
 

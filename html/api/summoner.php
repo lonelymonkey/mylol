@@ -35,6 +35,10 @@ try {
     $response['data'] = $data;
     $response['season'] = $season;
   }
+  else if($_GET['function'] == 'getSummary'){
+    $data = $service->getSummary($summonerName,$summonerId[$summonerName]['id'],$season);
+    $response['data'] = $data;
+  }
 
 } catch (Exception $e) {
     if ($response['status'] >= 1) {

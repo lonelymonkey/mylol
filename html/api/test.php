@@ -1,6 +1,6 @@
 <?php
-
-
+include '../../global.inc';
+include INCLUDE_PATH . '/lolcache.inc';
 $testStr = 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/gdsfgjdfl;kgjdf;slgkdjf?itemListData=all&api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0';
 //https://na.api.pvp.net/api/lol/na/v1.3/game/by-summoner/19732385/recent?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0
 //https://global.api.pvp.net/api/lol/static-data/na/v1.2/item?itemListData=all&api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0
@@ -23,14 +23,21 @@ $config = array( //unit in min
   )
 );
 //sdfsfds
-echo preg_match('#.*#',$testStr,$match);
+
+$lolcache = new lolWebAPICache();
+
+$res = $lolcache->getCommand('https://na.api.pvp.net/api/lol/na/v2.2/match/2328048744?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0');
+var_dump($res);
+$escapedres = htmlspecialchars('https://na.api.pvp.net/api/lol/na/v2.2/match/2328048744?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0');
+var_dump($escapedres.'littledog');
+/*echo preg_match('#.*#',$testStr,$match);
 var_dump($match);
-/*$expirationPeriod = time();
+$expirationPeriod = time();
 echo $expirationPeriod;
-echo '</br>';
+echo '</br>';*/
 
 $expire = date('Y-m-d H:i:s', $expirationPeriod);
-echo $expire;*/
+echo $expire;
 
 $reg = '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.5/league/by-summoner/\d{8}#';
 //#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/game/by-summoner/\d{8}/recent#

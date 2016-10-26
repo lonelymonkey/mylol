@@ -17,7 +17,7 @@ class lolWebAPIResource {
   public $config = array( //unit in min
     'expiredDate' => array(
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/game/by-summoner/\d{8}/recent#' => 7200, //matchList  1 day
-      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.2/match/\d{4,}#' => 7200, //matchDetail
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.2/match/\d+#' => 7200, //matchDetail
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/[\d,]{8,}#' => 2592000, //summonerName
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/by-name/\w{2,}#' => 7200, //summonerId
       '#https://global.api.pvp.net/api/lol/static-data/\w{2,4}/v1.2/champion#' => 2592000, //championNameAndImage
@@ -28,7 +28,7 @@ class lolWebAPIResource {
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/masteries#' => 86400, //summonerMasteries
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.4/summoner/\d{8}/runes#' => 86400, //summonerRunes
       '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v2.5/league/by-summoner/\d{8}#' => 86400, //summonerLeague
-      //'#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/stats/by-summoner/\d{8}/ranked#' => 7200, //rankedStats
+      '#https://\w{2,4}.api.pvp.net/api/lol/\w{2,4}/v1.3/stats/by-summoner/\d{8}/ranked#' => 7200, //rankedStats
       '#.*#' => 3600 //if nothing matches
     )
   );
@@ -66,8 +66,12 @@ class lolWebAPIResource {
   }
   //matchDetail: returns the detail information of one game by its gameId
   public function matchDetail($region,$matchId){
-    $command = $this->path($region).'api/lol/'.$region.'/v2.2/match/'.$matchId.'?'. http_build_query(array('api_key' => $this->apiKey));
-
+    $command = $this->path($region).'api/lol/'.$region.'/v2.2/match/'.$matchId.'?'.http_build_query(array('api_key' => $this->apiKey));
+    /*$http = $this->path($region);
+    $command = 'api/lol/'.$region.'/v2.2/match/'.$matchId;
+    $key = http_build_query(array('api_key' => $this->apiKey));
+    $apiLink = $http.$command.'?'.$key;*/
+    echo $command;
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);

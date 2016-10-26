@@ -3,6 +3,25 @@ lolSummonerData = function(cfg){
     apiURL :  'api/summoner.php'
   },cfg);
 
+  summonerSummary = function(summonerName,season,callback){
+    console.log('summonerSummary');
+    $.ajax({
+      'type':'GET',
+      'dataType':'json',
+      'url':config.apiURL,
+      'data':{'function':'getSummary','summonerName' : summonerName,'season' : season},
+      'success': function(res){
+        console.log(res);
+        if(typeof(callback) == 'function'){
+          callback(res.data);
+        }
+        else{
+          console.log('error');
+        }
+        }
+      });
+  }
+
   summonerInfo = function(summonerName,callback){
     //console.log('summonerInfo');
     /*$.get(
@@ -114,6 +133,7 @@ lolSummonerData = function(cfg){
     runes : runes,
     masteries : masteries,
     league : league,
-    rankedStats : rankedStats
+    rankedStats : rankedStats,
+    summonerSummary, summonerSummary
   }
 };

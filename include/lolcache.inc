@@ -22,15 +22,25 @@ if (!class_exists('lolWebAPICache')) {
         $output = '';
         $this->deleteExpired();
         $query = 'select * from lolwebapicache where command = :cmd order by id asc';
+        /*echo '<br/>';
+        var_dump($query);
+        echo '<br/>';
+        var_dump($command);
+        echo '<br/>';*/
         $results = $this->db->query($query)
                             ->bindAll(array(
                                 ':cmd' => substr($command,0,256)
                               ))
                             ->execute()
                             ->resultset();
+      /*  var_dump($results);
+        echo '<br/>';
+        echo '<br/>';*/
         foreach ($results AS $row) {
           $output .= $row['results'];
         }
+      /*  echo '<br/>';
+        var_dump($output);*/
         return json_decode($output,true);
       }
       public function save($command, $results, $expDate) {
@@ -40,17 +50,19 @@ if (!class_exists('lolWebAPICache')) {
         $dataSegment = substr($results, 0, $this->config['maxBytesData']);
         $now = date('Y-m-d H:i:s');
         while (strlen($dataSegment) > 0 ) {
-          $query = 'insert into lolwebapicache (createdDate, expiredDate, command, results) values (:now, :expDate, :command, :results)';
-          $this->db->query($query)
-                ->bindAll(array(
-                  ':now' => $now,
-                  ':expDate' => $expDate,
-                  ':command' => $command,  //string
-                  ':results' => $dataSegment //php data
-                ))
-                ->execute();
-          $dataSegment = substr($results, $index*$this->config['maxBytesData'], $this->config['maxBytesData']);
-          $index++;
+          if(!empty($dataSegment)){
+            $query = 'insert into lolwebapicache (createdDate, expiredDate, command, results) values (:now, :expDate, :command, :results)';
+            $this->db->query($query)
+                  ->bindAll(array(
+                    ':now' => $now,
+                    ':expDate' => $expDate,
+                    ':command' => $command,  //string
+                    ':results' => $dataSegment //php data
+                  ))
+                  ->execute();
+            $dataSegment = substr($results, $index*$this->config['maxBytesData'], $this->config['maxBytesData']);
+            $index++;
+          }
         }
       }
 
