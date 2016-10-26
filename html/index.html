@@ -13,6 +13,7 @@
 <script src="lolHistoryData.js"></script>
 <script src="lolSummonerUI.js"></script>
 <script src="lolSummonerData.js"></script>
+<script src="summonerBase.js"></script>
 
 <!DOCTYPE html>
 
@@ -47,10 +48,14 @@
   });*/
 
   $(document).ready(function(){
-    buildUIFrame('summary-info');
+    summonerBase.load({
+      containerId : appWrapper
+    });
+    console.log(summonerBase.dataModel);
+    //buildUIFrame('summary-info');
     //buildgeneralview();
-    webpage('summary-info');
-    bindevent();
+    //webpage('summary-info');
+    //bindevent();
   });
 
   function webpage(page){

@@ -11,7 +11,7 @@ lolSummonerData = function(cfg){
       'url':config.apiURL,
       'data':{'function':'getSummary','summonerName' : summonerName,'season' : season},
       'success': function(res){
-        console.log(res);
+        //console.log(res);
         if(typeof(callback) == 'function'){
           callback(res.data);
         }
