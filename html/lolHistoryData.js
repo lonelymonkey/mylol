@@ -40,6 +40,7 @@ lolHistoryData = function(cfg){
 
   };
   matchDetail = function(matchId,callback){
+    console.log(matchId);
     $.ajax({
       'type':'GET',
       'dataType':'json',

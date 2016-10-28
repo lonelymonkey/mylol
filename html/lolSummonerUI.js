@@ -46,50 +46,6 @@
     $('#summoner').append(view);
   }
 
-  function buildLeagueView(){
-    var data = dataModel.league;
-    //console.log(data);
-    var playerInfo = {};
-    var summary='';
-
-    data.forEach(function(league){
-      summary = ''+
-            '<div>'+league.name+'</div>' +
-            '<div>'+league.queue+'</div>' +
-            '<div>'+league.tier+'</div>';
-      $.each(league.entries,function(key,league){
-        if(league.playerOrTeamId == dataModel.summonerInfo.id){
-          playerInfo = league;
-        }
-      });
-      //console.log(playerInfo);
-    });
-    summary += ''+
-    '<div>'+playerInfo.isHotStreak+'</div>' +
-    '<div>'+playerInfo.leaguePoints+'</div>' +
-    '<div>'+playerInfo.wins+'</div>' +
-    '<div>'+playerInfo.losses+'</div>' +
-    '<div>'+JSON.stringify(playerInfo.miniSeries)+'</div>';
-
-    $('#summary').append(summary);
-  }
-
-  function buildRankedStatsView(){
-    var data = dataModel.rankedStats.slice(0,10);
-    var championStats = '';
-    //console.log(data);
-    $.each(data,function(key,rankedStats){
-      championStats += ''+
-      '<div>'+rankedStats.name+'</div>' +
-      '<div>'+rankedStats.stats.totalChampionKills+'</div>' +
-      '<div>'+rankedStats.stats.maxNumDeaths+'</div>' +
-      '<div>'+rankedStats.stats.totalAssists+'</div>' +
-      '<div>'+rankedStats.stats.totalSessionsPlayed+'</div>';
-    });
-
-    $('#champion-summary').append(championStats);
-  }
-
   //views for summary page
 
   //views for champions page

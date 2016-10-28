@@ -54,52 +54,7 @@
     });
   }
 
-  function bindevent(){
-    $('#summary-button').click(function(){
-      console.log('summary is clicked');
-      $('#summoner-info').remove();
-      //$('#summoner').empty();
-      buildUIFrame('summary-info');
-      webpage('summary-info');
-    });
-
-    $('#champions-button').click(function(){
-      console.log('champions is clicked');
-      $('#summoner-info').remove();
-      //$('#summoner').empty();
-      buildUIFrame('champions');
-      webpage('champions');
-    });
-
-    $('#league-button').click(function(){
-      console.log('league is clicked');
-      $('#summoner-info').remove();
-      //$('#summoner').empty();
-      buildUIFrame('league-list');
-      webpage('league-list');
-    });
-
-    $('#matches-button').click(function(){
-      console.log('matches is clicked');
-
-    });
-
-    $('#runes-button').click(function(){
-      console.log('runes is clicked');
-      $('#summoner-info').remove();
-      //$('#summoner').empty();
-      buildUIFrame('runes');
-      webpage('runes');
-    });
-
-    $('#masteries-button').click(function(){
-      console.log('masteries is clicked');
-      $('#summoner-info').remove();
-      //$('#summoner').empty();
-      buildUIFrame('masteries');
-      webpage('masteries');
-    });
-  }
+  
 
   function buildUIFrame(page) {
     var view = '';

@@ -71,7 +71,6 @@ class lolWebAPIResource {
     $command = 'api/lol/'.$region.'/v2.2/match/'.$matchId;
     $key = http_build_query(array('api_key' => $this->apiKey));
     $apiLink = $http.$command.'?'.$key;*/
-    echo $command;
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = json_decode(file_get_contents($command),true);

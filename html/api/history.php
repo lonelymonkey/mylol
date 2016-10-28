@@ -1,6 +1,6 @@
 <?php
 //mylol.local/api/history.php?function=matchList&summonerName=epiccookierawr
-//mylol.local/api/history.php?function=matchDetail&matchId=2305801661
+//mylol.local/api/history.php?function=matchDetail&matchId=2330981297
 
 include '../../global.inc';
 include INCLUDE_PATH . '/matchHistoryService.php';

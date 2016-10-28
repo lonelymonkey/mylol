@@ -18,7 +18,7 @@
       console.log(res);
       dataModel.matchDetail = res;
       //console.log(res);
-      $('#game'+matchId).append(JSON.stringify(dataModel.matchDetail));
+      //$('#game'+matchId).append(JSON.stringify(dataModel.matchDetail));
   });
 }
 
