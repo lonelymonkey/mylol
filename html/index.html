@@ -9,12 +9,14 @@
        console.log(data);
    });*/
 </script>
-<script src="lolHistoryUI.js"></script>
 <script src="lolHistoryData.js"></script>
-<script src="lolSummonerUI.js"></script>
 <script src="lolSummonerData.js"></script>
 <script src="summonerBase.js"></script>
 <script src="summonerSummary.js"></script>
+<script src="summonerChampions.js"></script>
+<script src="summonerLeague.js"></script>
+<script src="summonerRunes.js"></script>
+<script src="summonerMasteries.js"></script>
 
 
 <!DOCTYPE html>
@@ -54,7 +56,7 @@
     });
   }
 
-  
+
 
   function buildUIFrame(page) {
     var view = '';
@@ -72,33 +74,7 @@
       '</div>';
     }
     else if(page == 'champions') {
-      view += '' +
-      '<div id="summoner-info">'+
-        '<div class="btn-group">'+
-          '<button type="button" class="btn btn-primary" id="season6-button">Season 6</button>'+
-          '<button type="button" class="btn btn-primary" id="season5-button">Season 5</button>'+
-          '<button type="button" class="btn btn-primary" id="season4-button">Season 4</button>'+
-          '<button type="button" class="btn btn-primary" id="season3-button">Season 3</button>'+
-        '</div>'+
-      '<div id="champion-list">'+
-        '<ul class="champion-column">'+
-          '<li class="champion-stats">#</li>'+
-          '<li class="champion-stats">Champion</li>'+
-          '<li class="champion-stats">Played</li>'+
-          '<li class="champion-stats">KDA</li>'+
-          '<li class="champion-stats">Gold</li>'+
-          '<li class="champion-stats">CS</li>'+
-          '<li class="champion-stats">Turrets Killed</li>'+
-          '<li class="champion-stats">Max Kills</li>'+
-          '<li class="champion-stats">Max Deaths</li>'+
-          '<li class="champion-stats">Average Damage Dealt</li>'+
-          '<li class="champion-stats">Average Damage Taken</li>'+
-          '<li class="champion-stats">Double Kill</li>'+
-          '<li class="champion-stats">Triple Kill</li>'+
-          '<li class="champion-stats">Quadra Kill</li>'+
-        '</ul>'+
-      '</div>'+
-    '</div>';
+
   }
     else if(page == 'league-list'){
       view += '' +

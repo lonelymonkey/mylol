@@ -26,10 +26,8 @@ $config = array( //unit in min
 
 $lolcache = new lolWebAPICache();
 
-$res = $lolcache->getCommand('https://na.api.pvp.net/api/lol/na/v2.2/match/2328048744?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0');
+$res = $lolcache->getCommand('https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/epiccookierawr?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0');
 var_dump($res);
-$escapedres = htmlspecialchars('https://na.api.pvp.net/api/lol/na/v2.2/match/2328048744?api_key=RGAPI-178a4b1c-107a-4509-85f1-9723084273f0');
-var_dump($escapedres.'littledog');
 /*echo preg_match('#.*#',$testStr,$match);
 var_dump($match);
 $expirationPeriod = time();

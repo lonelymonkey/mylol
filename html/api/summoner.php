@@ -1,6 +1,6 @@
 <?php
 //http://mylol.local/api/summoner.php?function=getRunes&summonerName=epiccookierawr
-//http://mylol.local/api/summoner.php?function=getRankedStats&summonerName=epiccookierawr&season=SEASON2015
+//http://mylol.local/api/summoner.php?function=getSummary&summonerName=epiccookierawr&season=SEASON2016
 include '../../global.inc';
 include INCLUDE_PATH . '/summonerService.php';
 

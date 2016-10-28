@@ -6,7 +6,7 @@
   var config = {};
 
   function bindEvent() {
-    $('.matchDetailButton').each(function(){
+    $('.match-detail-button').each(function(){
       $(this).click(function(){
         //console.log('clicked');
         var matchId = $(this).attr('id').replace($(this).attr('class'),'');
@@ -18,8 +18,6 @@
   function buildSummonerView() {
     //check if dataModel changed?
     //if unchanged return
-    console.log(dataModel);
-    console.log(dataModel.summonerSummary.summonerInfo[summonerBase.search]['id']);
     var view = '';
     view += '' +
     '<div id="summary">'+
@@ -138,7 +136,7 @@
       view += ''+
               '<div><h3>'+statusView+'</h3></div>'+
               '<div>'+match.championName+match.spellName1+match.spellName2+'</div>' +
-              '<input type="button" class="matchDetailButton" id="matchDetailButton'+match.gameId+'"">'+match.gameId+'</input>'+
+              '<input type="button" class="match-detail-button" id="match-detail-button'+match.gameId+'"">'+match.gameId+'</input>'+
               '<div>'+match.stats.itemName0+'</div>' +
               '<div>'+match.stats.itemName1+'</div>' +
               '<div>'+match.stats.itemName2+'</div>' +

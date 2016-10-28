@@ -3,7 +3,9 @@
 }(function(summonerBase){
   var config;
   var dataModel = {
-    summonerSummary : []
+    summonerSummary : [],
+    runes : [],
+    masteries : []
   };
   const MAXGAME = 10;
   //export dataModel
@@ -11,7 +13,10 @@
 
   var eventsCallback = {
     'onLoad' : [],
-    'base' : []
+    'champions' : [],
+    'league' : [],
+    'runes' : [],
+    'masteries' : []
   };
 
   var dataFlag = false;
@@ -23,6 +28,7 @@
   }
 
   function executeRegisteredCallbacks(event,data) {
+    console.log(eventsCallback);
     eventsCallback[event].forEach(function(callback, index){
       callback();
     });
@@ -74,10 +80,14 @@
 
     $('#champions-button').click(function(){
       console.log('champions is clicked');
+      $('#summary-info').empty();
+      executeRegisteredCallbacks('champions',dataModel);
     });
 
     $('#league-button').click(function(){
       console.log('league is clicked');
+      $('#summary-info').empty();
+      executeRegisteredCallbacks('league',dataModel);
     });
 
     $('#matches-button').click(function(){
@@ -86,11 +96,22 @@
 
     $('#runes-button').click(function(){
       console.log('runes is clicked');
+      $('#summary-info').empty();
+      var dataAPISummoner = lolSummonerData(config);
+      dataAPISummoner.runes(summonerBase.search,function(res){
+        dataModel.runes = res;
+        executeRegisteredCallbacks('runes',res);
+      });
     });
 
     $('#masteries-button').click(function(){
       console.log('masteries is clicked');
-
+      $('#summary-info').empty();
+      var dataAPISummoner = lolSummonerData(config);
+      dataAPISummoner.masteries(summonerBase.search,function(res){
+        dataModel.masteries = res;
+        executeRegisteredCallbacks('masteries',res);
+      });
     });
   }
 
@@ -105,6 +126,12 @@
       //console.log(JSON.stringify(dataModel));
       buildSummonerView();
     });
+    /*dataAPISummoner.runes(summonerBase.search,function(res){
+      dataModel.runes = res;
+    });
+    dataAPISummoner.masteries(summonerBase.search,function(res){
+      dataModel.masteries = res;
+    });*/
     buildUIFrame();
     bindevent();
   };

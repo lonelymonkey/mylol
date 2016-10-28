@@ -11,13 +11,7 @@
     rankedStats : []
   };
 
-  var leagueList = {
-    one : '',
-    two : '',
-    three : '',
-    four : '',
-    five : ''
-  }
+
 
   var search = 'epiccookierawr';
   var season = 'SEASON2016';
