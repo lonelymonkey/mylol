@@ -9,11 +9,13 @@
     var display = 'teemo';
     var runeId = '';
     $('.rune-page').click(function(){
-      $('#runes-detail').empty();
+      $('#runes-img').empty();
+      $('#runes').empty();
       runeId = $(this).html();
       $.each(allpages,function(key,page){
         if(page.name == runeId){
-          buildRunesDetail(page.slots);
+          //buildRunesDetail(page.slots);
+          buildRunesImage(page.slots);
         }
       });
     });
@@ -36,8 +38,17 @@
     });
     detail += '</ul>';
     console.log(detail);
-    $('#runes-detail').append(detail);
+    $('#runes').append(detail);
   }
+
+  function buildRunesImage(data){
+    var runePage = document.createElement("img");
+    runePage.setAttribute('src','images/runes/runeSlots.png');
+    console.log(runePage);
+    $("#runes-img").append(runePage);
+  }
+
+
 
   function buildRunesView(){
     //console.log('buildRunesView');
@@ -46,6 +57,10 @@
       '<div id="runes-list">'+
       '</div>'+
       '<div id="runes-detail">'+
+        '<div id="runes">'+
+        '</div>'+
+        '<div id="runes-img">'+
+        '</div>'+
       '</div>';
       //console.log(view);
 
@@ -53,6 +68,7 @@
   }
 
   function buildRunesList(){
+    allpages = [];
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.runes.summonerRunes[id]['pages'];
     var list = '<ul class="list-group">';
