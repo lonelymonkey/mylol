@@ -125,11 +125,14 @@ class matchHistoryService{
     $output = array();
 
     $championNameAndImage = $this->api->getNameAndImage();
+    //usleep(250);
     $items = $this->api->getItems();
+    //usleep(250);
     $spells = $this->api->getSummonerSpell();
-
+    //usleep(250);
     $this->profiler->mark('api->getRunes','start');
     $runes = $this->api->getRunes();
+    //usleep(250);
     $this->profiler->mark('api->getRunes','finish');
 
     $this->profiler->mark('api->getMasteries','start');

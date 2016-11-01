@@ -33,9 +33,17 @@ if (!class_exists('lolWebAPICache')) {
         }
         return json_decode($output,true);//json_decode($output,true);
       }
-
+      private function delete($command) {
+        $query = 'delete from lolwebapicache where command=:cmd';
+        $this->db->query($query)
+                  ->bindAll(array(
+                      ':cmd' => $command
+                    ))
+                  ->execute();
+      }
       public function save($command, $results, $expDate) {
-        $this->deleteExpired();
+        $this->delete($command);
+        //$this->deleteExpired();
         if(!empty($results)){
           $index = 1;
           $results = json_encode($results);
