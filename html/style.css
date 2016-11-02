@@ -139,22 +139,43 @@ ul.champion-column > li:last-Child {
 
 /*runes*/
 #runes-list{
-  width: 300px;
+  width: 225px;
   height: inherit;
   background: antiquewhite;
   float: left;
 }
 
 #runes-detail{
-  width: 700px;
+  width: 775px;
   height: inherit;
   background: coral;
   position: relative;
-  left: 300px;
+  float: left;
 }
 
 #runes-img{
-  position: absolute;
+}
+
+.rune-div{
+  width: 387.5px;
+  height: 80px;
+  float: left;
+  position: relative;
+}
+
+.title{
+  text-align: center;
+  margin: 5px 0px;
+}
+
+.name{
+  float: left;
+  margin: 20px;
+}
+
+.quantity{
+  float: right;
+  margin: 20px;
 }
 
 /*masteries*/

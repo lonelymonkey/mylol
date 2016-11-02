@@ -14,7 +14,7 @@
       runeId = $(this).html();
       $.each(allpages,function(key,page){
         if(page.name == runeId){
-          //buildRunesDetail(page.slots);
+          buildRunesDetail(page.slots);
           buildRunesImage(page.slots);
         }
       });
@@ -23,7 +23,7 @@
 
   function buildRunesDetail(data){
     var runes = {};
-    var detail = '<ul>';
+    //var detail = '<ul>';
     $.each(data,function(key,rune){
       if(!(rune.runeName in runes)){
         runes[rune.runeName] = 1;
@@ -34,11 +34,42 @@
     });
     console.log(runes);
     $.each(runes,function(key,sum){
-      detail += '<li>'+key+sum+'</li>';
+      buildRuneDiv(key,sum);
+      //detail += '<li>'+key+sum+'</li>';
     });
-    detail += '</ul>';
-    console.log(detail);
-    $('#runes').append(detail);
+    //detail += '</ul>';
+    //console.log(detail);
+    //$('#runes').append(detail);
+
+  }
+
+  function buildRuneDiv(key,sum){
+    var idKey = key.replace(/\s/g,'-');
+    console.log(idKey);
+    var view = '';
+    view += '' +
+    '<div class="rune-div">'+
+      '<div class="title" id='+idKey+'></div>'+
+      '<div class="name">'+key+'</div>'+
+      '<div class="quantity">'+sum+'</div>'+
+    '</div>';
+    $('#runes').append(view);
+    if(key.search('Mark') > -1){
+      $('#'+idKey).html('Mark');
+      $('#'+idKey).css({background: 'red'});
+    }
+    else if (key.search('Seal') > -1) {
+      $('#'+idKey).html('Seal');
+      $('#'+idKey).css({background: 'yellow'});
+    }
+    else if (key.search('Glyph') > -1) {
+      $('#'+idKey).html('Glyph');
+      $('#'+idKey).css({background: 'blue'});
+    }
+    else if (key.search('Quintessence') > -1) {
+      $('#'+idKey).html('Quintessence');
+      $('#'+idKey).css({background: 'purple'});
+    }
   }
 
   function buildRunesImage(data){
@@ -53,19 +84,34 @@
     }).appendTo('#runes-img');
     $('#runePage').css({width:'775px'});
   //  console.log(runePage);
-    $("#runes-img").append(runePage);
+
     $.each(data,function(key,rune){
       //console.log(rune);
       jQuery('<div/>', {
         id: 'rune'+key,
       }).appendTo('#runes-img');
+      jQuery('<div/>', {
+        id: 'runeName'+key,
+      }).appendTo('#runes-img');
+
       $('#rune'+key).css({position: 'absolute', left: left[key]+'px',
               top: top[key]+'px'});
+      $('#runeName'+key).css({position: 'absolute', left: left[key]+'px',
+              top: top[key]+20+'px',background:'black', display:'none'});
+
+      $('#runeName'+key).append(rune.runeName);
+
       runeImg = document.createElement("img");
       runeImg.setAttribute('src','http://ddragon.leagueoflegends.com/cdn/6.21.1/img/rune/'+rune.runeImage);
       runeImg.setAttribute('id','runeImg'+key);
       $('#rune'+key).append(runeImg);
+      $('#rune'+key).hover(function(){
+        $('#runeName'+key).show();
+      },function(){
+        $('#runeName'+key).hide();
+      });
     });
+
     for(var i=27;i<=29;i++){
       console.log(i);
       $('#runeImg'+i).css({
@@ -84,9 +130,9 @@
       '<div id="runes-list">'+
       '</div>'+
       '<div id="runes-detail">'+
-        '<div id="runes">'+
-        '</div>'+
         '<div id="runes-img">'+
+        '</div>'+
+        '<div id="runes">'+
         '</div>'+
       '</div>';
       //console.log(view);
