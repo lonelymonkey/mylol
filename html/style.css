@@ -153,6 +153,10 @@ ul.champion-column > li:last-Child {
   left: 300px;
 }
 
+#runes-img{
+  position: absolute;
+}
+
 /*masteries*/
 #masteries-list{
   height: 250px;

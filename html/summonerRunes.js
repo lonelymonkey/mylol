@@ -42,10 +42,37 @@
   }
 
   function buildRunesImage(data){
+    console.log(data);
+    var top = [442,442,445,375,371,389,315,320,268,216,211,158,131,77,45,24,2,61,5,64,5,108,52,5,46,93,156,30,254,193];
+    var left = [27,99,186,11,83,148,38,132,87,42,125,77,143,179,247,314,390,423,470,510,548,566,602,646,703,656,682,44,227,501];
     var runePage = document.createElement("img");
-    runePage.setAttribute('src','images/runes/runeSlots.png');
-    console.log(runePage);
+    var rune;
+    jQuery('<img/>', {
+      id: 'runePage',
+      src: 'images/runes/runeSlots.png'
+    }).appendTo('#runes-img');
+    $('#runePage').css({width:'775px'});
+  //  console.log(runePage);
     $("#runes-img").append(runePage);
+    $.each(data,function(key,rune){
+      //console.log(rune);
+      jQuery('<div/>', {
+        id: 'rune'+key,
+      }).appendTo('#runes-img');
+      $('#rune'+key).css({position: 'absolute', left: left[key]+'px',
+              top: top[key]+'px'});
+      runeImg = document.createElement("img");
+      runeImg.setAttribute('src','http://ddragon.leagueoflegends.com/cdn/6.21.1/img/rune/'+rune.runeImage);
+      runeImg.setAttribute('id','runeImg'+key);
+      $('#rune'+key).append(runeImg);
+    });
+    for(var i=27;i<=29;i++){
+      console.log(i);
+      $('#runeImg'+i).css({
+        width: '110px',
+        height: '110px'
+      });
+    }
   }
 
 
