@@ -70,6 +70,7 @@ class summonerService{
       if(!empty($page['masteries'])){
         foreach($page['masteries'] AS $masteriesIndex => $mastery){
           $summonerMasteries[$summonerId]['pages'][$pageIndex]['masteries'][$masteriesIndex]['masteryName'] = $masteries['data'][$mastery['id']]['name'];
+          $summonerMasteries[$summonerId]['pages'][$pageIndex]['masteries'][$masteriesIndex]['description'] = $masteries['data'][$mastery['id']]['description'];
         }
       }
     }

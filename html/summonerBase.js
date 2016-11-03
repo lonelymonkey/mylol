@@ -30,7 +30,7 @@
   function executeRegisteredCallbacks(event,data) {
     console.log(eventsCallback);
     eventsCallback[event].forEach(function(callback, index){
-      callback();
+      callback(data);
     });
   }
   summonerBase.registerEvent = function(event, callback) {

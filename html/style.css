@@ -154,6 +154,15 @@ ul.champion-column > li:last-Child {
 }
 
 #runes-img{
+  position: relative;
+}
+
+#rune-page-name{
+  width: inherit;
+  height: 40px;
+  position: relative;
+  text-align: center;
+  padding: 10px;
 }
 
 .rune-div{
@@ -180,7 +189,6 @@ ul.champion-column > li:last-Child {
 
 /*masteries*/
 #masteries-list{
-  height: 250px;
   width: inherit;
   background: antiquewhite;
   float: left;
@@ -190,6 +198,5 @@ ul.champion-column > li:last-Child {
   height: 750px;
   width: inherit;
   background: coral;
-  position: relative;
-  top: 250px;
+  float: left;
 }

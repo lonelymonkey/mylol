@@ -9,22 +9,25 @@
     var display = 'teemo';
     var runeId = '';
     $('.rune-page').click(function(){
+      $('#rune-page-name').empty();
       $('#runes-img').empty();
       $('#runes').empty();
       runeId = $(this).html();
       $.each(allpages,function(key,page){
         if(page.name == runeId){
-          buildRunesDetail(page.slots);
-          buildRunesImage(page.slots);
+          buildRunesDetail(page);
+          buildRunesImage(page);
         }
       });
     });
   }
 
   function buildRunesDetail(data){
+    console.log(data);
+    $('#rune-page-name').append(data.name);
     var runes = {};
     //var detail = '<ul>';
-    $.each(data,function(key,rune){
+    $.each(data.slots,function(key,rune){
       if(!(rune.runeName in runes)){
         runes[rune.runeName] = 1;
       }
@@ -32,7 +35,7 @@
         runes[rune.runeName] += 1;
       }
     });
-    console.log(runes);
+    //console.log(runes);
     $.each(runes,function(key,sum){
       buildRuneDiv(key,sum);
       //detail += '<li>'+key+sum+'</li>';
@@ -45,13 +48,13 @@
 
   function buildRuneDiv(key,sum){
     var idKey = key.replace(/\s/g,'-');
-    console.log(idKey);
+    //console.log(idKey);
     var view = '';
     view += '' +
     '<div class="rune-div">'+
       '<div class="title" id='+idKey+'></div>'+
       '<div class="name">'+key+'</div>'+
-      '<div class="quantity">'+sum+'</div>'+
+      '<div class="quantity"> x'+sum+'</div>'+
     '</div>';
     $('#runes').append(view);
     if(key.search('Mark') > -1){
@@ -85,7 +88,7 @@
     $('#runePage').css({width:'775px'});
   //  console.log(runePage);
 
-    $.each(data,function(key,rune){
+    $.each(data.slots,function(key,rune){
       //console.log(rune);
       jQuery('<div/>', {
         id: 'rune'+key,
@@ -130,6 +133,8 @@
       '<div id="runes-list">'+
       '</div>'+
       '<div id="runes-detail">'+
+        '<div id="rune-page-name">'+
+        '</div>'+
         '<div id="runes-img">'+
         '</div>'+
         '<div id="runes">'+
@@ -158,9 +163,14 @@
   }
 
   summonerBase.registerEvent('runes',function(data){
-    //console.log('build summoner runes view');
+    //console.log(data);
+    var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
+    var firstRunePage = data.summonerRunes[id]['pages'][0];
+    //console.log(firstRunePage);
     buildRunesView();
     buildRunesList();
+    buildRunesDetail(firstRunePage);
+    buildRunesImage(firstRunePage);
     bindEvent();
   });
 
