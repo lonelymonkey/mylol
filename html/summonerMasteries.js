@@ -3,8 +3,28 @@
 }(function(summonerBase){
   var dataModel = summonerBase.dataModel;
   var config = {};
+  var hoverTimer;
 
   function bindEvent() {
+    var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
+    var data = dataModel.masteries.summonerMasteries[id]['pages'];
+    $(".rune-page").click(function(){
+      //console.log($(this).html());
+      var selectedPage = {};
+      var selectedName = $(this).html();
+      $("#ferocity").empty();
+      $("#cunning").empty();
+      $("#resolve").empty();
+      $.each(data,function(key,mastery){
+        //console.log(mastery.name);
+        if(mastery.name == selectedName){
+          selectedPage = mastery;
+        }
+      });
+      //console.log(selectedPage);
+      buildMasteriesDetail(selectedPage);
+      buildMasteriesImage(selectedPage);
+    });
   }
 
   function buildMasteriesView(){
@@ -35,10 +55,7 @@
 
     $.each(data,function(key, masteriesPage){
       console.log(masteriesPage);
-      list += '<li><a>'+masteriesPage.name+'</a></li>';
-      $.each(masteriesPage.masteries,function(key,mastery){
-        detail += '<div>'+mastery.masteryName+mastery.rank+'</div>';
-      });
+      list += '<li><a class="rune-page">'+masteriesPage.name+'</a></li>';
     });
 
     list += '</ul>';
@@ -46,9 +63,18 @@
     //$('#masteries-detail').append(detail);
   }
 
-  function buildMasteriesDetail(data){
-
+  function masteryDetail(data){
     //console.log(data);
+    $.each(data.data,function(id,detail){
+      var rank = detail.ranks;
+      $('#'+id).hover(function(){
+        hoverTimer = setTimeout(function(){
+          console.log(detail.description[rank-1]);
+        }, 500);
+      },function(){
+        clearTimeout(hoverTimer);
+      });
+    });
   }
 
   function buildMasteriesImage(data){
@@ -58,31 +84,60 @@
         'data': data,
         'success': function(res){
           masteryImagePlacement(data,res);
+          masteryDetail(res);
         }
         });
   }
 
   function masteryImagePlacement(data,res){
     console.log(res);
-    var onMasteries = [];
+    var onMasteries = {};
     var cunning = [6311,6312,6321,6322,6323,6331,6332,6341,6342,6351,6352,6361,6362,6363];
     var ferocity = [6111,6114,6121,6122,6123,6131,6134,6141,6142,6151,6154,6161,6162,6164];
     var resolve =  [6211,6212,6221,6223,6231,6232,6241,6242,6251,6252,6261,6262,6263];
+    var cunningTotal = 0;
+    var ferocityTotal = 0;
+    var resolveTotal = 0;
     var ferocityAndCunningRows = [1,3,1,2,1,3];
     var resolveRows = [1,2,1,2,1,3];
     $.each(data.masteries,function(key,mastery){
-      onMasteries.push(mastery.id);
+      //console.log(mastery);
+      onMasteries[mastery.id] = mastery.rank;
     });
     console.log(onMasteries);
     constructGroup(ferocity,'ferocity',ferocityAndCunningRows);
     constructGroup(cunning,'cunning',ferocityAndCunningRows);
     constructGroup(resolve,'resolve',resolveRows);
-    onMasteries.forEach(function(mastery){
+    $.each(onMasteries,function(mastery,rank){
       var image = document.getElementById(mastery);
+      var row = mastery.toString().substr(2,1);
+      var group = mastery.toString().substr(0,2);
+
+      switch(group){
+        case '61':
+          ferocityTotal += rank;
+        case '63':
+          cunningTotal += rank;
+        case '62':
+          resolveTotal += rank;
+      }
+
       if(image){
-        $('#'+mastery).append('<img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/mastery/'+mastery+'.png">');
+        $('#'+mastery).append('<img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/mastery/'+mastery+'.png" id="img'+mastery+'">');
+        switch (row) {
+          case '1':
+          case '3':
+          case '5':
+            $('#'+mastery).append('<div class="rank'+row+'">'+rank+'/5</div>');
+            break;
+          default:
+          $('#img'+mastery).css({
+            border: 'solid orange 1px'
+          });
+        }
       }
     });
+    console.log(ferocityTotal);
   }
 
   function constructGroup(list,groupName,rowOrder){
@@ -97,25 +152,24 @@
       if(type == 1){
         view += '' +
         '<div class="row-type-1">'+
-          '<div id='+list.shift()+' class="type-1-1 row'+row+'">'+
-          '<div class="rank">1/5</div>'+
+          '<div id='+list.shift()+' class="type-1-1 row'+row+' rune">'+
           '</div>'+
-          '<div id='+list.shift()+' class="type-1-3 row'+row+'"></div>'+
+          '<div id='+list.shift()+' class="type-1-3 row'+row+' rune"></div>'+
         '</div>';
       }
       else if (type == 2) {
         view += '' +
         '<div class="row-type-2">'+
-          '<div id='+list.shift()+' class="type-2-1 row'+row+'"></div>'+
-          '<div id='+list.shift()+' class="type-2-2 row'+row+'"></div>'+
+          '<div id='+list.shift()+' class="type-2-1 row'+row+' rune"></div>'+
+          '<div id='+list.shift()+' class="type-2-2 row'+row+' rune"></div>'+
         '</div>';
       }
       else if(type == 3){
         view += '' +
         '<div class="row-type-3">'+
-          '<div id='+list.shift()+' class="type-3-1 row'+row+'"></div>'+
-          '<div id='+list.shift()+' class="type-3-2 row'+row+'"></div>'+
-          '<div id='+list.shift()+' class="type-3-3 row'+row+'"></div>'+
+          '<div id='+list.shift()+' class="type-3-1 row'+row+' rune"></div>'+
+          '<div id='+list.shift()+' class="type-3-2 row'+row+' rune"></div>'+
+          '<div id='+list.shift()+' class="type-3-3 row'+row+' rune"></div>'+
         '</div>';
       }
       row++;
@@ -130,7 +184,7 @@
     var firstPage = dataModel.masteries.summonerMasteries[id]['pages'][0];
     buildMasteriesView();
     buildMasteriesList();
-    buildMasteriesDetail(firstPage);
+    //buildMasteriesDetail(firstPage);
     buildMasteriesImage(firstPage);
     bindEvent();
   });

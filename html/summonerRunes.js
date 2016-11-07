@@ -38,12 +38,7 @@
     //console.log(runes);
     $.each(runes,function(key,sum){
       buildRuneDiv(key,sum);
-      //detail += '<li>'+key+sum+'</li>';
     });
-    //detail += '</ul>';
-    //console.log(detail);
-    //$('#runes').append(detail);
-
   }
 
   function buildRuneDiv(key,sum){

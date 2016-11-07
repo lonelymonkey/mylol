@@ -243,15 +243,15 @@ ul.champion-column > li:last-Child {
 }
 
 .type-2-2{
-  left: 78px;
+  left: 83px;
 }
 
 .type-3-2{
-  left: 41px;
+  left: 43px;
 }
 
 .type-3-3{
-  left: 57px;
+  left: 61px;
 }
 
 .row1{
@@ -270,10 +270,9 @@ ul.champion-column > li:last-Child {
   top:6px;
 }
 
-.rank1{
+.rank1,.rank3,.rank5{
   position: absolute;
   left: 37px;
-  top: 51px;
   color: red;
   background: black;
   width: 27px;
@@ -283,28 +282,14 @@ ul.champion-column > li:last-Child {
   border-radius: 4px;
 }
 
-.rank2{
-  position: absolute;
-  left: 37px;
+.rank1{
   top: 51px;
-  color: red;
-  background: black;
-  width: 27px;
-  text-align: center;
-  font-size: 8px;
-  border: solid 1px red;
-  border-radius: 4px;
 }
 
 .rank3{
-  position: absolute;
-  left: 37px;
-  top: 51px;
-  color: red;
-  background: black;
-  width: 27px;
-  text-align: center;
-  font-size: 8px;
-  border: solid 1px red;
-  border-radius: 4px;
+  top: 49px;
+}
+
+.rank5{
+  top: 47px;
 }
