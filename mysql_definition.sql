@@ -1,4 +1,4 @@
-CREATE TABLE `lolWEBAPICache` (
+CREATE TABLE `lolwebapicache` (
     `id` int(11) not null auto_increment,
     `createdDate` datetime not null default '0000-00-00',
     `expiredDate` datetime not null default '0000-00-00',
