@@ -21,6 +21,10 @@
     var view = '';
     view += '' +
     '<div id="summary">'+
+      '<div id="tier-icon"></div>'+
+      '<div id="tier-info"></div>'+
+      '<div id="tier-league"></div>'+
+    //  '<canvas id="myChart" width="2px" height="2px"></canvas>'+
     '</div>'+
     '<div id="champion-summary">'+
     '</div>'+
@@ -35,51 +39,94 @@
   function buildLeagueView(){
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.summonerSummary.league.summonerLeague[id];
-    console.log(data);
+    //console.log(data);
     var playerInfo = {};
     var summary='';
-
+    var tier;
+    var rank;
+    var leagueName;
+    var winRate;
+    //var ctx = document.getElementById("myChart");
+    /*var pieData = {
+    labels: [
+        "Wins",
+        "Losses",
+    ],
+    datasets:
+    [{
+      data: [],
+      backgroundColor: ["#36A2EB","#FF6384"],
+      //borderColor: ["#36A2EB","#FF6384"]
+    }]
+  };*/
     data.forEach(function(league){
-      summary = ''+
-            '<div>'+league.name+'</div>' +
-            '<div>'+league.queue+'</div>' +
-            '<div>'+league.tier+'</div>';
+      tier = league.tier;
+      leagueName = league.name;
       $.each(league.entries,function(key,league){
         if(league.playerOrTeamId == id){
           playerInfo = league;
         }
       });
-      //console.log(playerInfo);
     });
-    summary += ''+
-    '<div>'+playerInfo.isHotStreak+'</div>' +
-    '<div>'+playerInfo.leaguePoints+'</div>' +
-    '<div>'+playerInfo.wins+'</div>' +
-    '<div>'+playerInfo.losses+'</div>' +
-    '<div>'+JSON.stringify(playerInfo.miniSeries)+'</div>';
 
-    $('#summary').append(summary);
+    rank = tier+'_'+playerInfo.division;
+    winRate = Number(playerInfo.wins)/(Number(playerInfo.wins)+Number(playerInfo.losses))*100;
+
+    summary += ''+
+      '<div>'+rank.replace('_',' ')+'</div>'+
+      //'<div>'+playerInfo.isHotStreak+'</div>' +
+      '<div>Points: '+playerInfo.leaguePoints+'</div>' +
+      '<div>'+playerInfo.wins+'W/'+playerInfo.losses+'L</div>' +
+      '<div>Win Rate: '+Math.floor(winRate)+'%</div>';
+
+    if(playerInfo.miniSeries){
+      summary += '<div>'+JSON.stringify(playerInfo.miniSeries)+'</div>';
+    }
+
+    $('#tier-info').append(summary);
+    $('#tier-icon').append('<div><img src="images/tier_icons/'+rank+'.png" style="width: 100px"></div>');
+    $('#tier-league').append(leagueName);
+    /*var myPieChart = new Chart(ctx,{
+        type: 'pie',
+        data: pieData,
+        options: {}
+    });*/
   }
 
   function buildRankedStatsView(){
     var data = dataModel.summonerSummary.rankedStats.rankedStats.champions.slice(0,10);
     var championStats = '';
-    console.log(data);
+    var championPic = '';
+    var averageKill,averageDeath,averageAssists,averageCS;
+    var totalSession;
+
+    //console.log(data);
     $.each(data,function(key,rankedStats){
+      totalSession = Number(rankedStats.stats.totalSessionsPlayed);
+      averageKill = Number(rankedStats.stats.totalChampionKills)/totalSession;
+      averageDeath = Number(rankedStats.stats.totalDeathsPerSession)/totalSession;
+      averageAssists = Number(rankedStats.stats.totalAssists)/totalSession;
+      averageCS = Number(rankedStats.stats.totalMinionKills)/totalSession;
+
+      averageKill = +averageKill.toFixed(2);
+      averageDeath = +averageDeath.toFixed(2);
+      averageAssists = +averageAssists.toFixed(2);
+      averageCS = +averageCS.toFixed(2);
+
       championStats += ''+
       '<div>'+rankedStats.name+'</div>' +
-      '<div>'+rankedStats.stats.totalChampionKills+'</div>' +
-      '<div>'+rankedStats.stats.maxNumDeaths+'</div>' +
-      '<div>'+rankedStats.stats.totalAssists+'</div>' +
+      '<div>'+averageKill+'/'+averageDeath+'/'+averageAssists+'</div>' +
       '<div>'+rankedStats.stats.totalSessionsPlayed+'</div>';
     });
+
+
 
     $('#champion-summary').append(championStats);
   }
 
   function buildSummonerAverageView(){
     var data = dataModel.summonerSummary.matchList.matchList.games;
-    console.log(data);
+    //console.log(data);
     var total = {
       Kill : 0,
       Death : 0,
@@ -162,7 +209,7 @@
 
 
   summonerBase.registerEvent('onLoad',function(data){
-    console.log('build Summoner Summary view');
+    //console.log('build Summoner Summary view');
     buildSummonerView();
     buildLeagueView();
     buildRankedStatsView();

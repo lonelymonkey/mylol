@@ -22,7 +22,7 @@
         }
       });
       //console.log(selectedPage);
-      buildMasteriesDetail(selectedPage);
+      masteryDetail(selectedPage);
       buildMasteriesImage(selectedPage);
     });
   }
@@ -137,7 +137,7 @@
         }
       }
     });
-    console.log(ferocityTotal);
+
   }
 
   function constructGroup(list,groupName,rowOrder){

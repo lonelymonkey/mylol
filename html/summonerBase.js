@@ -28,7 +28,7 @@
   }
 
   function executeRegisteredCallbacks(event,data) {
-    console.log(eventsCallback);
+    //console.log(eventsCallback);
     eventsCallback[event].forEach(function(callback, index){
       callback(data);
     });

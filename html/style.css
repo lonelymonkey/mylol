@@ -40,21 +40,33 @@
 
 #summary {
   width: 250px;
-  height: 200px;
+  height: 151px;
   background: red;
   float: left;
 }
 
+#tier-icon{
+  float: left;
+  padding: 15px 15px 0px 15px;
+}
+
+#tier-info{
+  float: left;
+  padding: 20px 0px;
+}
+
+#tier-league{
+  float: left;
+  padding: 0px 10px;
+}
+
 #champion-summary {
   width: 250px;
-    height: 800px;
-    background: blue;
-    /* margin: 0; */
-    /* display: inline; */
-    float: left;
-    position: relative;
-    top: 200px;
-    right: 250px;
+  background: green;
+  float: left;
+  position: relative;
+  top: 151px;
+  right: 250px;
 }
 
 #summoner-average {

@@ -4,7 +4,7 @@ lolSummonerData = function(cfg){
   },cfg);
 
   summonerSummary = function(summonerName,season,callback){
-    console.log('summonerSummary');
+    //console.log('summonerSummary');
     $.ajax({
       'type':'GET',
       'dataType':'json',
