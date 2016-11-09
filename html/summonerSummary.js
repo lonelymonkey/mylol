@@ -13,6 +13,35 @@
         summonerBase.matchDetail(matchId);
       });
     });
+
+    $.ajax({
+        'dataType': 'json',
+        'url': 'staticData/item.json',
+        'data': {},
+        'success': function(res){
+          itemDetail(res);
+        }
+    });
+  }
+
+  function itemDetail(res){
+    var data = res.data;
+    var itemTimer;
+    console.log(res);
+    $('.game-items-img').each(function(item){
+      var itemId = $(this).attr('id').replace($(this).attr('class'),'');
+      var itemDiv = $(this).attr('id');
+      //console.log($(this));
+      $(this).hover(function(){
+        itemTimer = setTimeout(function(){
+          $('#itemDesDiv'+itemId).html('<div id="item-title">'+data[itemId].name+'</div>'+data[itemId].description);
+          $('#itemDesDiv'+itemId).css('visibility','visible');
+        },250);
+      },function(){
+        clearTimeout(itemTimer);
+        $('#itemDesDiv'+itemId).css('visibility','hidden');
+      });
+    });
   }
 
   function buildSummonerView() {
@@ -252,6 +281,9 @@
     var teamColor;
     var date;
     var win;
+    var gameDuration;
+    var kill,death,assists;
+    var fellowPlayerName;
     data.forEach(function(match){
       gameType = '';
       gamePic = '';
@@ -301,12 +333,17 @@
         var spell = match['spellName'+i];
         //console.log(spell);
         $.each(summonerSpell,function(name,detail){
-          if(name.replace('Summoner','') == spell){
-            img += '<img src=http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+detail.image.full+'>';
-            console.log(img);
+          if(detail.name == spell){
+            img += '<img src=http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+detail.image.full+' class="game-summoner-spell-pic">';
           }
         });
       }
+
+      gameDuration = (match.stats.timePlayed/60).toFixed(2);
+
+      kill = (match.stats.championsKilled)? match.stats.championsKilled:0;
+      death = (match.stats.numDeaths)? match.stats.numDeaths:0;
+      assists = (match.stats.assists)? match.stats.assists:0;
 
       gameType += ''+
       '<div>'+match.subType.replace('_',' ')+'</div>'+
@@ -315,23 +352,46 @@
       '<div>'+win+'</div>'+
       '<div>'+date+' days ago</div>';
       gamePic += '' +
-      '<div>'+match.image+'</div>'+
-      '<div>'+match.championName+'</div>'+
-      '<div>'+img+'</div>';
+      '<div class="game-champion-pic-div"><img src=http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+' class="game-champion-pic"></div>'+
+      '<div class="game-champion-name-div">'+match.championName+'</div>'+
+      '<div class="game-summoner-spell-div">'+img+'</div>';
       gameInfo += '' +
-      '<div>'+match.stats.championsKilled+'/'+match.stats.championsKilled+'/'+match.stats.numDeaths+'</div>'+
-      '<div>'+match.stats.timePlayed+'</div>'+
-      '<div>'+match.stats.minionsKilled+'</div>'+
-      '<div>'+match.stats.wardPlaced+'</div>'+
-      '<div>'+match.stats.level+'</div>';
-      gameItems += '' +
-      '<div>'+match.stats.itemName0+'</div>'+
-      '<div>'+match.stats.itemName1+'</div>'+
-      '<div>'+match.stats.itemName2+'</div>'+
-      '<div>'+match.stats.itemName3+'</div>'+
-      '<div>'+match.stats.itemName4+'</div>'+
-      '<div>'+match.stats.itemName5+'</div>'+
-      '<div>'+match.stats.itemName6+'</div>';
+      '<div>KDA: '+kill+'/'+death+'/'+assists+'</div>'+
+      '<div>'+gameDuration+' minutes</div>'+
+      '<div>'+match.stats.minionsKilled+' CS</div>'+
+      '<div>'+match.stats.wardPlaced+' wards placed</div>'+
+      '<div>level '+match.stats.level+'</div>';
+
+      for(i=0; i<=6; i++){
+        if(match.stats['itemImage'+i] && match.stats['itemImage'+i] != '2043.png'){
+          gameItems += '<div class="game-items-img-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/item/'+match.stats['itemImage'+i]+'" class="game-items-img" id="game-items-img'+match.stats['item'+i]+'">'+
+          '<div id="itemDesDiv'+match.stats['item'+i]+'" class="itemDesDiv"></div></div>';
+        }
+        //console.log(i);
+      }
+
+      jQuery('<div/>',{
+        id: 'purple-'+match.gameId,
+        class: 'fellow-players'
+      }).appendTo('#game-members-'+match.gameId);
+
+      jQuery('<div/>',{
+        id: 'blue-'+match.gameId,
+        class: 'fellow-players'
+      }).appendTo('#game-members-'+match.gameId);
+
+      $.each(match.fellowPlayers,function(index,player){
+        fellowPlayerName = player.summonerName.substring(0,6)+'.....';
+        gameMembers = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+player.image+'" class="player-img">'+fellowPlayerName+'</div>';
+        //console.log(gameMembers);
+        if(player.teamColor == 'blue'){
+          $('#blue-'+match.gameId).append(gameMembers);
+        }
+        else{
+          $('#purple-'+match.gameId).append(gameMembers);
+        }
+      });
+
 
       $('#game-type-'+match.gameId).append(gameType);
       $('#game-pic-'+match.gameId).append(gamePic);

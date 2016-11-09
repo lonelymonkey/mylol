@@ -131,7 +131,7 @@ class lolWebAPIResource {
   }
   //championNameAndImage: retrieve champion's name and image by its id
   public function championNameAndImage($region){
-    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/champion?'. http_build_query(array('champData' => 'image','dataById' => 'true','api_key' => $this->getApiKey()));
+    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/champion?'. http_build_query(array('champData' => 'image,skins','dataById' => 'true','api_key' => $this->getApiKey()));
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = $this->apiGetCommand($command);

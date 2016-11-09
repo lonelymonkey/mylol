@@ -92,7 +92,7 @@ class matchHistoryService{
         $summonerId = $player["summonerId"];
         $summonerName = $summonerNameTranslation[$summonerId];
         $matchList['games'][$gameIndex]['fellowPlayers'][$playerIndex]['summonerName'] = $summonerName;
-        $matchList['games'][$gameIndex]['fellowPlayers'][$playerIndex]['image'] = $championNameAndImage['data'][$game['championId']]['image']['full'];
+        $matchList['games'][$gameIndex]['fellowPlayers'][$playerIndex]['image'] = $championNameAndImage['data'][$player['championId']]['image']['full'];
         if($player["teamId"] == 100){
           $matchList['games'][$gameIndex]['fellowPlayers'][$playerIndex]['teamColor'] = 'blue';
         }

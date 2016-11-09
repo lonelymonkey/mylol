@@ -40,7 +40,20 @@
 
   function buildSummonerView() {
     var data = dataModel.summonerSummary.summonerInfo[summonerBase.search];
-    //console.log(data);
+    var topMasteries = dataModel.summonerSummary.championMastery.championMastery.slice(0,6);
+    var slideArray = [];
+    var skinNum = '';
+    var chosenSkin;
+    $.each(topMasteries,function(masteryIndex,mastery){
+      var imageLength = mastery.image.length;
+      var imageName = mastery.image.substr(0,imageLength - 4);
+      $.each(mastery.skins,function(skinIndex,skin){
+        skinNum = skin.num;
+        slideArray.push(imageName+'_'+skinNum+'.jpg');
+      });
+    });
+    console.log(slideArray);
+    chosenSkin = Math.floor(Math.random()*slideArray.length);
     var view = '';
       var iconImage = 'http://ddragon.leagueoflegends.com/cdn/6.21.1/img/profileicon/'+data.profileIconId+'.png';
       view += ''+
@@ -48,6 +61,11 @@
               '<div>'+data.name+'</div>' +
               '<div>'+data.summonerLevel+'</div>';
     $('#summoner').append(view);
+    $('#summoner').css('background-image','url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'+slideArray[chosenSkin]+')');
+    setInterval(function(){
+      chosenSkin = Math.floor(Math.random()*slideArray.length);
+      $('#summoner').css('background-image','url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'+slideArray[chosenSkin]+')');
+    },10000);
   }
 
   function buildUIFrame(){

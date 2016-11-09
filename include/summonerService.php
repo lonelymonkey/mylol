@@ -167,6 +167,7 @@ class summonerService{
         $summonerId = $player["summonerId"];
         $summonerName = $summonerNameTranslation[$summonerId];
         $matchList['games'][$gameIndex]['fellowPlayers'][$playerIndex]['summonerName'] = $summonerName;
+        $matchList['games'][$gameIndex]['fellowPlayers'][$playerIndex]['image'] = $championNameAndImage['data'][$player['championId']]['image']['full'];
         if($player["teamId"] == 100){
           $matchList['games'][$gameIndex]['fellowPlayers'][$playerIndex]['teamColor'] = 'blue';
         }
@@ -206,6 +207,7 @@ class summonerService{
     foreach($championMastery AS $championIndex => $champion){
       $championMastery[$championIndex]['name'] = $championNameAndImage['data'][$champion['championId']]['name'];
       $championMastery[$championIndex]['image'] = $championNameAndImage['data'][$champion['championId']]['image']['full'];
+      $championMastery[$championIndex]['skins'] = $championNameAndImage['data'][$champion['championId']]['skins'];
     }
 
     $output['championMastery'] = $championMastery;
