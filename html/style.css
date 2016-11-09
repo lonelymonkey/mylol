@@ -139,8 +139,33 @@
   background: aqua;
   position: relative;
   float: left;
-  bottom: 799px;
+  bottom: 1000px;
   left: 250px;
+}
+
+.game-id{
+  width: inherit;
+  height: 150px;
+}
+
+.game-type{
+  float:left;
+  font-size: 12px;
+  margin: 10px;
+  text-align: center;
+}
+
+.game-pic{
+  float:left;
+}
+.game-info{
+  float:left;
+}
+.game-items{
+  float:left;
+}
+.game-members{
+  float:left;
 }
 
 /*season stats*/

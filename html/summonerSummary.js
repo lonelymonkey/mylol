@@ -224,33 +224,120 @@
       $('#champion-mastery-info'+champion.name).append(championMasteryDetail);
       $('#champion-mastery-div-img'+champion.name).append(championMasteryImg);
     });
-
-
-
-    console.log(data);
-
+    //console.log(data);
   }
 
-  function buildMatchListView() {
-    var data = dataModel.summonerSummary.matchList.matchList.games;
-    var view = '';
-    data.forEach(function(match){
-      var statusView = (match.stats.win) ? 'YAY' : 'SUCKER' ;
-      view += ''+
-              '<div><h3>'+statusView+'</h3></div>'+
-              '<div>'+match.championName+match.spellName1+match.spellName2+'</div>' +
-              '<input type="button" class="match-detail-button" id="match-detail-button'+match.gameId+'"">'+match.gameId+'</input>'+
-              '<div>'+match.stats.itemName0+'</div>' +
-              '<div>'+match.stats.itemName1+'</div>' +
-              '<div>'+match.stats.itemName2+'</div>' +
-              '<div>'+match.stats.itemName3+'</div>' +
-              '<div>'+match.stats.itemName4+'</div>' +
-              '<div>'+match.stats.itemName5+'</div>' +
-              '<div>'+match.stats.itemName6+'</div>' +
-              '<div>'+JSON.stringify(match.fellowPlayers)+'</div>'+
-              '<div id="game'+match.gameId+'"></div>';
+  function loadAllMatchListData(){
+    $.ajax({
+        'dataType': 'json',
+        'url': 'staticData/summoner.json',
+        'data': {},
+        'success': function(res){
+          buildMatchListView(res);
+        }
     });
-    $('#game-stat').append(view);
+  }
+
+  function buildMatchListView(res) {
+    var data = dataModel.summonerSummary.matchList.matchList.games;
+    var summonerSpell = res.data;
+    console.log(data);
+    console.log(res);
+    var view = '';
+    var gameType = '';
+    var gamePic = '';
+    var gameInfo = '';
+    var gameItems = '';
+    var gameMembers = '';
+    var teamColor;
+    var date;
+    var win;
+    data.forEach(function(match){
+      gameType = '';
+      gamePic = '';
+      gameInfo = '';
+      gameItems = '';
+      gameMembers = '';
+      jQuery('<div/>',{
+        id: 'game-id-'+match.gameId,
+        class: 'game-id'
+      }).appendTo('#game-stat');
+
+      jQuery('<div/>',{
+        id: 'game-type-'+match.gameId,
+        class: 'game-type'
+      }).appendTo('#game-id-'+match.gameId);
+      jQuery('<div/>',{
+        id: 'game-pic-'+match.gameId,
+        class: 'game-pic'
+      }).appendTo('#game-id-'+match.gameId);
+      jQuery('<div/>',{
+        id: 'game-info-'+match.gameId,
+        class: 'game-info'
+      }).appendTo('#game-id-'+match.gameId);
+      jQuery('<div/>',{
+        id: 'game-items-'+match.gameId,
+        class: 'game-items'
+      }).appendTo('#game-id-'+match.gameId);
+      jQuery('<div/>',{
+        id: 'game-members-'+match.gameId,
+        class: 'game-members'
+      }).appendTo('#game-id-'+match.gameId);
+
+      if(match.teamId == 100){
+        teamColor = "Blue";
+      }
+      else{
+        teamColor = "Purple";
+      }
+      date = Date.now() - match.createDate; //difference between now and the createdDate
+      date = Math.floor(date/1000); //convert timestamp from unix to milliseconds
+      date = Math.floor(date/86400);//convert timestamp from milliseconds to days
+
+      win = (match.stats.win)? 'Victory':'Defeat';
+
+      var img = '';
+      for(var i=1; i<=2;i++){
+        var spell = match['spellName'+i];
+        //console.log(spell);
+        $.each(summonerSpell,function(name,detail){
+          if(name.replace('Summoner','') == spell){
+            img += '<img src=http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+detail.image.full+'>';
+            console.log(img);
+          }
+        });
+      }
+
+      gameType += ''+
+      '<div>'+match.subType.replace('_',' ')+'</div>'+
+      '<div>'+match.ipEarned+' ip earned</div>'+
+      '<div>'+teamColor+' team</div>'+
+      '<div>'+win+'</div>'+
+      '<div>'+date+' days ago</div>';
+      gamePic += '' +
+      '<div>'+match.image+'</div>'+
+      '<div>'+match.championName+'</div>'+
+      '<div>'+img+'</div>';
+      gameInfo += '' +
+      '<div>'+match.stats.championsKilled+'/'+match.stats.championsKilled+'/'+match.stats.numDeaths+'</div>'+
+      '<div>'+match.stats.timePlayed+'</div>'+
+      '<div>'+match.stats.minionsKilled+'</div>'+
+      '<div>'+match.stats.wardPlaced+'</div>'+
+      '<div>'+match.stats.level+'</div>';
+      gameItems += '' +
+      '<div>'+match.stats.itemName0+'</div>'+
+      '<div>'+match.stats.itemName1+'</div>'+
+      '<div>'+match.stats.itemName2+'</div>'+
+      '<div>'+match.stats.itemName3+'</div>'+
+      '<div>'+match.stats.itemName4+'</div>'+
+      '<div>'+match.stats.itemName5+'</div>'+
+      '<div>'+match.stats.itemName6+'</div>';
+
+      $('#game-type-'+match.gameId).append(gameType);
+      $('#game-pic-'+match.gameId).append(gamePic);
+      $('#game-info-'+match.gameId).append(gameInfo);
+      $('#game-items-'+match.gameId).append(gameItems);
+    });
   }
 
   summonerBase.matchDetail = function(matchId){
@@ -270,7 +357,7 @@
     buildLeagueView();
     buildRankedStatsView();
     buildSummonerAverageView();
-    buildMatchListView();
+    loadAllMatchListData();
     championMastery();
     bindEvent();
   });
