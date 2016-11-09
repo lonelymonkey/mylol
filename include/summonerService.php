@@ -9,7 +9,8 @@ class summonerService{
 
   public function __construct() {
     $this->api = new lolAPI(array(
-      'region' => 'na'
+      'region' => 'na',
+      'location' => 'NA1'
     ));
     $this->profiler = profiler::getConnection();
   }
@@ -105,6 +106,7 @@ class summonerService{
 
     foreach($rankedStats['champions'] AS $championIndex => $champion){
       $rankedStats['champions'][$championIndex]['name'] = $championNameAndImage['data'][$champion['id']]['name'];
+      $rankedStats['champions'][$championIndex]['image'] = $championNameAndImage['data'][$champion['id']]['image']['full'];
     }
 
     $output['rankedStats'] = $rankedStats;
@@ -192,6 +194,28 @@ class summonerService{
     return $output;
   }
 
+  public function getChampionMastery($summonerId){
+    $output = array();
+
+    $championNameAndImage = $this->api->getNameAndImage();
+
+    $this->profiler->mark('api->getChampionMastery','start');
+    $championMastery = $this->api->getChampionMastery($summonerId);
+    $this->profiler->mark('api->getChampionMastery','end');
+
+    foreach($championMastery AS $championIndex => $champion){
+      $championMastery[$championIndex]['name'] = $championNameAndImage['data'][$champion['championId']]['name'];
+      $championMastery[$championIndex]['image'] = $championNameAndImage['data'][$champion['championId']]['image']['full'];
+    }
+
+    $output['championMastery'] = $championMastery;
+    $output['profiler'] = $this->profiler->data;
+
+    return $output;
+
+  }
+
+
   public function getSummary($summonerNamesString,$summonerId,$season){
     $ouput = array();
 
@@ -199,6 +223,7 @@ class summonerService{
     $output['league'] = $this->getSummonerLeague($summonerId);
     $output['rankedStats'] = $this->getRankedStats($summonerId,$season);
     $output['matchList'] = $this->matchList($summonerId);
+    $output['championMastery'] = $this->getChampionMastery($summonerId);
 
     return $output;
   }

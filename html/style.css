@@ -10,7 +10,6 @@
 
 #summary-info{
   width: 1000px;
-  height: 1000px;
   margin: 0 auto;
 }
 
@@ -69,14 +68,69 @@
   right: 250px;
 }
 
-#summoner-average {
+.ranked-stats-div{
+  width: inherit;
+  height: 100px;
+}
+
+.ranked-stats-pic-style{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-position: center;
+  float: left;
+  margin: 15px;
+  background-size: contain;
+}
+
+.ranked-stats-info{
+  float:left;
+  margin: 10px 10px;
+}
+
+#summoner-mastery {
   width: 750px;
-    height: 150px;
-    background: yellow;
-    float: left;
+      height: 200px;
+      background: yellow;
+      float: left;
+      position: relative;
+      bottom: 1000px;
+      left: 250px;
+}
+
+.champion-mastery{
+  float: left;
+    width: 120px;
+    margin: 0px 2px;
+    height: inherit;
+}
+
+.champion-mastery-div-img{
+  float: left;
+  position: relative;
+  width: inherit;
+  height: 137px;
+}
+
+.champion-mastery-info{
+  float: left;
+  width: inherit;
+  text-align: center;
+}
+
+.champion-mastery-img{
+  z-index: 1;
+    width: 71px;
     position: relative;
-    bottom: 800px;
-    left: 250px;
+    top: 10px;
+    left: 27px;
+}
+
+.champion-mastery-icon{
+  z-index: 0;
+  position: absolute;
+  left: 24px;
+  width: 77px;
 }
 
 #game-stat {

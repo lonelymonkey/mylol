@@ -1,6 +1,7 @@
 <?php
 //http://mylol.local/api/summoner.php?function=getRunes&summonerName=epiccookierawr
 //http://mylol.local/api/summoner.php?function=getSummary&summonerName=epiccookierawr&season=SEASON2016
+//http://mylol.local/api/summoner.php?function=getChampionMastery&summonerName=epiccookierawr
 include '../../global.inc';
 include INCLUDE_PATH . '/summonerService.php';
 
@@ -34,6 +35,10 @@ try {
     $data = $service->getRankedStats($summonerId[$summonerName]['id'],$season);
     $response['data'] = $data;
     $response['season'] = $season;
+  }
+  else if($_GET['function'] == 'getChampionMastery'){
+    $data = $service->getChampionMastery($summonerId[$summonerName]['id']);
+    $response['data'] = $data;
   }
   else if($_GET['function'] == 'getSummary'){
     $data = $service->getSummary($summonerName,$summonerId[$summonerName]['id'],$season);

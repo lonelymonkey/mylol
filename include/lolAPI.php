@@ -229,7 +229,16 @@ class lolWebAPIResource {
     return $res;
   }
 
-
+  public function ChampionMastery($region,$location,$summonerId){
+    $command = $this->path($region).'championmastery/location/'.$location.'/player/'.$summonerId.'/champions?'.http_build_query(array('api_key' => $this->getApiKey()));
+    $res = $this->cache->getCommand($command);
+    if(empty($res)){
+      $res = $this->apiGetCommand($command);
+      $expDate = $this->getExpiredTime($command);
+      $this->cache->save($command, $res, $expDate);
+    }
+    return $res;
+  }
 }
 
 class localFileResource {
@@ -255,6 +264,7 @@ class lolAPI {
   public $resource;
   private $config = array( //default values
     'region' => 'na',
+    'location' => 'NA1'
   );
   public function __construct($config = array()) {
     $this->resource = new stdclass();
@@ -321,6 +331,10 @@ class lolAPI {
 
   public function getrankedStats($summonerId = 0, $seaon = 'SEASON2016'){
     return $this->resource->webAPI->rankedStats($this->config['region'],$summonerId,$seaon);
+  }
+
+  public function getChampionMastery($summonerId = 0){
+    return $this->resource->webAPI->ChampionMastery($this->config['region'],$this->config['location'],$summonerId);
   }
 }
 

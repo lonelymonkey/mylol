@@ -28,7 +28,9 @@
     '</div>'+
     '<div id="champion-summary">'+
     '</div>'+
-    '<div id="summoner-average">'+
+    '<div id="summoner-mastery">'+
+      '<div id="summoner-mastery-title">Champion Mastery</div>'+
+      '<div id="summoner-mastery-detail"></div>'+
     '</div>'+
     '<div id="game-stat">'+
     '</div>';
@@ -80,6 +82,7 @@
       '<div>Win Rate: '+Math.floor(winRate)+'%</div>';
 
     if(playerInfo.miniSeries){
+      //this needs graphical representation
       summary += '<div>'+JSON.stringify(playerInfo.miniSeries)+'</div>';
     }
 
@@ -95,13 +98,18 @@
 
   function buildRankedStatsView(){
     var data = dataModel.summonerSummary.rankedStats.rankedStats.champions.slice(0,10);
-    var championStats = '';
     var championPic = '';
+    var championStats;
     var averageKill,averageDeath,averageAssists,averageCS;
     var totalSession;
 
     //console.log(data);
     $.each(data,function(key,rankedStats){
+      championStats = '';
+      jQuery('<div/>',{
+        id: rankedStats.name+'-info',
+        class: 'ranked-stats-div'
+      }).appendTo('#champion-summary');
       totalSession = Number(rankedStats.stats.totalSessionsPlayed);
       averageKill = Number(rankedStats.stats.totalChampionKills)/totalSession;
       averageDeath = Number(rankedStats.stats.totalDeathsPerSession)/totalSession;
@@ -113,15 +121,26 @@
       averageAssists = +averageAssists.toFixed(2);
       averageCS = +averageCS.toFixed(2);
 
-      championStats += ''+
+      championStats += '<div class="ranked-stats-info">'+
       '<div>'+rankedStats.name+'</div>' +
-      '<div>'+averageKill+'/'+averageDeath+'/'+averageAssists+'</div>' +
-      '<div>'+rankedStats.stats.totalSessionsPlayed+'</div>';
+      '<div>KDA:'+averageKill+'/'+averageDeath+'/'+averageAssists+'</div>' +
+      '<div>CS:'+averageCS+'</div>' +
+      '<div>Total Played:'+rankedStats.stats.totalSessionsPlayed+'</div>'+
+      '</div>';
+
+      jQuery('<div/>',{
+        id: rankedStats.name+'-image',
+        class: 'ranked-stats-pic',
+      }).appendTo('#'+rankedStats.name+'-info');
+
+      $('#'+rankedStats.name+'-image').css(
+        'background-image', 'url(http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+rankedStats.image+')'
+      );
+
+      $('#'+rankedStats.name+'-image').addClass("ranked-stats-pic-style");
+
+      $('#'+rankedStats.name+'-info').append(championStats);
     });
-
-
-
-    $('#champion-summary').append(championStats);
   }
 
   function buildSummonerAverageView(){
@@ -172,7 +191,44 @@
     '<div>'+total.Assist/MAXGAME+'</div>' +
     '<div>'+total.win+'</div>' +
     '<div>'+total.loss+'</div>';
-    $('#summoner-average').html(view);
+  }
+
+  function championMastery(){
+    var data= dataModel.summonerSummary.championMastery.championMastery.slice(0,6);
+    var championMasteryDetail;
+    var championMasteryImg;
+
+    $.each(data,function(index,champion){
+      championMasteryDetail = '';
+      championMasteryImg = '';
+      jQuery('<div/>',{
+        id: 'champion-mastery'+champion.name,
+        class: 'champion-mastery'
+      }).appendTo('#summoner-mastery-detail');
+      jQuery('<div/>',{
+        id: 'champion-mastery-div-img'+champion.name,
+        class: 'champion-mastery-div-img'
+      }).appendTo('#champion-mastery'+champion.name);
+      jQuery('<div/>',{
+        id: 'champion-mastery-info'+champion.name,
+        class: 'champion-mastery-info'
+      }).appendTo('#champion-mastery'+champion.name);
+
+      championMasteryDetail += '' +
+      '<div>'+champion.name+'</div>'+
+      '<div>'+champion.championPoints+' points</div>';
+
+      championMasteryImg += '<img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+champion.image+'" class="champion-mastery-img">'+
+                            '<img src="images/mastery_icons/Champ_Mastery_'+champion.championLevel+'.png" class="champion-mastery-icon">';
+
+      $('#champion-mastery-info'+champion.name).append(championMasteryDetail);
+      $('#champion-mastery-div-img'+champion.name).append(championMasteryImg);
+    });
+
+
+
+    console.log(data);
+
   }
 
   function buildMatchListView() {
@@ -198,8 +254,8 @@
   }
 
   summonerBase.matchDetail = function(matchId){
-    console.log('matchDetail is clicked');
-    console.log(matchId);
+    //console.log('matchDetail is clicked');
+    //console.log(matchId);
     var dataAPI = lolHistoryData(config);
     dataAPI.matchDetail(matchId,function(res){
       //console.log(res);
@@ -215,6 +271,7 @@
     buildRankedStatsView();
     buildSummonerAverageView();
     buildMatchListView();
+    championMastery();
     bindEvent();
   });
   //summonerBase.registerEvent('onLoad',buildView);

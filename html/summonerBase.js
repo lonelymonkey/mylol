@@ -40,7 +40,7 @@
 
   function buildSummonerView() {
     var data = dataModel.summonerSummary.summonerInfo[summonerBase.search];
-    console.log(data);
+    //console.log(data);
     var view = '';
       var iconImage = 'http://ddragon.leagueoflegends.com/cdn/6.21.1/img/profileicon/'+data.profileIconId+'.png';
       view += ''+
@@ -120,6 +120,7 @@
     saveConfig(cfg);
     dataAPISummoner.summonerSummary(summonerBase.search,'SEASON2016',function(res){
       dataModel.summonerSummary = res;
+      console.log(res);
       //summonerBase.buildView(res);
       executeRegisteredCallbacks('onLoad',res);
       //console.log(JSON.stringify(summonerBase.dataModel));
