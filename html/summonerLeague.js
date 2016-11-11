@@ -13,7 +13,7 @@
   }
 
   function bindEvent() {
-    $('.rank').click(function(){
+    $('.summoner-rank').click(function(){
       var rank = $(this).attr('id').replace('-button','');
       $('#league-list').empty();
       $('#league-list').append(leagueList[rank]);
@@ -26,14 +26,24 @@
       '<div id="summoner-info">'+
         '<div id="search-league">'+
           '<div id="league-icon">'+
+            '<div id="tier-icon"></div>'+
+            '<div id="tier-info"></div>'+
           '</div>'+
           '<div id="league-menu">'+
-            '<div class="btn-group">'+
-              '<button type="button" class="btn btn-primary rank" id="rank1-button">I</button>'+
-              '<button type="button" class="btn btn-primary rank" id="rank2-button">II</button>'+
-              '<button type="button" class="btn btn-primary rank" id="rank3-button">III</button>'+
-              '<button type="button" class="btn btn-primary rank" id="rank4-button">IV</button>'+
-              '<button type="button" class="btn btn-primary rank" id="rank5-button">V</button>'+
+            '<div id="league-league-name"></div>'+
+            '<div>'+
+              /*'<button type="button" class="btn btn-primary summoner-rank" id="rank1-button">I</button>'+
+              '<button type="button" class="btn btn-primary summoner-rank" id="rank2-button">II</button>'+
+              '<button type="button" class="btn btn-primary summoner-rank" id="rank3-button">III</button>'+
+              '<button type="button" class="btn btn-primary summoner-rank" id="rank4-button">IV</button>'+
+              '<button type="button" class="btn btn-primary summoner-rank" id="rank5-button">V</button>'+*/
+              '<ul id="summoner-rank-list">'+
+                '<li class="summoner-rank" id="rank1-button">I</li>'+
+                '<li class="summoner-rank" id="rank2-button">II</li>'+
+                '<li class="summoner-rank" id="rank3-button">III</li>'+
+                '<li class="summoner-rank" id="rank4-button">IV</li>'+
+                '<li class="summoner-rank" id="rank5-button">V</li>'+
+              '</ul>'+
             '</div>'+
           '</div>'+
         '</div>'+
@@ -50,18 +60,53 @@
     $('#summary-info').append(view);
   }
 
+  function buildYourLeague(){
+    var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
+    var data = dataModel.summonerSummary.league.summonerLeague[id];
+    console.log(data);
+    var playerInfo = {};
+    var summary='';
+    var tier;
+    var rank;
+    var leagueName;
+    var winRate;
+    data.forEach(function(league){
+      tier = league.tier;
+      leagueName = league.name;
+      $.each(league.entries,function(key,league){
+        if(league.playerOrTeamId == id){
+          playerInfo = league;
+        }
+      });
+    });
+
+    rank = tier+'_'+playerInfo.division;
+    winRate = Number(playerInfo.wins)/(Number(playerInfo.wins)+Number(playerInfo.losses))*100;
+
+    summary += ''+
+      '<div>'+rank.replace('_',' ')+'</div>'+
+      //'<div>'+playerInfo.isHotStreak+'</div>' +
+      '<div>Points: '+playerInfo.leaguePoints+'</div>' +
+      '<div>'+playerInfo.wins+'W/'+playerInfo.losses+'L</div>' +
+      '<div>Win Rate: '+Math.floor(winRate)+'%</div>';
+
+    if(playerInfo.miniSeries){
+      //this needs graphical representation
+      summary += '<div>'+JSON.stringify(playerInfo.miniSeries)+'</div>';
+    }
+
+    $('#tier-info').append(summary);
+    $('#tier-icon').append('<div><img src="images/tier_icons/'+rank+'.png" style="width: 100px"></div>');
+    $('#league-league-name').append(leagueName);
+  }
+
   function buildLeagueListView(){
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.summonerSummary.league.summonerLeague[id];
     //console.log(data);
     //console.log(data.entries);
-    var generalInfo = '';
 
     $.each(data,function(key,summoner){
-      generalInfo += '' +
-      '<div>'+summoner.name+'</div>'+
-      '<div>'+summoner.queue+'</div>'+
-      '<div>'+summoner.tier+'</div>';
       $.each(summoner.entries,function(key,otherSummoner){
         if(otherSummoner.division == 'I'){
           leagueList.rank1 += '<ul class="league-column">'+
@@ -112,7 +157,7 @@
       });
     });
     //console.log(leagueList);
-    $('#league-icon').append(generalInfo);
+    //$('#league-icon').append(generalInfo);
     $('#league-list').append(leagueList.rank2);
 
   }
@@ -121,6 +166,7 @@
     //console.log('build summoner league view');
     buildLeagueView();
     buildLeagueListView();
+    buildYourLeague();
     bindEvent();
   });
 

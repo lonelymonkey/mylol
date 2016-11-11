@@ -2,6 +2,14 @@
     margin: 0 auto;
 }
 
+body {
+  background: url('images/common/background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .menu {
   list-style: none;
   float: left;
@@ -414,7 +422,7 @@ ul.champion-row > li.champion-list-name{
 
 #search-league{
   width: inherit;
-  height: 175px;
+  height: 135px;
   background: red;
 }
 
@@ -429,6 +437,38 @@ ul.champion-row > li.champion-list-name{
   width: inherit;
   height: 825px;
   background: yellow;
+}
+
+#league-league-name{
+  color: grey;
+    float: left;
+    margin: 40px 20px;
+    font-size: 20px;
+}
+
+#summoner-rank-list{
+  list-style: none;
+      margin: 0px;
+      padding: 0px;
+      position: relative;
+      top: 65px;
+      right: 202px;
+}
+
+ul#summoner-rank-list > li{
+  float: left;
+      width: 70px;
+      height: 29px;
+      background: #dbddde;
+      margin: 20px 2px;
+      text-align: center;
+      padding: 5px;
+      border: grey 1px solid;
+      border-radius: 3px;
+}
+
+ul#summoner-rank-list > li:hover{
+  border: black 1px solid;
 }
 
 /*runes*/
