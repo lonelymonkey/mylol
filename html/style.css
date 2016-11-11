@@ -28,6 +28,33 @@
     transition: background-image 2s ease-in-out;
 }
 
+#summoner-icon-div{
+  float: left;
+  position: relative;
+  margin: 30px;
+  border: solid 3px gold;
+  left: 30px;
+}
+
+#summoner-name, #summoner-level{
+  float: left;
+  position: relative;
+  color: whitesmoke;
+  margin: 10px;
+  font-size: 25;
+  font-weight: bold;
+}
+
+#summoner-name{
+    top: 15px;
+      left: 44px;
+}
+
+#summoner-level{
+  top: 62px;
+right: 187px;
+}
+
 #menu {
   width: 1000px;
   height: 54px;
@@ -195,16 +222,14 @@
 
 .game-champion-name-div{
   float: left;
-  position: relative;
-  top: 79px;
-  right: 60px;
+  position: absolute;
 }
 
 .game-summoner-spell-div{
   float: left;
-  position: relative;
-  bottom: 15px;
-  width: 40px;
+      position: relative;
+      top: 10px;
+      width: 40px;
 }
 
 .game-summoner-spell-pic{
@@ -261,8 +286,7 @@
 
 #champion-list {
   width: inherit;
-  height: 950px;
-  background: blue;
+  background: yellow;
 }
 
 .champion-column {
@@ -279,6 +303,101 @@ ul.champion-column > li:last-Child {
 .champion-stats {
   float:left;
   margin-right: 5px;
+}
+
+ul.champion-row {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+ul.champion-row > li{
+  float: left;
+  width: 90px;
+  position: relative;
+  height: 90px;
+}
+
+ul.champion-row > li.champion-champion-won{
+  width: 70px;
+}
+
+ul.champion-row > li.champion-champion-lost{
+  width: 70px;
+}
+
+ul.champion-row > li.champion-champion-kda{
+  width: 130px;
+}
+
+.champion-row-div{
+  width: inherit;
+  height: 100px;
+}
+
+.champion-champion-img{
+  width: 80px;
+  margin: 5px;
+}
+
+.champion-champion-name{
+  font-size: 8px;
+  position: absolute;
+  top: 67px;
+  text-align: center;
+  width: 80;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  margin: 0px 5px;
+}
+
+.champion-champion-icon{
+  position: absolute;
+    width: 50px;
+}
+
+.champion-num{
+padding: 30px 5px;
+font-size: 20px;
+text-align: center;
+font-weight: bold;
+}
+
+.champion-champion-won{
+  color: blue;
+}
+
+.champion-champion-lost{
+  color: red;
+}
+
+.champion-champion-win{
+}
+
+.winrate-num{
+  position: absolute;
+  top: 33px;
+  left: 26px;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  width: 40;
+}
+
+.champion-list-name{
+  padding: 30px 5px;
+  font-size: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#champion-stats-name{
+  width: inherit;
+  height: 60px;
+}
+
+ul.champion-row > li.champion-list-name{
+  height: 60px
 }
 
 /*league-stats*/

@@ -27,7 +27,7 @@
   function itemDetail(res){
     var data = res.data;
     var itemTimer;
-    console.log(res);
+    //console.log(res);
     $('.game-items-img').each(function(item){
       var itemId = $(this).attr('id').replace($(this).attr('class'),'');
       var itemDiv = $(this).attr('id');
@@ -77,19 +77,6 @@
     var rank;
     var leagueName;
     var winRate;
-    //var ctx = document.getElementById("myChart");
-    /*var pieData = {
-    labels: [
-        "Wins",
-        "Losses",
-    ],
-    datasets:
-    [{
-      data: [],
-      backgroundColor: ["#36A2EB","#FF6384"],
-      //borderColor: ["#36A2EB","#FF6384"]
-    }]
-  };*/
     data.forEach(function(league){
       tier = league.tier;
       leagueName = league.name;
@@ -118,11 +105,6 @@
     $('#tier-info').append(summary);
     $('#tier-icon').append('<div><img src="images/tier_icons/'+rank+'.png" style="width: 100px"></div>');
     $('#tier-league').append(leagueName);
-    /*var myPieChart = new Chart(ctx,{
-        type: 'pie',
-        data: pieData,
-        options: {}
-    });*/
   }
 
   function buildRankedStatsView(){
@@ -270,8 +252,8 @@
   function buildMatchListView(res) {
     var data = dataModel.summonerSummary.matchList.matchList.games;
     var summonerSpell = res.data;
-    console.log(data);
-    console.log(res);
+    //console.log(data);
+    //console.log(res);
     var view = '';
     var gameType = '';
     var gamePic = '';
@@ -382,7 +364,7 @@
 
       $.each(match.fellowPlayers,function(index,player){
         fellowPlayerName = player.summonerName.substring(0,6)+'.....';
-        gameMembers = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+player.image+'" class="player-img">'+fellowPlayerName+'</div>';
+        gameMembers = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+player.image+'" class="player-img">  '+fellowPlayerName+'</div>';
         //console.log(gameMembers);
         if(player.teamColor == 'blue'){
           $('#blue-'+match.gameId).append(gameMembers);

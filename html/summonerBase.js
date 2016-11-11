@@ -52,14 +52,14 @@
         slideArray.push(imageName+'_'+skinNum+'.jpg');
       });
     });
-    console.log(slideArray);
+    //console.log(slideArray);
     chosenSkin = Math.floor(Math.random()*slideArray.length);
     var view = '';
       var iconImage = 'http://ddragon.leagueoflegends.com/cdn/6.21.1/img/profileicon/'+data.profileIconId+'.png';
       view += ''+
-              '<div><img src='+iconImage+'></div>'+
-              '<div>'+data.name+'</div>' +
-              '<div>'+data.summonerLevel+'</div>';
+              '<div id="summoner-icon-div"><img src='+iconImage+' class="summoner-icon-img"></div>'+
+              '<div id="summoner-name">'+data.name+'</div>' +
+              '<div id="summoner-level">Level: '+data.summonerLevel+'</div>';
     $('#summoner').append(view);
     $('#summoner').css('background-image','url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'+slideArray[chosenSkin]+')');
     setInterval(function(){
@@ -91,29 +91,29 @@
 
   function bindevent(){
     $('#summary-button').click(function(){
-      console.log('summary is clicked');
+    //  console.log('summary is clicked');
       $('#summary-info').empty();
       executeRegisteredCallbacks('onLoad',dataModel);
     });
 
     $('#champions-button').click(function(){
-      console.log('champions is clicked');
+    //  console.log('champions is clicked');
       $('#summary-info').empty();
       executeRegisteredCallbacks('champions',dataModel);
     });
 
     $('#league-button').click(function(){
-      console.log('league is clicked');
+    //  console.log('league is clicked');
       $('#summary-info').empty();
       executeRegisteredCallbacks('league',dataModel);
     });
 
     $('#matches-button').click(function(){
-      console.log('matches is clicked');
+    //  console.log('matches is clicked');
     });
 
     $('#runes-button').click(function(){
-      console.log('runes is clicked');
+      //console.log('runes is clicked');
       $('#summary-info').empty();
       var dataAPISummoner = lolSummonerData(config);
       dataAPISummoner.runes(summonerBase.search,function(res){
@@ -123,7 +123,7 @@
     });
 
     $('#masteries-button').click(function(){
-      console.log('masteries is clicked');
+      //console.log('masteries is clicked');
       $('#summary-info').empty();
       var dataAPISummoner = lolSummonerData(config);
       dataAPISummoner.masteries(summonerBase.search,function(res){
@@ -138,7 +138,7 @@
     saveConfig(cfg);
     dataAPISummoner.summonerSummary(summonerBase.search,'SEASON2016',function(res){
       dataModel.summonerSummary = res;
-      console.log(res);
+      //console.log(res);
       //summonerBase.buildView(res);
       executeRegisteredCallbacks('onLoad',res);
       //console.log(JSON.stringify(summonerBase.dataModel));

@@ -53,7 +53,7 @@
   function buildLeagueListView(){
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.summonerSummary.league.summonerLeague[id];
-    console.log(data);
+    //console.log(data);
     //console.log(data.entries);
     var generalInfo = '';
 
@@ -111,14 +111,14 @@
 
       });
     });
-    console.log(leagueList);
+    //console.log(leagueList);
     $('#league-icon').append(generalInfo);
     $('#league-list').append(leagueList.rank2);
 
   }
 
   summonerBase.registerEvent('league',function(data){
-    console.log('build summoner league view');
+    //console.log('build summoner league view');
     buildLeagueView();
     buildLeagueListView();
     bindEvent();
