@@ -15,8 +15,8 @@
   function bindEvent() {
     $('.summoner-rank').click(function(){
       var rank = $(this).attr('id').replace('-button','');
-      $('#league-list').empty();
-      $('#league-list').append(leagueList[rank]);
+      $('#league-list-detail').empty();
+      $('#league-list-detail').append(leagueList[rank]);
     });
   }
 
@@ -48,12 +48,17 @@
           '</div>'+
         '</div>'+
         '<div id="league-list">'+
-          '<ul class="league-column">'+
-            '<li class="league-stats">Summoners</li>'+
-            '<li class="league-stats">Emblems</li>'+
-            '<li class="league-stats">Victory</li>'+
-            '<li class="league-stats">Promotion series/Point</li>'+
-          '</ul>'+
+          '<div id="league-list-names">'+
+            '<ul class="league-column">'+
+              '<li class="league-num league-stats">#</li>'+
+              '<li class="league-summoner-name league-stats">Summoners</li>'+
+              '<li class="league-emblems league-stats">Emblems</li>'+
+              '<li class="league-game league-stats">Game Played</li>'+
+              '<li class="league-promotion league-stats">Promotion series/Point</li>'+
+            '</ul>'+
+          '</div>'+
+          '<div id="league-list-detail">'+
+          '</div>'+
         '</div>'+
       '</div>';
 
@@ -103,63 +108,97 @@
   function buildLeagueListView(){
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.summonerSummary.league.summonerLeague[id];
+    var array = {
+      rank1 : [],
+      rank2 : [],
+      rank3 : [],
+      rank4 : [],
+      rank5 : []
+    };
     //console.log(data);
     //console.log(data.entries);
-
     $.each(data,function(key,summoner){
       $.each(summoner.entries,function(key,otherSummoner){
-        if(otherSummoner.division == 'I'){
-          leagueList.rank1 += '<ul class="league-column">'+
-          '<li class="league-stats">'+otherSummoner.division+'</li>' +
-          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
-          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
-          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
-          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
-          '</ul>';
+        switch (otherSummoner.division) {
+          case 'I':
+            array.rank1.push(otherSummoner);
+          break;
+          case 'II':
+            array.rank2.push(otherSummoner);
+          break;
+          case 'III':
+            array.rank3.push(otherSummoner);
+          break;
+          case 'IV':
+            array.rank4.push(otherSummoner);
+          break;
+          default:
+            array.rank5.push(otherSummoner);
         }
-        else if(otherSummoner.division == 'II'){
-          leagueList.rank2 += '<ul class="league-column">'+
-          '<li class="league-stats">'+otherSummoner.division+'</li>' +
-          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
-          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
-          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
-          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
-          '</ul>';
-        }
-        else if(otherSummoner.division == 'III'){
-          leagueList.rank3 += '<ul class="league-column">'+
-          '<li class="league-stats">'+otherSummoner.division+'</li>' +
-          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
-          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
-          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
-          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
-          '</ul>';
-        }
-        else if(otherSummoner.division == 'IV'){
-          leagueList.rank4 += '<ul class="league-column">'+
-          '<li class="league-stats">'+otherSummoner.division+'</li>' +
-          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
-          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
-          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
-          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
-          '</ul>';
-        }
-        else if(otherSummoner.division == 'V'){
-          leagueList.rank5 += '<ul class="league-column">'+
-          '<li class="league-stats">'+otherSummoner.division+'</li>' +
-          '<li class="league-stats">'+otherSummoner.leaguePoints+'</li>' +
-          '<li class="league-stats">'+otherSummoner.playerOrTeamName+'</li>' +
-          '<li class="league-stats">'+otherSummoner.wins+'</li>' +
-          '<li class="league-stats">'+otherSummoner.losses+'</li>' +
-          '</ul>';
-        }
-
       });
     });
-    //console.log(leagueList);
-    //$('#league-icon').append(generalInfo);
-    $('#league-list').append(leagueList.rank2);
 
+    for(var i=1;i<=5;i++){
+      array['rank'+i].sort(function(a, b) {
+        return b.leaguePoints - a.leaguePoints;
+      });
+      var num = 1;
+      array['rank'+i].forEach(function(summoner){
+        leagueList['rank'+i] += '<ul class="league-column">'+
+        '<li class="league-num league-stats">'+num+'</div>'+
+        '<li class="league-summoner-name league-stats">'+summoner.playerOrTeamName+'</li>'+
+        '<li class="league-emblems league-stats">'+emblems(summoner)+'</li>'+
+        '<li class="league-game league-stats">'+summoner.wins+'W/'+summoner.losses+'L</li>'+
+        '<li class="league-promotion league-stats">'+miniSeries(summoner)+'</li>'+
+        '</ul>';
+        num++;
+      });
+    }
+    $('#league-list-detail').append(leagueList.rank1);
+    console.log(array.rank5);
+  }
+
+  function emblems(summoner){
+    var view = '';
+    if(summoner.isFreshBlood){
+      view += '<img src="images/league_icons/isFreshBlood.png" class="league-icon">';
+    }
+    if(summoner.isHotStreak){
+      view += '<img src="images/league_icons/isHotStreak.png" class="league-icon">';
+    }
+    if(summoner.isInactive){
+      view += '<img src="images/league_icons/isInactive.png" class="league-icon">';
+    }
+    if(summoner.isVeteran){
+      view += '<img src="images/league_icons/isVeteran.png" class="league-icon">';
+    }
+    return view;
+  }
+
+  function miniSeries(summoner){
+    var view = '';
+    var unattempted;
+    if(summoner.leaguePoints == 100){
+      unattempted = summoner.miniSeries.progress.length - summoner.miniSeries.losses - summoner.miniSeries.wins;
+      console.log(unattempted);
+      if(summoner.miniSeries.wins>0){
+          for(var i=0; i<summoner.miniSeries.wins; i++){
+          view += '<div class="miniseries-win miniseries">W</div>'
+        }
+      }
+      if(summoner.miniSeries.losses>0){
+          for(var i=0; i<summoner.miniSeries.losses; i++){
+          view += '<div class="miniseries-losses miniseries">L</div>'
+        }
+      }
+      for(var i=0; i<unattempted; i++){
+      view += '<div class="miniseries-neutral miniseries">N</div>'
+    }
+    return view;
+  }
+    else{
+      return summoner.leaguePoints;
+    }
   }
 
   summonerBase.registerEvent('league',function(data){

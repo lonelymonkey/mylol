@@ -76,7 +76,7 @@ right: 187px;
   margin: 0 auto;
 }
 
-#summary {
+#summary,#recent-summoner {
   width: 250px;
   height: 151px;
   background: red;
@@ -127,7 +127,7 @@ right: 187px;
   margin: 10px 10px;
 }
 
-#summoner-mastery {
+#summoner-mastery,#summoner-summary {
   width: 750px;
       height: 200px;
       background: yellow;
@@ -413,11 +413,20 @@ ul.champion-row > li.champion-list-name{
   list-style: none;
   padding: 0px;
   margin: 0px;
+  height: 40px;
 }
 
 .league-stats {
   float:left;
   padding: 10px;
+  list-style: none;
+  text-align: center;
+}
+
+.league-icon{
+  width: 20px;
+float: left;
+margin: 0px 3px;
 }
 
 #search-league{
@@ -435,7 +444,11 @@ ul.champion-row > li.champion-list-name{
 
 #league-list{
   width: inherit;
-  height: 825px;
+  background: yellow;
+}
+
+#leauge-list-detail{
+  width: inherit;
   background: yellow;
 }
 
@@ -469,6 +482,50 @@ ul#summoner-rank-list > li{
 
 ul#summoner-rank-list > li:hover{
   border: black 1px solid;
+}
+
+.league-num{
+  width:50px;
+}
+
+.league-summoner-name{
+  width: 350px;
+}
+
+.league-emblems{
+  width: 150px;
+}
+
+.league-game{
+  width: 150px;
+}
+
+.league-promotion{
+  width: 270px;
+}
+
+.miniseries{
+  display:inline-block;
+  color: white;
+  width: 20px;
+  border-radius: 10px;
+  margin: 0px 3px;
+  text-align: center;
+}
+
+.miniseries-neutral{
+  background: black;
+  border: solid 1px black;
+}
+
+.miniseries-win{
+  background: blue;
+  border: solid 1px blue;
+}
+
+.miniseries-losses{
+  background: red;
+  border: solid 1px red;
 }
 
 /*runes*/
@@ -626,4 +683,58 @@ ul#summoner-rank-list > li:hover{
 
 .rank5{
   top: 47px;
+}
+
+/*match*/
+
+#recent-summoner-title{
+  font-size: 10px;
+  text-align: center;
+}
+
+.recent-data{
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  width: inherit;
+    height: 20px;
+}
+
+ul.recent-data > li {
+  float: left;
+  font-size: 8px;
+}
+
+.recent-name{
+  width: 100px;
+  font-weight: bold;
+}
+
+.recent-num{
+  width: 50px;
+}
+
+#recent-winrate-div{
+  width: 150px;
+  height: 150px;
+  position: relative;
+  float: left;
+  margin: 30px 46px;
+}
+
+#recent-kda-div{
+  width: 180px;
+  height: 169px;
+  position: relative;
+  float: left;
+  margin: 15px 20px;
+  top: 15px;
+}
+
+#champion-winrate-div{
+  width: 228px;
+  height: 200px;
+  position: relative;
+  float: left;
+  margin: 0px 30px;
 }

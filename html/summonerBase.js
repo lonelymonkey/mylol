@@ -16,7 +16,8 @@
     'champions' : [],
     'league' : [],
     'runes' : [],
-    'masteries' : []
+    'masteries' : [],
+    'matches': []
   };
 
   var dataFlag = false;
@@ -110,6 +111,8 @@
 
     $('#matches-button').click(function(){
     //  console.log('matches is clicked');
+      $('#summary-info').empty();
+      executeRegisteredCallbacks('matches',dataModel);
     });
 
     $('#runes-button').click(function(){
