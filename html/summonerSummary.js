@@ -29,17 +29,18 @@
     var itemTimer;
     //console.log(res);
     $('.game-items-img').each(function(item){
-      var itemId = $(this).attr('id').replace($(this).attr('class'),'');
+      var identifier = $(this).attr('id').replace($(this).attr('class'),'');
       var itemDiv = $(this).attr('id');
-      //console.log($(this));
+      var itemId = identifier.substr(0,4);
+      console.log(itemId);
       $(this).hover(function(){
         itemTimer = setTimeout(function(){
-          $('#itemDesDiv'+itemId).html('<div id="item-title">'+data[itemId].name+'</div>'+data[itemId].description);
-          $('#itemDesDiv'+itemId).css('visibility','visible');
+          $('#itemDesDiv'+identifier).html('<div id="item-title">'+data[itemId].name+'</div>'+data[itemId].description);
+          $('#itemDesDiv'+identifier).css('visibility','visible');
         },250);
       },function(){
         clearTimeout(itemTimer);
-        $('#itemDesDiv'+itemId).css('visibility','hidden');
+        $('#itemDesDiv'+identifier).css('visibility','hidden');
       });
     });
   }
@@ -52,7 +53,7 @@
     '<div id="summary">'+
       '<div id="tier-icon"></div>'+
       '<div id="tier-info"></div>'+
-      '<div id="tier-league"></div>'+
+      '<div id="tier-league" class="bold"></div>'+
     //  '<canvas id="myChart" width="2px" height="2px"></canvas>'+
     '</div>'+
     '<div id="champion-summary">'+
@@ -91,16 +92,16 @@
     winRate = Number(playerInfo.wins)/(Number(playerInfo.wins)+Number(playerInfo.losses))*100;
 
     summary += ''+
-      '<div>'+rank.replace('_',' ')+'</div>'+
+      '<div class="rank-color">'+rank.replace('_',' ')+'</div>'+
       //'<div>'+playerInfo.isHotStreak+'</div>' +
       '<div>Points: '+playerInfo.leaguePoints+'</div>' +
-      '<div>'+playerInfo.wins+'W/'+playerInfo.losses+'L</div>' +
+      '<div class="bold">'+playerInfo.wins+'W/'+playerInfo.losses+'L</div>' +
       '<div>Win Rate: '+Math.floor(winRate)+'%</div>';
 
-    if(playerInfo.miniSeries){
+    /*if(playerInfo.miniSeries){
       //this needs graphical representation
       summary += '<div>'+JSON.stringify(playerInfo.miniSeries)+'</div>';
-    }
+    }*/
 
     $('#tier-info').append(summary);
     $('#tier-icon').append('<div><img src="images/tier_icons/'+rank+'.png" style="width: 100px"></div>');
@@ -108,13 +109,20 @@
   }
 
   function buildRankedStatsView(){
-    var data = dataModel.summonerSummary.rankedStats.rankedStats.champions.slice(0,10);
+    var data = dataModel.summonerSummary.rankedStats.rankedStats.champions;
     var championPic = '';
     var championStats;
     var averageKill,averageDeath,averageAssists,averageCS;
     var totalSession;
+    var winRate;
 
-    //console.log(data);
+    data = data.sort(function(a,b){
+      return b.stats.totalSessionsWon - a.stats.totalSessionsWon;
+    });
+    data = data.slice(1,11);
+
+
+    console.log(data);
     $.each(data,function(key,rankedStats){
       championStats = '';
       jQuery('<div/>',{
@@ -126,16 +134,18 @@
       averageDeath = Number(rankedStats.stats.totalDeathsPerSession)/totalSession;
       averageAssists = Number(rankedStats.stats.totalAssists)/totalSession;
       averageCS = Number(rankedStats.stats.totalMinionKills)/totalSession;
+      winRate = Number(rankedStats.stats.totalSessionsWon)/totalSession*100;
 
       averageKill = +averageKill.toFixed(2);
       averageDeath = +averageDeath.toFixed(2);
       averageAssists = +averageAssists.toFixed(2);
       averageCS = +averageCS.toFixed(2);
+      winRate = +winRate.toFixed(2);
 
       championStats += '<div class="ranked-stats-info">'+
-      '<div>'+rankedStats.name+'</div>' +
+      '<div class="bold">'+rankedStats.name+'</div>' +
       '<div>KDA:'+averageKill+'/'+averageDeath+'/'+averageAssists+'</div>' +
-      '<div>CS:'+averageCS+'</div>' +
+      '<div>Win Rate: '+winRate+'%</div>' +
       '<div>Total Played:'+rankedStats.stats.totalSessionsPlayed+'</div>'+
       '</div>';
 
@@ -252,7 +262,7 @@
   function buildMatchListView(res) {
     var data = dataModel.summonerSummary.matchList.matchList.games;
     var summonerSpell = res.data;
-    //console.log(data);
+    console.log(data);
     //console.log(res);
     var view = '';
     var gameType = '';
@@ -308,8 +318,6 @@
       date = Math.floor(date/1000); //convert timestamp from unix to milliseconds
       date = Math.floor(date/86400);//convert timestamp from milliseconds to days
 
-      win = (match.stats.win)? 'Victory':'Defeat';
-
       var img = '';
       for(var i=1; i<=2;i++){
         var spell = match['spellName'+i];
@@ -330,8 +338,7 @@
       gameType += ''+
       '<div>'+match.subType.replace('_',' ')+'</div>'+
       '<div>'+match.ipEarned+' ip earned</div>'+
-      '<div>'+teamColor+' team</div>'+
-      '<div>'+win+'</div>'+
+      '<div>'+teamColor+' team</div>'+winGame(match.stats.win)+
       '<div>'+date+' days ago</div>';
       gamePic += '' +
       '<div class="game-champion-pic-div"><img src=http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+' class="game-champion-pic"></div>'+
@@ -346,8 +353,8 @@
 
       for(i=0; i<=6; i++){
         if(match.stats['itemImage'+i] && match.stats['itemImage'+i] != '2043.png'){
-          gameItems += '<div class="game-items-img-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/item/'+match.stats['itemImage'+i]+'" class="game-items-img" id="game-items-img'+match.stats['item'+i]+'">'+
-          '<div id="itemDesDiv'+match.stats['item'+i]+'" class="itemDesDiv"></div></div>';
+          gameItems += '<div class="game-items-img-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/item/'+match.stats['itemImage'+i]+'" class="game-items-img" id="game-items-img'+match.stats['item'+i]+match.gameId+'">'+
+          '<div id="itemDesDiv'+match.stats['item'+i]+match.gameId+'" class="itemDesDiv"></div></div>';
         }
         //console.log(i);
       }
@@ -380,6 +387,16 @@
       $('#game-info-'+match.gameId).append(gameInfo);
       $('#game-items-'+match.gameId).append(gameItems);
     });
+  }
+
+  function winGame(data){
+    var view = '';
+    if(data){
+      return '<div class="victory">Victory</div>';
+    }
+    else{
+      return '<div class="defeat">Defeat</div>';
+    }
   }
 
   summonerBase.matchDetail = function(matchId){
