@@ -54,19 +54,19 @@
     $('#runes').append(view);
     if(key.search('Mark') > -1){
       $('#'+idKey).html('Mark');
-      $('#'+idKey).css({background: 'red'});
+      $('#'+idKey).css({background: 'rgb(238,90,82)'});
     }
     else if (key.search('Seal') > -1) {
       $('#'+idKey).html('Seal');
-      $('#'+idKey).css({background: 'yellow'});
+      $('#'+idKey).css({background: 'rgb(246,175,46)'});
     }
     else if (key.search('Glyph') > -1) {
       $('#'+idKey).html('Glyph');
-      $('#'+idKey).css({background: 'blue'});
+      $('#'+idKey).css({background: 'rgb(31,142,205)'});
     }
     else if (key.search('Quintessence') > -1) {
       $('#'+idKey).html('Quintessence');
-      $('#'+idKey).css({background: 'purple'});
+      $('#'+idKey).css({background: 'rgb(173,85,231)'});
     }
   }
 
@@ -76,6 +76,7 @@
     var left = [27,99,186,11,83,148,38,132,87,42,125,77,143,179,247,314,390,423,470,510,548,566,602,646,703,656,682,44,227,501];
     var runePage = document.createElement("img");
     var rune;
+    var runeTimer;
     jQuery('<img/>', {
       id: 'runePage',
       src: 'images/runes/runeSlots.png'
@@ -84,7 +85,7 @@
   //  console.log(runePage);
 
     $.each(data.slots,function(key,rune){
-      //console.log(rune);
+      console.log(rune);
       jQuery('<div/>', {
         id: 'rune'+key,
       }).appendTo('#runes-img');
@@ -95,17 +96,20 @@
       $('#rune'+key).css({position: 'absolute', left: left[key]+'px',
               top: top[key]+'px'});
       $('#runeName'+key).css({position: 'absolute', left: left[key]+'px',
-              top: top[key]+20+'px',background:'black', display:'none'});
+              top: top[key]+20+'px',background:'black', display:'none', 'z-index':1});
 
-      $('#runeName'+key).append(rune.runeName);
+      $('#runeName'+key).append(rune.runeName+'</br>'+rune.description);
 
       runeImg = document.createElement("img");
       runeImg.setAttribute('src','http://ddragon.leagueoflegends.com/cdn/6.21.1/img/rune/'+rune.runeImage);
       runeImg.setAttribute('id','runeImg'+key);
       $('#rune'+key).append(runeImg);
       $('#rune'+key).hover(function(){
-        $('#runeName'+key).show();
+        runeTimer = setTimeout(function(){
+          $('#runeName'+key).show();
+        },500);
       },function(){
+        clearTimeout(runeTimer);
         $('#runeName'+key).hide();
       });
     });
@@ -144,12 +148,12 @@
     allpages = [];
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.runes.summonerRunes[id]['pages'];
-    var list = '<ul class="list-group">';
+    var list = '<ul class="rune-list-group">';
     var detail = '';
 
   //  console.log(data);
     $.each(data,function(key, runePage){
-      list += '<li class="list-group-item"><button class="rune-page">'+runePage.name+'</button></li>';
+      list += '<li class="rune-page">'+runePage.name+'</li></li>';
       allpages.push(runePage);
     });
     list += '</ul>';

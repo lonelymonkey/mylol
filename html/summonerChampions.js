@@ -21,6 +21,7 @@
   function buildChampionView(){
     var view = '';
     view += '' +
+      '<div id="champion-page">'+
         '<div class="btn-group">'+
           '<button type="button" class="btn btn-primary season-button" id="SEASON2016-button">Season 6</button>'+
           '<button type="button" class="btn btn-primary season-button" id="SEASON2015-button">Season 5</button>'+
@@ -43,6 +44,7 @@
         '</ul>'+
       '</div>'+
       '<div id="champion-list">'+
+      '</div>'+
       '</div>';
 
     $('#summary-info').append(view);
@@ -96,11 +98,11 @@
       averageCS = Number(stats.totalMinionKills)/totalSession;
       averageGold = Number(stats.totalGoldEarned)/totalSession;
 
-      averageKill = +averageKill.toFixed(2);
-      averageDeath = +averageDeath.toFixed(2);
-      averageAssists = +averageAssists.toFixed(2);
-      averageCS = +averageCS.toFixed(2);
-      averageGold = +averageGold.toFixed(2);
+      averageKill = +averageKill.toFixed(1);
+      averageDeath = +averageDeath.toFixed(1);
+      averageAssists = +averageAssists.toFixed(1);
+      averageCS = +averageCS.toFixed(1);
+      averageGold = +averageGold.toFixed(1);
 
       winRate = Math.floor(Number(stats.totalSessionsWon)/totalSession*100);
 
@@ -135,8 +137,7 @@
           data: pieData,
           options: {legend: {
               display: false
-           },animation : false,
-         showTooltips: false}
+           },animation : false}
       });
 
 

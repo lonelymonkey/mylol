@@ -20,17 +20,34 @@
     });
   }
 
+  function emblemsDetail(){
+    var emblemTimer;
+    //console.log(res);
+    $('.emblemFinder').each(function(emblem){
+      var identifier = $(this).attr('id');
+      $(this).hover(function(){
+        emblemTimer = setTimeout(function(){
+          console.log()
+          $('#'+identifier+'div').css('visibility','visible');
+        },250);
+      },function(){
+        clearTimeout(emblemTimer);
+        $('#'+identifier+'div').css('visibility','hidden');
+      });
+    });
+  }
+
   function buildLeagueView(){
     var view = '';
     view += '' +
       '<div id="summoner-info">'+
         '<div id="search-league">'+
-          '<div id="league-icon">'+
+          '<div id="league-summary">'+
             '<div id="tier-icon"></div>'+
             '<div id="tier-info"></div>'+
           '</div>'+
           '<div id="league-menu">'+
-            '<div id="league-league-name"></div>'+
+            '<div id="league-league-name" class"bold"></div>'+
             '<div>'+
               /*'<button type="button" class="btn btn-primary summoner-rank" id="rank1-button">I</button>'+
               '<button type="button" class="btn btn-primary summoner-rank" id="rank2-button">II</button>'+
@@ -89,7 +106,7 @@
     winRate = Number(playerInfo.wins)/(Number(playerInfo.wins)+Number(playerInfo.losses))*100;
 
     summary += ''+
-      '<div>'+rank.replace('_',' ')+'</div>'+
+      '<div class="rank-color">'+rank.replace('_',' ')+'</div>'+
       //'<div>'+playerInfo.isHotStreak+'</div>' +
       '<div>Points: '+playerInfo.leaguePoints+'</div>' +
       '<div>'+playerInfo.wins+'W/'+playerInfo.losses+'L</div>' +
@@ -159,18 +176,19 @@
   }
 
   function emblems(summoner){
+    console.log(summoner);
     var view = '';
     if(summoner.isFreshBlood){
-      view += '<img src="images/league_icons/isFreshBlood.png" class="league-icon">';
+      view += '<div class="emblem-image"><img src="images/league_icons/isFreshBlood.png" id="isFreshBlood'+summoner.playerOrTeamId+'" class="isFreshBlood emblemFinder"><div id="isFreshBlood'+summoner.playerOrTeamId+'div" class="emblem-detail">Veteran</br>Played 100 or more games in this league</div></div>';
     }
     if(summoner.isHotStreak){
-      view += '<img src="images/league_icons/isHotStreak.png" class="league-icon">';
+      view += '<div class="emblem-image"><img src="images/league_icons/isHotStreak.png" id="isHotStreak'+summoner.playerOrTeamId+'" class="isHotStreak emblemFinder"><div id="isHotStreak'+summoner.playerOrTeamId+'div" class="emblem-detail">Hot Streak</br>Won three or more games in a row</div></div>';
     }
     if(summoner.isInactive){
-      view += '<img src="images/league_icons/isInactive.png" class="league-icon">';
+      view += '<div class="emblem-image"><img src="images/league_icons/isInactive.png" id="isInactive'+summoner.playerOrTeamId+'" class="isInactive emblemFinder"><div id="isInactive'+summoner.playerOrTeamId+'div" class="emblem-detail">Inactive user</div></div>';
     }
     if(summoner.isVeteran){
-      view += '<img src="images/league_icons/isVeteran.png" class="league-icon">';
+      view += '<div class="emblem-image"><img src="images/league_icons/isVeteran.png" id="isVeteran'+summoner.playerOrTeamId+'" class="isVeteran emblemFinder"><div id="isVeteran'+summoner.playerOrTeamId+'div" class="emblem-detail">Recruit</br>Recently joined this league</div></div>';
     }
     return view;
   }
@@ -207,6 +225,7 @@
     buildLeagueListView();
     buildYourLeague();
     bindEvent();
+    emblemsDetail();
   });
 
   return summonerBase;

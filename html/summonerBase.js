@@ -61,7 +61,7 @@
               '<div id="summoner-icon-div"><img src='+iconImage+' class="summoner-icon-img"></div>'+
               '<div id="summoner-name">'+data.name+'</div>' +
               '<div id="summoner-level">Level: '+data.summonerLevel+'</div>';
-    $('#summoner').append(view);
+    $('#summoner-overall').append(view);
     $('#summoner').css('background-image','url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'+slideArray[chosenSkin]+')');
     setInterval(function(){
       chosenSkin = Math.floor(Math.random()*slideArray.length);
@@ -73,16 +73,15 @@
     var view = '';
     view += '' +
     '<div id="summoner">'+
-    '</div>'+
-    '<div id="menu">'+
-      '<ul class="menu">'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="summary-button">Summary</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="champions-button">Champions</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="league-button">League</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="matches-button">Matches</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="runes-button">Runes</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="masteries-button">Masteries</a></li>'+
-      '</ul>'+
+    '<div id="summoner-overall"></div>'+
+    '<ul class="menu">'+
+      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="summary-button">Summary</a></li>'+
+      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="champions-button">Champions</a></li>'+
+      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="league-button">League</a></li>'+
+      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="matches-button">Matches</a></li>'+
+      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="runes-button">Runes</a></li>'+
+      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="masteries-button">Masteries</a></li>'+
+    '</ul>'+
     '</div>'+
     '<div id="summary-info">'+
     '</div>';

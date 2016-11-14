@@ -50,6 +50,7 @@ class summonerService{
       foreach($page['slots'] AS $slotsIndex => $slot){
         $summonerRunes[$summonerId]['pages'][$pageIndex]['slots'][$slotsIndex]['runeName'] = $runes['data'][$slot['runeId']]['name'];
         $summonerRunes[$summonerId]['pages'][$pageIndex]['slots'][$slotsIndex]['runeImage'] = $runes['data'][$slot['runeId']]['image']['full'];
+        $summonerRunes[$summonerId]['pages'][$pageIndex]['slots'][$slotsIndex]['description'] = $runes['data'][$slot['runeId']]['description'];
       }
     }
 

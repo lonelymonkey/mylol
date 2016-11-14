@@ -12,8 +12,11 @@ body {
 
 .menu {
   list-style: none;
-  float: left;
-  margin: 0px;
+      float: left;
+      margin: 0px;
+      position: relative;
+      top: 67px;
+      right: 100px;
 }
 
 #summary-info{
@@ -41,7 +44,7 @@ body {
 
 #summoner {
     width: 1000px;
-    height: 200px;
+    height: 245px;
     background: grey;
     margin: 0 auto;
     background-size: 1000px 400px;
@@ -145,12 +148,12 @@ right: 187px;
 
 .ranked-stats-info{
   float:left;
-  margin: 10px 10px;
+  margin: 10px 7px;
 }
 
-#summoner-mastery,#summoner-summary {
+#summoner-summary {
   width: 750px;
-      height: 220px;
+      height: 280px;
       background: black;
       float: left;
       position: relative;
@@ -160,10 +163,28 @@ right: 187px;
       color: white;
 }
 
-.summoner-mastery-title{
+#summoner-mastery{
+  width: 750px;
+      height: 250px;
+      background: black;
+      float: left;
+      position: relative;
+      bottom: 1000px;
+      left: 250px;
+      border: solid grey;
+      color: white;
+}
+
+#summoner-summary-title{
   text-align: center;
-    font-size: 20;
-    font-weight: bold;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#summoner-mastery-title{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .champion-mastery{
@@ -319,6 +340,12 @@ right: 187px;
 }
 
 /*season stats*/
+
+#champion-page{
+  background: black;
+  color: #E9EEEB;
+}
+
 #season-menu {
   width: inherit;
   height: 50px;
@@ -327,7 +354,6 @@ right: 187px;
 
 #champion-list {
   width: inherit;
-  background: yellow;
 }
 
 .champion-column {
@@ -374,11 +400,21 @@ ul.champion-row > li.champion-champion-kda{
 .champion-row-div{
   width: inherit;
   height: 100px;
+  border-bottom: solid grey;
 }
 
 .champion-champion-img{
   width: 80px;
   margin: 5px;
+  border: white solid;
+}
+
+#champion-stats-name > ul.champion-row > li.champion-champion-win{
+  top:0px;
+}
+
+.champion-champion-win{
+  top:4px;
 }
 
 .champion-champion-name{
@@ -444,9 +480,10 @@ ul.champion-row > li.champion-list-name{
 /*league-stats*/
 .league-column {
   list-style: none;
-  padding: 0px;
-  margin: 0px;
-  height: 40px;
+      padding: 0px 0px;
+      margin: 0px 0px;
+      height: 43px;
+      border-bottom: solid grey 1px;
 }
 
 .league-stats {
@@ -456,10 +493,48 @@ ul.champion-row > li.champion-list-name{
   text-align: center;
 }
 
-.league-icon{
+.isFreshBlood,.isHotStreak,.isInactive,.isVeteran{
   width: 20px;
 float: left;
 margin: 0px 3px;
+}
+
+.emblem-detail{
+  position: absolute;
+  background: black;
+  visibility: hidden;
+  bottom: 0px;
+  font-size: 8px;
+}
+
+.emblem-image{
+  position: relative;
+}
+
+#league-summary{
+  width: 250px;
+  height: inherit;
+  background: black;
+  float: left;
+  border: solid grey;
+  color:white;
+}
+
+#league-menu{
+  height: inherit;
+  width: 750px;
+  background: black;
+  float: left;
+  border-top: solid grey;
+  color: white;
+  border-bottom: solid grey;
+  border-right: solid grey;
+  color: white;
+}
+
+#league-list-names{
+  color: red;
+  font-weight: bold;
 }
 
 #search-league{
@@ -468,16 +543,10 @@ margin: 0px 3px;
   background: red;
 }
 
-#league-icon{
-  width: 250px;
-  height: inherit;
-  background: green;
-  float: left;
-}
-
 #league-list{
   width: inherit;
-  background: yellow;
+  background: black;
+  color: white;
 }
 
 #leauge-list-detail{
@@ -486,10 +555,11 @@ margin: 0px 3px;
 }
 
 #league-league-name{
-  color: grey;
-    float: left;
-    margin: 40px 20px;
-    font-size: 20px;
+  color: white;
+  float: left;
+  margin: 40px 20px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 #summoner-rank-list{
@@ -505,8 +575,8 @@ ul#summoner-rank-list > li{
   float: left;
       width: 70px;
       height: 29px;
-      background: #dbddde;
-      margin: 20px 2px;
+      background: rebeccapurple;
+      margin: 16px 2px;
       text-align: center;
       padding: 5px;
       border: grey 1px solid;
@@ -547,8 +617,8 @@ ul#summoner-rank-list > li:hover{
 }
 
 .miniseries-neutral{
-  background: black;
-  border: solid 1px black;
+  background: rebeccapurple;
+  border: solid 1px rebeccapurple;
 }
 
 .miniseries-win{
@@ -564,17 +634,37 @@ ul#summoner-rank-list > li:hover{
 /*runes*/
 #runes-list{
   width: 225px;
-  height: inherit;
-  background: antiquewhite;
-  float: left;
+      height: inherit;
+      background: black;
+      float: left;
+      border: solid grey;
 }
 
+.rune-list-group{
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+ul.rune-list-group > li{
+  color: black;
+  background: grey;
+  margin: 10px;
+  text-align: center;
+  border: solid black;
+}
+
+ul.rune-list-group > li:hover{
+  background: #696969;
+  cursor: pointer;
+}
 #runes-detail{
   width: 775px;
   height: inherit;
-  background: coral;
+  background: black;
   position: relative;
   float: left;
+  color: white;
 }
 
 #runes-img{
@@ -587,6 +677,8 @@ ul#summoner-rank-list > li:hover{
   position: relative;
   text-align: center;
   padding: 10px;
+  font-size: 17px;
+  font-weight: bold;
 }
 
 .rune-div{
@@ -594,6 +686,7 @@ ul#summoner-rank-list > li:hover{
   height: 80px;
   float: left;
   position: relative;
+  border: solid black;
 }
 
 .title{
@@ -612,16 +705,25 @@ ul#summoner-rank-list > li:hover{
 }
 
 /*masteries*/
+.nav-pills>li>a {
+    border-radius: 4px;
+    color: white;
+    height: 30;
+    margin: 5px;
+    padding: 7px;
+    background: #483D8B;
+}
+
 #masteries-list{
   width: inherit;
-  background: antiquewhite;
+  background: black;
   float: left;
+  border-bottom: solid grey;
 }
 
 #masteries-detail{
-  height: 750px;
   width: inherit;
-  background: coral;
+  background: black;
   float: left;
 }
 
@@ -631,9 +733,9 @@ ul#summoner-rank-list > li:hover{
 }
 
 #masteries-img{
-  background-image: url(images/masteries/masterySlots.PNG);
   width: inherit;
   height: 585px;
+  margin: 6px;
 }
 
 .group{
@@ -659,7 +761,7 @@ ul#summoner-rank-list > li:hover{
 }
 
 .type-1-3{
-  left: 130px;
+  left: 131px;
 }
 
 .type-2-1{
@@ -718,6 +820,17 @@ ul#summoner-rank-list > li:hover{
   top: 47px;
 }
 
+.rank-detail{
+  position: absolute;
+  visibility: hidden;
+top: 72px;
+    background: black;
+    color: white;
+    font-size: 8px;
+    z-index: 1;
+    width: 100px
+}
+
 /*match*/
 
 #recent-summoner-title{
@@ -739,12 +852,13 @@ ul.recent-data > li {
 }
 
 .recent-name{
-  width: 100px;
+  width: 120px;
+  padding: 0px 5px;
   font-weight: bold;
 }
 
 .recent-num{
-  width: 50px;
+  width: 36px;
 }
 
 #recent-winrate-div{
@@ -769,5 +883,24 @@ ul.recent-data > li {
   height: 200px;
   position: relative;
   float: left;
-  margin: 0px 30px;
+  margin: 0px 27px;
+}
+
+#recent-winrate-title{
+  position: relative;
+  top: 15px;
+  text-align: center;
+  font-size: 15;
+}
+#recent-kda-title{
+  position: relative;
+  top: 7px;
+  text-align: center;
+  font-size: 15;
+}
+#champion-winrate-title{
+  position: relative;
+  bottom: 9px;
+  text-align: center;
+  font-size: 15;
 }

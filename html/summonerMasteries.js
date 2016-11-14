@@ -35,6 +35,7 @@
       '</div>'+
       '<div id="masteries-detail">'+
         '<div id="masteries-img">'+
+            '<img src="images/masteries/masterySlots.PNG" style="position:absolute">'+
             '<div id="ferocity" class="group">'+
             '</div>'+
             '<div id="cunning" class="group"></div>'+
@@ -63,16 +64,19 @@
     //$('#masteries-detail').append(detail);
   }
 
-  function masteryDetail(data){
+  function masteryDetail(){
     //console.log(data);
-    $.each(data.data,function(id,detail){
-      var rank = detail.ranks;
-      $('#'+id).hover(function(){
+    $('.img').each(function(){
+      var masteryId = $(this).attr('id').replace('img','');
+      console.log(masteryId);
+      $(this).hover(function(){
         hoverTimer = setTimeout(function(){
-          console.log(detail.description[rank-1]);
+          console.log(masteryId);
+          $('#rank-detail'+masteryId).css({'visibility':'visible'})
         }, 500);
       },function(){
         clearTimeout(hoverTimer);
+        $('#rank-detail'+masteryId).css({'visibility':'hidden'})
       });
     });
   }
@@ -84,7 +88,7 @@
         'data': data,
         'success': function(res){
           masteryImagePlacement(data,res);
-          masteryDetail(res);
+          masteryDetail();
         }
         });
   }
@@ -123,18 +127,20 @@
       }
 
       if(image){
-        $('#'+mastery).append('<img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/mastery/'+mastery+'.png" id="img'+mastery+'">');
+        $('#'+mastery).append('<img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/mastery/'+mastery+'.png" id="img'+mastery+'" class="img">');
         switch (row) {
           case '1':
           case '3':
           case '5':
             $('#'+mastery).append('<div class="rank'+row+'">'+rank+'/5</div>');
+
             break;
           default:
           $('#img'+mastery).css({
             border: 'solid orange 1px'
           });
         }
+        $('#'+mastery).append('<div id="rank-detail'+mastery+'" class="rank-detail">'+res.data[mastery].name+'</br></br>'+res.data[mastery].description[rank-1]+'</div>');
       }
     });
 

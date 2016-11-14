@@ -29,17 +29,18 @@
     var itemTimer;
     //console.log(res);
     $('.game-items-img').each(function(item){
-      var itemId = $(this).attr('id').replace($(this).attr('class'),'');
+      var identifier = $(this).attr('id').replace($(this).attr('class'),'');
       var itemDiv = $(this).attr('id');
-      //console.log($(this));
+      var itemId = identifier.substr(0,4);
+      console.log(itemId);
       $(this).hover(function(){
         itemTimer = setTimeout(function(){
-          $('#itemDesDiv'+itemId).html('<div id="item-title">'+data[itemId].name+'</div>'+data[itemId].description);
-          $('#itemDesDiv'+itemId).css('visibility','visible');
+          $('#itemDesDiv'+identifier).html('<div id="item-title">'+data[itemId].name+'</div>'+data[itemId].description);
+          $('#itemDesDiv'+identifier).css('visibility','visible');
         },250);
       },function(){
         clearTimeout(itemTimer);
-        $('#itemDesDiv'+itemId).css('visibility','hidden');
+        $('#itemDesDiv'+identifier).css('visibility','hidden');
       });
     });
   }
@@ -59,14 +60,20 @@
     '<div id="champion-summary">'+
     '</div>'+
     '<div id="summoner-summary">'+
-      '<div id="recent-winrate-div">'+
-        '<canvas id="recent-winrate" width="100px" height="100px"></canvas>'+
-      '</div>'+
-      '<div id="recent-kda-div">'+
-        '<canvas id="recent-kda" width="100px" height="100px"></canvas>'+
-      '</div>'+
-      '<div id="champion-winrate-div">'+
-        '<canvas id="champion-winrate" width="100px" height="100px"></canvas>'+
+    '<div id="summoner-summary-title">Summoner Summary</div>'+
+    '<div>'+
+        '<div id="recent-winrate-div">'+
+          '<canvas id="recent-winrate" width="100px" height="100px"></canvas>'+
+          '<div id="recent-winrate-title">Recent Winrate</div>'+
+        '</div>'+
+        '<div id="recent-kda-div">'+
+          '<canvas id="recent-kda" width="100px" height="100px"></canvas>'+
+          '<div id="recent-kda-title">Recent KDA</div>'+
+        '</div>'+
+        '<div id="champion-winrate-div">'+
+          '<canvas id="champion-winrate" width="100px" height="100px"></canvas>'+
+          '<div id="champion-winrate-title">Champion Winrate</div>'+
+        '</div>'+
       '</div>'+
     '</div>'+
     '<div id="game-stat">'+
@@ -143,7 +150,7 @@
 }
 
   function buildRankedStatsView(){
-    var data = dataModel.summonerSummary.rankedStats.rankedStats.champions.slice(0,10);
+    var data = dataModel.summonerSummary.rankedStats.rankedStats.champions.slice(1,11);
     var championPic = '';
     var championStats;
     var averageKill,averageDeath,averageAssists,averageCS;
@@ -199,6 +206,7 @@
       win : 0,
       loss : 0
     };
+    console.log(championData);
     var view = '';
     var ctxKDA = document.getElementById('recent-kda');
     var ctxWinRate = document.getElementById('recent-winrate');
@@ -303,10 +311,8 @@
 
     championData.forEach(function(champion){
       radarData.labels.push(champion.name);
-      radarData.datasets[0].data.push(champion.stats.totalSessionsWon);
+      radarData.datasets[0].data.push((champion.stats.totalSessionsWon/champion.stats.totalSessionsPlayed).toFixed(2)*100);
     });
-
-    console.log(radarData);
 
     var myDoughnutChart = new Chart(ctxWinRate, {
       type: 'doughnut',
@@ -354,7 +360,7 @@
   function buildMatchListView(res) {
     var data = dataModel.summonerSummary.matchList.matchList.games;
     var summonerSpell = res.data;
-    //console.log(data);
+    console.log(data);
     //console.log(res);
     var view = '';
     var gameType = '';
@@ -410,8 +416,6 @@
       date = Math.floor(date/1000); //convert timestamp from unix to milliseconds
       date = Math.floor(date/86400);//convert timestamp from milliseconds to days
 
-      win = (match.stats.win)? 'Victory':'Defeat';
-
       var img = '';
       for(var i=1; i<=2;i++){
         var spell = match['spellName'+i];
@@ -432,8 +436,7 @@
       gameType += ''+
       '<div>'+match.subType.replace('_',' ')+'</div>'+
       '<div>'+match.ipEarned+' ip earned</div>'+
-      '<div>'+teamColor+' team</div>'+
-      '<div>'+win+'</div>'+
+      '<div>'+teamColor+' team</div>'+winGame(match.stats.win)+
       '<div>'+date+' days ago</div>';
       gamePic += '' +
       '<div class="game-champion-pic-div"><img src=http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+' class="game-champion-pic"></div>'+
@@ -448,8 +451,8 @@
 
       for(i=0; i<=6; i++){
         if(match.stats['itemImage'+i] && match.stats['itemImage'+i] != '2043.png'){
-          gameItems += '<div class="game-items-img-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/item/'+match.stats['itemImage'+i]+'" class="game-items-img" id="game-items-img'+match.stats['item'+i]+'">'+
-          '<div id="itemDesDiv'+match.stats['item'+i]+'" class="itemDesDiv"></div></div>';
+          gameItems += '<div class="game-items-img-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/item/'+match.stats['itemImage'+i]+'" class="game-items-img" id="game-items-img'+match.stats['item'+i]+match.gameId+'">'+
+          '<div id="itemDesDiv'+match.stats['item'+i]+match.gameId+'" class="itemDesDiv"></div></div>';
         }
         //console.log(i);
       }
@@ -482,6 +485,16 @@
       $('#game-info-'+match.gameId).append(gameInfo);
       $('#game-items-'+match.gameId).append(gameItems);
     });
+  }
+
+  function winGame(data){
+    var view = '';
+    if(data){
+      return '<div class="victory">Victory</div>';
+    }
+    else{
+      return '<div class="defeat">Defeat</div>';
+    }
   }
 
   summonerBase.matchDetail = function(matchId){
