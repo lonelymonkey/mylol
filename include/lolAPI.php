@@ -142,7 +142,7 @@ class lolWebAPIResource {
   }
   //item: retrieve item's name and image by its id
   public function items($region){
-    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/item?'.http_build_query(array('itemListData' => 'gold,image', 'api_key' => $this->getApiKey()));
+    $command = $this->globalPath.'api/lol/static-data/'.$region.'/v1.2/item?'.http_build_query(array('itemListData' => 'all', 'api_key' => $this->getApiKey()));
     $res = $this->cache->getCommand($command);
     if(empty($res)){
       $res = $this->apiGetCommand($command);
@@ -242,19 +242,19 @@ class lolWebAPIResource {
 }
 
 class localFileResource {
-  private $path = '../../localResource';
+  private $path = '../html/staticData';
   public function __construct($dataPath = '') {
     if(!empty($dataPath)){
       $this->path = $dataPath;
     }
   }
   //parameters
-  public function matchList() {
-    return file_get_contents($this->path.'/matchList.json');
+  public function items() {
+    return json_decode(file_get_contents($this->path.'/item.json'),true);
   }
 
-  public function matchDetail() {
-    return json_decode(file_get_contents($this->path.'/matchDetail.json'),true);
+  public function summonerSpell() {
+    return json_decode(file_get_contents($this->path.'/summoner.json'),true);
   }
 }
 

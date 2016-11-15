@@ -47,7 +47,7 @@ lolHistoryData = function(cfg){
       'url':config.apiURL,
       'data':{'function':'matchDetail','matchId':matchId},
       'success': function(res){
-        console.log(res);
+        //console.log(res);
         if(typeof(callback) == 'function'){
           callback(res.data);
         }

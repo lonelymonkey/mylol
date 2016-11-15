@@ -904,3 +904,94 @@ ul.recent-data > li {
   text-align: center;
   font-size: 15;
 }
+
+/*match detail*/
+.match-detail-row{
+  list-style: none;
+  padding: 0px;
+  position: relative;
+  width: inherit;
+  height: 44px;
+  color:rgb(85, 77, 77);
+}
+
+.game-detail-won{
+  background: rgb(163,207,236);
+    margin: 2px 22px;
+}
+
+.game-detail-loss{
+  background: rgb(226,182,179);
+    margin: 2px 22px;
+}
+
+ul.match-detail-row > li {
+    float: left;
+    margin: 1px 9px;
+}
+
+ul.match-detail-row > li.match-detail-spell-div {
+    margin: 1px 0px;
+}
+
+ul.match-detail-row > li.match-detail-name-div {
+    width: 90px;
+}
+
+.match-detail-row-champ-img{
+  width: 40px;
+  border: solid black 1px;
+  border-radius: 20px;
+}
+
+.match-detail-row-champ-level{
+  position: absolute;
+    top: 22px;
+    left: 6px;
+    background: rgba(0,0,0,0.7);
+    border: solid rgba(0,0,0,0.7) 1px;
+    border-radius: 12px;
+    font-size: 12;
+}
+
+.match-detail-spell2{
+  position: relative;
+    top: 20;
+    right: 20;
+}
+
+.match-detail-mastery{
+  top: 10;
+    position: relative;
+    right: 15;
+}
+
+.match-detail-name{
+  margin: 12px 0px;
+font-size: 5;
+}
+
+.match-detail-img{
+  width: 20px;
+}
+
+.match-detail-items{
+  list-style: none;
+  padding: 0px;
+  margin: 10px 0px;
+  width: 176px;
+}
+
+ul.match-detail-items > li{
+  float: left;
+}
+
+.match-detail-items-img{
+  width: 25px;
+}
+
+.match-detail-num{
+  padding: 11px 0px;
+  font-size: 8px;
+  width: 36px;
+}

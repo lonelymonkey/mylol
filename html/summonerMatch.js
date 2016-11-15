@@ -6,11 +6,18 @@
   var config = {};
 
   function bindEvent() {
-    $('.match-detail-button').each(function(){
-      $(this).click(function(){
-        //console.log('clicked');
-        var matchId = $(this).attr('id').replace($(this).attr('class'),'');
-        summonerBase.matchDetail(matchId);
+
+    $('.game-detail-button').each(function(){
+      var gameId = $(this).attr('id').replace($(this).attr('class'),'');
+      console.log(gameId);
+      $('#game-detail-button'+gameId).click(function(){
+        $('#game-detail-won-'+gameId).empty();
+        $('#game-detail-loss-'+gameId).empty();
+        matchDetail(gameId);
+      });
+      $('#game-detail-erase'+gameId).click(function(){
+        $('#game-detail-won-'+gameId).empty();
+        $('#game-detail-loss-'+gameId).empty();
       });
     });
 
@@ -32,7 +39,7 @@
       var identifier = $(this).attr('id').replace($(this).attr('class'),'');
       var itemDiv = $(this).attr('id');
       var itemId = identifier.substr(0,4);
-      console.log(itemId);
+      //console.log(itemId);
       $(this).hover(function(){
         itemTimer = setTimeout(function(){
           $('#itemDesDiv'+identifier).html('<div id="item-title">'+data[itemId].name+'</div>'+data[itemId].description);
@@ -353,6 +360,7 @@
         'data': {},
         'success': function(res){
           buildMatchListView(res);
+          bindEvent();
         }
     });
   }
@@ -380,10 +388,31 @@
       gameInfo = '';
       gameItems = '';
       gameMembers = '';
+
+      jQuery('<div/>',{
+        id: 'game-'+match.gameId,
+        class: 'game'
+      }).appendTo('#game-stat');
+
       jQuery('<div/>',{
         id: 'game-id-'+match.gameId,
         class: 'game-id'
-      }).appendTo('#game-stat');
+      }).appendTo('#game-'+match.gameId);
+
+      jQuery('<div/>',{
+        id: 'game-detail-'+match.gameId,
+        class: 'game-detail'
+      }).appendTo('#game-'+match.gameId);
+
+      jQuery('<div/>',{
+        id:'game-detail-won-'+match.gameId,
+        class: 'game-detail-won'
+      }).appendTo('#game-detail-'+match.gameId);
+
+      jQuery('<div/>',{
+        id:'game-detail-loss-'+match.gameId,
+        class: 'game-detail-loss'
+      }).appendTo('#game-detail-'+match.gameId);
 
       jQuery('<div/>',{
         id: 'game-type-'+match.gameId,
@@ -404,6 +433,14 @@
       jQuery('<div/>',{
         id: 'game-members-'+match.gameId,
         class: 'game-members'
+      }).appendTo('#game-id-'+match.gameId);
+      jQuery('<div/>',{
+        id: 'game-detail-button'+match.gameId,
+        class: 'game-detail-button'
+      }).appendTo('#game-id-'+match.gameId);
+      jQuery('<div/>',{
+        id: 'game-detail-erase'+match.gameId,
+        class: 'game-detail-erase'
       }).appendTo('#game-id-'+match.gameId);
 
       if(match.teamId == 100){
@@ -484,6 +521,8 @@
       $('#game-pic-'+match.gameId).append(gamePic);
       $('#game-info-'+match.gameId).append(gameInfo);
       $('#game-items-'+match.gameId).append(gameItems);
+      $('#game-detail-button'+match.gameId).append('+');
+      $('#game-detail-erase'+match.gameId).append('^');
     });
   }
 
@@ -497,25 +536,70 @@
     }
   }
 
-  summonerBase.matchDetail = function(matchId){
+  function matchDetail(gameId){
     //console.log('matchDetail is clicked');
     //console.log(matchId);
     var dataAPI = lolHistoryData(config);
-    dataAPI.matchDetail(matchId,function(res){
+    dataAPI.matchDetail(gameId,function(res){
       //console.log(res);
-      $('#game'+matchId).append(JSON.stringify(res));
+      matchDetailDiv(res);
   });
 }
 
+  function matchDetailDiv(data){
+    var participantIdentities = data.matchDetail.participantIdentities;
+    var participants = data.matchDetail.participants;
+    var matchId = data.matchDetail.matchId;
+    var view = '';
+    for(var i=0; i<10; i++){
+      view = '';
+      view += '<ul class="match-detail-row">'+
+      '<li><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+participants[i].image+'" class="match-detail-row-champ-img"><div class="match-detail-row-champ-level">'+participants[i].stats.champLevel+'</div></li>'+
+      '<li class="match-detail-spell-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+participants[i].spellImg1+'" class="match-detail-spell1 match-detail-img"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+participants[i].spellImg2+'" class="match-detail-spell2 match-detail-img"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+participants[i].spellImg2+'" class="match-detail-mastery match-detail-img"></li>'+
+      '<li class="match-detail-name-div"><div class="match-detail-name">'+participantIdentities[i].player.summonerName.substr(0,10)+'...</div></li>'+
+      '<li>'+
+        '<ul class="match-detail-items">'+
+          '<li></li>'+
+          '<li>'+itemList(participants[i].stats.itemImage0)+'</li>'+
+          '<li>'+itemList(participants[i].stats.itemImage1)+'</li>'+
+          '<li>'+itemList(participants[i].stats.itemImage2)+'</li>'+
+          '<li>'+itemList(participants[i].stats.itemImage3)+'</li>'+
+          '<li>'+itemList(participants[i].stats.itemImage4)+'</li>'+
+          '<li>'+itemList(participants[i].stats.itemImage5)+'</li>'+
+          '<li>'+itemList(participants[i].stats.itemImage6)+'</li>'+
+        '</ul>'+
+      '</li>'+
+      '<li class="match-detail-num">'+participants[i].stats.kills+'/'+participants[i].stats.deaths+'/'+participants[i].stats.assists+'</li>'+
+      '<li class="match-detail-num">'+participants[i].stats.totalDamageDealtToChampions+'</li>'+
+      '<li class="match-detail-num">'+participants[i].stats.totalDamageTaken+'</li>'+
+      '<li class="match-detail-num">'+participants[i].stats.wardsPlaced+participants[i].stats.wardsKilled+'</li>'+
+      '<li class="match-detail-num">'+participants[i].stats.minionsKilled+'</li>'+
+      '</ul>';
+      if(participants[i].stats.winner){
+        $('#game-detail-won-'+matchId).append(view);
+      }
+      else{
+        $('#game-detail-loss-'+matchId).append(view);
+      }
+    }
+  }
+
+  function itemList(item){
+    if(item){
+      return '<img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/item/'+item+'" class="match-detail-items-img">';
+    }
+    else{
+      return '';
+    }
+  }
+
 
   summonerBase.registerEvent('matches',function(data){
-    //console.log('build Summoner Summary view');
     buildSummonerView();
     buildPlayerView();
     buildRankedStatsView();
     buildSummonerAverageView();
     loadAllMatchListData();
-    bindEvent();
   });
   //summonerBase.registerEvent('onLoad',buildView);
   /*

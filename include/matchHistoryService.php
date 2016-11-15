@@ -165,6 +165,7 @@ class matchHistoryService{
 
       for($i = 1; $i<=2; $i++){//spells
         $matchDetail['participants'][$index]['spellName'.$i] = $spells['data'][$participant['spell'.$i.'Id']]['name'];
+        $matchDetail['participants'][$index]['spellImg'.$i] = $spells['data'][$participant['spell'.$i.'Id']]['image']['full'];
       }
     }
 

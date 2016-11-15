@@ -227,6 +227,8 @@ class summonerService{
     $output['rankedStats'] = $this->getRankedStats($summonerId,$season);
     $output['matchList'] = $this->matchList($summonerId);
     $output['championMastery'] = $this->getChampionMastery($summonerId);
+    $output['items'] = $this->api->getItems();
+    $output['summonerSpell'] = $this->api->getSummonerSpell();
 
     return $output;
   }
