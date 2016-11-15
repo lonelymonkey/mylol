@@ -190,7 +190,7 @@ right: 187px;
 .champion-mastery{
   float: left;
     width: 120px;
-    margin: 0px 2px;
+    margin: 0px 1px;
     height: inherit;
 }
 
@@ -883,7 +883,7 @@ ul.recent-data > li {
   height: 200px;
   position: relative;
   float: left;
-  margin: 0px 27px;
+  margin: 0px 25px;
 }
 
 #recent-winrate-title{
