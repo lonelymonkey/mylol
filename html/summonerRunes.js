@@ -88,6 +88,7 @@
       console.log(rune);
       jQuery('<div/>', {
         id: 'rune'+key,
+        class : 'rune'
       }).appendTo('#runes-img');
       jQuery('<div/>', {
         id: 'runeName'+key,
@@ -104,6 +105,7 @@
       runeImg.setAttribute('src','http://ddragon.leagueoflegends.com/cdn/6.21.1/img/rune/'+rune.runeImage);
       runeImg.setAttribute('id','runeImg'+key);
       $('#rune'+key).append(runeImg);
+      /*
       $('#rune'+key).hover(function(){
         runeTimer = setTimeout(function(){
           $('#runeName'+key).show();
@@ -112,6 +114,32 @@
         clearTimeout(runeTimer);
         $('#runeName'+key).hide();
       });
+      */
+    });
+
+
+    $(".rune").each(function(){
+        $(this).hover(function(e){
+            if (!$(this).hasClass('hover')) {
+                var parentOffset = $('body').offset();
+                var appWrapperOffset = $('#appWrapper').offset();
+                $(this).addClass('hover');
+                //get comments
+
+
+                var parentId = $(this).attr('id');
+                var id = parentId.replace('rune','');
+                var comment = $('#runeName'+id).html();
+                r1TextBubble(comment, parentId);
+                $('#bubble_msg_wrapper').hover(function(e){
+                    return;
+                },function(){
+                    $('#bubble_msg_wrapper').remove();
+                });
+            }
+        },function(){
+            $(this).removeClass('hover');
+        });
     });
 
     for(var i=27;i<=29;i++){

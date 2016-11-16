@@ -8,7 +8,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
 
+<style>
+#bubble_msg_wrapper {
+  background-color: black;
+  border-radius: 10px;
+  color: white;
+  padding: 8px;
+}
+.game {
+  opacity: 0.9;
+}
+.game:hover{
+  opacity: 1;
+}
+</style>
+<script>
+function r1TextBubble (content, parentId, id) {
+	if (typeof(id) == 'undefined') {
+		id = 'bubble_msg_wrapper';
+	}
 
+        $('#'+id).remove();
+        $('#'+parentId).append('<div style="display:none; position:relative;overflow:auto;z-index:300;" id="'+id+'"><div class="content">'+content+'</div></div>');
+	setTimeout(function(){
+/*		$('#'+id).slideDown(250);  */
+		$('#'+id).fadeIn(200);
+	},5);
+}
+</script>
 <script src="lolHistoryData.js"></script>
 <script src="lolSummonerData.js"></script>
 <script src="summonerBase.js"></script>
