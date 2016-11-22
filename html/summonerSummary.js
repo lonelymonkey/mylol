@@ -32,7 +32,7 @@
       var identifier = $(this).attr('id').replace($(this).attr('class'),'');
       var itemDiv = $(this).attr('id');
       var itemId = identifier.substr(0,4);
-      console.log(itemId);
+      //console.log(itemId);
       $(this).hover(function(){
         itemTimer = setTimeout(function(){
           $('#itemDesDiv'+identifier).html('<div id="item-title">'+data[itemId].name+'</div>'+data[itemId].description);
@@ -50,21 +50,24 @@
     //if unchanged return
     var view = '';
     view += '' +
-    '<div id="summary">'+
-      '<div id="tier-icon"></div>'+
-      '<div id="tier-info"></div>'+
-      '<div id="tier-league" class="bold"></div>'+
-    //  '<canvas id="myChart" width="2px" height="2px"></canvas>'+
+    '<div id="summary-left">'+
+      '<div id="summary">'+
+        '<div id="tier-icon"></div>'+
+        '<div id="tier-info"></div>'+
+        '<div id="tier-league" class="bold"></div>'+
+      //  '<canvas id="myChart" width="2px" height="2px"></canvas>'+
+      '</div>'+
+      '<div id="champion-summary">'+
+      '</div>'+
     '</div>'+
-    '<div id="champion-summary">'+
-    '</div>'+
-    '<div id="summoner-mastery">'+
-      '<div id="summoner-mastery-title">Champion Mastery</div>'+
-      '<div id="summoner-mastery-detail"></div>'+
-    '</div>'+
-    '<div id="game-stat">'+
+    '<div id="summary-right">'+
+      '<div id="summoner-mastery">'+
+        '<div id="summoner-mastery-title">Champion Mastery</div>'+
+        '<div id="summoner-mastery-detail"></div>'+
+      '</div>'+
+      '<div id="game-stat">'+
+      '</div>'+
     '</div>';
-
     $('#summary-info').append(view);
   }
 
@@ -122,11 +125,11 @@
     data = data.slice(1,11);
 
 
-    console.log(data);
+    //console.log(data);
     $.each(data,function(key,rankedStats){
       championStats = '';
       jQuery('<div/>',{
-        id: rankedStats.name+'-info',
+        id: rankedStats.id+'-info',
         class: 'ranked-stats-div'
       }).appendTo('#champion-summary');
       totalSession = Number(rankedStats.stats.totalSessionsPlayed);
@@ -150,17 +153,17 @@
       '</div>';
 
       jQuery('<div/>',{
-        id: rankedStats.name+'-image',
+        id: rankedStats.id+'-image',
         class: 'ranked-stats-pic',
-      }).appendTo('#'+rankedStats.name+'-info');
+      }).appendTo('#'+rankedStats.id+'-info');
 
-      $('#'+rankedStats.name+'-image').css(
+      $('#'+rankedStats.id+'-image').css(
         'background-image', 'url(http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+rankedStats.image+')'
       );
 
-      $('#'+rankedStats.name+'-image').addClass("ranked-stats-pic-style");
+      $('#'+rankedStats.id+'-image').addClass("ranked-stats-pic-style");
 
-      $('#'+rankedStats.name+'-info').append(championStats);
+      $('#'+rankedStats.id+'-info').append(championStats);
     });
   }
 
@@ -218,22 +221,23 @@
     var data= dataModel.summonerSummary.championMastery.championMastery.slice(0,6);
     var championMasteryDetail;
     var championMasteryImg;
+    console.log(data);
 
     $.each(data,function(index,champion){
       championMasteryDetail = '';
       championMasteryImg = '';
       jQuery('<div/>',{
-        id: 'champion-mastery'+champion.name,
+        id: 'champion-mastery'+champion.championId,
         class: 'champion-mastery'
       }).appendTo('#summoner-mastery-detail');
       jQuery('<div/>',{
-        id: 'champion-mastery-div-img'+champion.name,
+        id: 'champion-mastery-div-img'+champion.championId,
         class: 'champion-mastery-div-img'
-      }).appendTo('#champion-mastery'+champion.name);
+      }).appendTo('#champion-mastery'+champion.championId);
       jQuery('<div/>',{
-        id: 'champion-mastery-info'+champion.name,
+        id: 'champion-mastery-info'+champion.championId,
         class: 'champion-mastery-info'
-      }).appendTo('#champion-mastery'+champion.name);
+      }).appendTo('#champion-mastery'+champion.championId);
 
       championMasteryDetail += '' +
       '<div>'+champion.name+'</div>'+
@@ -242,8 +246,8 @@
       championMasteryImg += '<img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+champion.image+'" class="champion-mastery-img">'+
                             '<img src="images/mastery_icons/Champ_Mastery_'+champion.championLevel+'.png" class="champion-mastery-icon">';
 
-      $('#champion-mastery-info'+champion.name).append(championMasteryDetail);
-      $('#champion-mastery-div-img'+champion.name).append(championMasteryImg);
+      $('#champion-mastery-info'+champion.championId).append(championMasteryDetail);
+      $('#champion-mastery-div-img'+champion.championId).append(championMasteryImg);
     });
     //console.log(data);
   }
@@ -262,7 +266,7 @@
   function buildMatchListView(res) {
     var data = dataModel.summonerSummary.matchList.matchList.games;
     var summonerSpell = res.data;
-    console.log(data);
+    //console.log(data);
     //console.log(res);
     var view = '';
     var gameType = '';
@@ -284,7 +288,7 @@
       gameMembers = '';
       jQuery('<div/>',{
         id: 'game-id-'+match.gameId,
-        class: 'game-id'
+        class: 'game-id game'
       }).appendTo('#game-stat');
 
       jQuery('<div/>',{
@@ -368,6 +372,15 @@
         id: 'blue-'+match.gameId,
         class: 'fellow-players'
       }).appendTo('#game-members-'+match.gameId);
+      var yourNameAbbre = summonerBase.search.substring(0,6)+'.....';
+      var yourChamp = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+'" class="player-img">  '+yourNameAbbre+'</div>';
+
+        if(match.teamId == 100){
+            $('#blue-'+match.gameId).append(yourChamp);
+        }
+        else{
+          $('#purple-'+match.gameId).append(yourChamp);
+        }
 
       $.each(match.fellowPlayers,function(index,player){
         fellowPlayerName = player.summonerName.substring(0,6)+'.....';
@@ -380,6 +393,8 @@
           $('#purple-'+match.gameId).append(gameMembers);
         }
       });
+
+
 
 
       $('#game-type-'+match.gameId).append(gameType);

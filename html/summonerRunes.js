@@ -85,7 +85,7 @@
   //  console.log(runePage);
 
     $.each(data.slots,function(key,rune){
-      console.log(rune);
+      //console.log(rune);
       jQuery('<div/>', {
         id: 'rune'+key,
         class : 'rune'
@@ -143,7 +143,7 @@
     });
 
     for(var i=27;i<=29;i++){
-      console.log(i);
+      //console.log(i);
       $('#runeImg'+i).css({
         width: '110px',
         height: '110px'

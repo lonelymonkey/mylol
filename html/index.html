@@ -3,9 +3,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
 
 <style>
@@ -16,7 +14,7 @@
   padding: 8px;
 }
 .game {
-  opacity: 0.9;
+  opacity: 0.7;
 }
 .game:hover{
   opacity: 1;
@@ -52,8 +50,6 @@ function r1TextBubble (content, parentId, id) {
 <html>
 
 <div id="appWrapper">
-
-
 </div>
 
 </html>
@@ -74,82 +70,4 @@ function r1TextBubble (content, parentId, id) {
     //webpage('summary-info');
     //bindevent();
   });
-
-  function webpage(page){
-    lolSummonerUI.load({
-      containerId : page
-    });
-    lolHistoryUI.load({
-      containerId : page
-    });
-  }
-
-
-
-  function buildUIFrame(page) {
-    var view = '';
-    if(page == 'summary-info'){
-      view += '' +
-      '<div id="summoner-info">'+
-        '<div id="summary">'+
-        '</div>'+
-        '<div id="champion-summary">'+
-        '</div>'+
-        '<div id="summoner-average">'+
-        '</div>'+
-        '<div id="game-stat">'+
-        '</div>'+
-      '</div>';
-    }
-    else if(page == 'champions') {
-
-  }
-    else if(page == 'league-list'){
-      view += '' +
-        '<div id="summoner-info">'+
-          '<div id="search-league">'+
-            '<div id="league-icon">'+
-            '</div>'+
-            '<div id="league-menu">'+
-              '<div class="btn-group">'+
-                '<button type="button" class="btn btn-primary" id="rank1-button">I</button>'+
-                '<button type="button" class="btn btn-primary" id="rank2-button">II</button>'+
-                '<button type="button" class="btn btn-primary" id="rank3-button">III</button>'+
-                '<button type="button" class="btn btn-primary" id="rank4-button">IV</button>'+
-                '<button type="button" class="btn btn-primary" id="rank5-button">V</button>'+
-              '</div>'+
-            '</div>'+
-          '</div>'+
-          '<div id="league-list">'+
-            '<ul class="league-column">'+
-              '<li class="league-stats">Summoners</li>'+
-              '<li class="league-stats">Emblems</li>'+
-              '<li class="league-stats">Victory</li>'+
-              '<li class="league-stats">Promotion series/Point</li>'+
-            '</ul>'+
-          '</div>'+
-        '</div>';
-    }
-    else if(page == 'runes'){
-      view += '' +
-      '<div id="summoner-info">'+
-        '<div id="runes-list">'+
-        '</div>'+
-        '<div id="runes-detail">'+
-        '</div>'+
-      '</div>';
-    }
-
-    else if (page == 'masteries') {
-      view += '' +
-      '<div id="summoner-info">'+
-        '<div id="masteries-list">'+
-        '</div>'+
-        '<div id="masteries-detail">'+
-        '</div>'+
-      '</div>';
-    }
-
-    $('#content').append(view);
-  };
 </script>

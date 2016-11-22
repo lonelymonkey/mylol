@@ -8,13 +8,23 @@
   function bindEvent() {
     $('.season-button').click(function(){
       var seasonId = $(this).attr('id').replace('-button','');
-      $('#champion-list').empty();
+      var previousList = $('.previous-list').attr('id');
+      jQuery('<div/>',{
+        id: 'champion-list'+seasonId,
+        class: 'previous-list'
+      }).appendTo('#champion-page');
+      $('#champion-list'+seasonId).css({'display':'none'});
       dataAPI.rankedStats(summonerBase.search,seasonId,function(res){
-        //console.log(res);
-        $.each(res.rankedStats.champions,function(key,champion){
-          buildChampionRow(champion);
+        res.rankedStats.champions.sort(function(a,b){
+          return b.stats.totalSessionsWon - a.stats.totalSessionsWon;
         })
+        $.each(res.rankedStats.champions,function(key,champion){
+          buildChampionRow(champion,seasonId);
+        });
+
+        $('#'+previousList).remove();
       });
+      $('#champion-list'+seasonId).css({'display':'initial'});
     });
   }
 
@@ -43,7 +53,7 @@
           '<li class="champion-champion-triple champion-list-name">Triple</li>'+
         '</ul>'+
       '</div>'+
-      '<div id="champion-list">'+
+      '<div id="champion-list" class="previous-list">'+
       '</div>'+
       '</div>';
 
@@ -52,14 +62,15 @@
 
   function buildChampionList(){
     var data = dataModel.summonerSummary.rankedStats.rankedStats.champions;
+    var season = '';
     //console.log(data);
     $.each(data,function(key,rankedStats){
-      buildChampionRow(rankedStats);
+      buildChampionRow(rankedStats,season);
     });
   }
 
-  function buildChampionRow(data){
-    //console.log(data);
+  function buildChampionRow(data,season){
+    //console.log(season);
     var stats = data.stats;
     var masteries = dataModel.summonerSummary.championMastery.championMastery;
     //console.log(masteries);
@@ -109,25 +120,26 @@
       view += '' +
       '<div class="champion-row-div">'+
         '<ul class="champion-row">'+
-          '<li id="champion-champion-pic'+data.id+'" class="champion-champion-pic">'+
-            '<div id="champion-champion-name'+data.id+'" class="champion-champion-name"></div>'+
-            '<div id="champion-champion-icon'+data.id+'"></div>'+
+          '<li id="champion-champion-pic'+data.id+season+'" class="champion-champion-pic">'+
+            '<div id="champion-champion-name'+data.id+season+'" class="champion-champion-name"></div>'+
+            '<div id="champion-champion-icon'+data.id+season+'"></div>'+
           '</li>'+
           '<li class="champion-champion-won champion-num">'+stats.totalSessionsWon+'</li>'+
           '<li class="champion-champion-lost champion-num">'+stats.totalSessionsLost+'</li>'+
           '<li class="champion-champion-kda champion-num">'+averageKill+'/'+averageDeath+'/'+averageAssists+'</li>'+
           '<li class="champion-champion-gold champion-num">'+averageGold+'</li>'+
           '<li class="champion-champion-cs champion-num">'+averageCS+'</li>'+
-          '<li class="champion-champion-win"><canvas id="winrate'+data.id+'" width="60" height="60"></canvas><div class="winrate-num">'+winRate+'</li>'+
-          '<li id="champion-champion-mastery'+data.id+'" class="champion-champion-mastery champion-num"></li>'+
+          '<li class="champion-champion-win"><canvas id="winrate'+data.id+season+'" width="60" height="60"></canvas><div class="winrate-num">'+winRate+'</li>'+
+          '<li id="champion-champion-mastery'+data.id+season+'" class="champion-champion-mastery champion-num"></li>'+
           '<li class="champion-champion-penta champion-num">'+stats.totalTripleKills+'</li>'+
           '<li class="champion-champion-quadra champion-num">'+stats.totalQuadraKills+'</li>'+
           '<li class="champion-champion-triple champion-num">'+stats.totalPentaKills+'</li>'+
         '</ul>'+
       '</div>';
-      $('#champion-list').append(view);
+    //  console.log(view);
+      $('#champion-list'+season).append(view);
 
-      ctx = document.getElementById('winrate'+data.id);
+      ctx = document.getElementById('winrate'+data.id+season);
       //console.log(ctx);
       pieData.datasets[0].data.push(stats.totalSessionsWon);
       pieData.datasets[0].data.push(stats.totalSessionsLost);
@@ -141,12 +153,12 @@
       });
 
 
-      $('#champion-champion-pic'+data.id).append(pic);
+      $('#champion-champion-pic'+data.id+season).append(pic);
       $.each(masteries,function(masteryIndex,mastery){
         if(data.id == mastery.championId){
-          $('#champion-champion-name'+data.id).html(mastery.name);
-          $('#champion-champion-icon'+data.id).html('<img src="images/mastery_image/Champ_Mastery_'+mastery.championLevel+'.png" class="champion-champion-icon">');
-          $('#champion-champion-mastery'+data.id).html(mastery.championPoints);
+          $('#champion-champion-name'+data.id+season).html(mastery.name);
+          $('#champion-champion-icon'+data.id+season).html('<img src="images/mastery_image/Champ_Mastery_'+mastery.championLevel+'.png" class="champion-champion-icon">');
+          $('#champion-champion-mastery'+data.id+season).html(mastery.championPoints);
         }
       });
     }

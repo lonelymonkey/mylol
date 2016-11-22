@@ -6,17 +6,24 @@
 
   var leagueList = {
     rank1 : '',
+    rank1Series : '',
     rank2 : '',
+    rank2Series : '',
     rank3 : '',
+    rank3Series : '',
     rank4 : '',
-    rank5 : ''
+    rank4Series : '',
+    rank5 : '',
+    rank5Series : ''
   }
 
   function bindEvent() {
     $('.summoner-rank').click(function(){
       var rank = $(this).attr('id').replace('-button','');
-      $('#league-list-detail').empty();
-      $('#league-list-detail').append(leagueList[rank]);
+      $('#league-series').empty();
+      $('#league-points').empty();
+      $('#league-series').append('<div id="league-series-title">Currently In Series</div>'+leagueList[rank+'Series']);
+      $('#league-points').append(leagueList[rank]);
     });
   }
 
@@ -27,7 +34,6 @@
       var identifier = $(this).attr('id');
       $(this).hover(function(){
         emblemTimer = setTimeout(function(){
-          console.log()
           $('#'+identifier+'div').css('visibility','visible');
         },250);
       },function(){
@@ -75,6 +81,10 @@
             '</ul>'+
           '</div>'+
           '<div id="league-list-detail">'+
+            '<div id="league-series">'+
+              '<div id="league-series-title">Currently In Series</div>'+
+            '</div>'+
+            '<div id="league-points"></div>'+
           '</div>'+
         '</div>'+
       '</div>';
@@ -85,7 +95,7 @@
   function buildYourLeague(){
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.summonerSummary.league.summonerLeague[id];
-    console.log(data);
+  //  console.log(data);
     var playerInfo = {};
     var summary='';
     var tier;
@@ -125,6 +135,8 @@
   function buildLeagueListView(){
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.summonerSummary.league.summonerLeague[id];
+    console.log(id);
+    console.log(data);
     var array = {
       rank1 : [],
       rank2 : [],
@@ -132,6 +144,7 @@
       rank4 : [],
       rank5 : []
     };
+    var initialPage;
     //console.log(data);
     //console.log(data.entries);
     $.each(data,function(key,summoner){
@@ -152,6 +165,24 @@
           default:
             array.rank5.push(otherSummoner);
         }
+        if(otherSummoner.playerOrTeamId == id){
+          switch (otherSummoner.division) {
+            case 'I':
+              initialPage = 'rank1';
+            break;
+            case 'II':
+              initialPage = 'rank2';
+            break;
+            case 'III':
+              initialPage = 'rank3';
+            break;
+            case 'IV':
+              initialPage = 'rank4';
+            break;
+            default:
+            initialPage = 'rank5';
+          }
+        }
       });
     });
 
@@ -161,22 +192,36 @@
       });
       var num = 1;
       array['rank'+i].forEach(function(summoner){
-        leagueList['rank'+i] += '<ul class="league-column">'+
-        '<li class="league-num league-stats">'+num+'</div>'+
-        '<li class="league-summoner-name league-stats">'+summoner.playerOrTeamName+'</li>'+
-        '<li class="league-emblems league-stats">'+emblems(summoner)+'</li>'+
-        '<li class="league-game league-stats">'+summoner.wins+'W/'+summoner.losses+'L</li>'+
-        '<li class="league-promotion league-stats">'+miniSeries(summoner)+'</li>'+
-        '</ul>';
+        if(summoner.leaguePoints != 100){
+          leagueList['rank'+i] += '<ul id="league-column'+summoner.playerOrTeamId+'" class="league-column">'+
+          '<li class="league-num league-stats">'+num+'</div>'+
+          '<li class="league-summoner-name league-stats">'+summoner.playerOrTeamName+'</li>'+
+          '<li class="league-emblems league-stats">'+emblems(summoner)+'</li>'+
+          '<li class="league-game league-stats">'+summoner.wins+'W/'+summoner.losses+'L</li>'+
+          '<li class="league-promotion league-stats">'+miniSeries(summoner)+'</li>'+
+          '</ul>';
+        }
+        else{
+          leagueList['rank'+i+'Series'] += '<ul id="league-column'+summoner.playerOrTeamId+'" class="league-column">'+
+          '<li class="league-num league-stats">'+num+'</div>'+
+          '<li class="league-summoner-name league-stats">'+summoner.playerOrTeamName+'</li>'+
+          '<li class="league-emblems league-stats">'+emblems(summoner)+'</li>'+
+          '<li class="league-game league-stats">'+summoner.wins+'W/'+summoner.losses+'L</li>'+
+          '<li class="league-promotion league-stats">'+miniSeries(summoner)+'</li>'+
+          '</ul>';
+        }
         num++;
       });
     }
-    $('#league-list-detail').append(leagueList.rank1);
-    console.log(array.rank5);
+    $('#league-series').append(leagueList.rank1Series);
+    $('#league-points').append(leagueList[initialPage]);
+    $('#league-column'+id).css({'border':'solid yellow'})
+
+    //console.log(array.rank5);
   }
 
   function emblems(summoner){
-    console.log(summoner);
+    //console.log(summoner);
     var view = '';
     if(summoner.isFreshBlood){
       view += '<div class="emblem-image"><img src="images/league_icons/isFreshBlood.png" id="isFreshBlood'+summoner.playerOrTeamId+'" class="isFreshBlood emblemFinder"><div id="isFreshBlood'+summoner.playerOrTeamId+'div" class="emblem-detail">Veteran</br>Played 100 or more games in this league</div></div>';
@@ -198,7 +243,7 @@
     var unattempted;
     if(summoner.leaguePoints == 100){
       unattempted = summoner.miniSeries.progress.length - summoner.miniSeries.losses - summoner.miniSeries.wins;
-      console.log(unattempted);
+      //console.log(unattempted);
       if(summoner.miniSeries.wins>0){
           for(var i=0; i<summoner.miniSeries.wins; i++){
           view += '<div class="miniseries-win miniseries">W</div>'

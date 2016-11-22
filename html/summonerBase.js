@@ -59,8 +59,7 @@
       var iconImage = 'http://ddragon.leagueoflegends.com/cdn/6.21.1/img/profileicon/'+data.profileIconId+'.png';
       view += ''+
               '<div id="summoner-icon-div"><img src='+iconImage+' class="summoner-icon-img"></div>'+
-              '<div id="summoner-name">'+data.name+'</div>' +
-              '<div id="summoner-level">Level: '+data.summonerLevel+'</div>';
+              '<div id="summoner-name">'+data.name+'<br>Level: '+data.summonerLevel+'</div>';
     $('#summoner-overall').append(view);
     $('#summoner').css('background-image','url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'+slideArray[chosenSkin]+')');
     setInterval(function(){
@@ -73,15 +72,20 @@
     var view = '';
     view += '' +
     '<div id="summoner">'+
-    '<div id="summoner-overall"></div>'+
-    '<ul class="menu">'+
-      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="summary-button">Summary</a></li>'+
-      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="champions-button">Champions</a></li>'+
-      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="league-button">League</a></li>'+
-      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="matches-button">Matches</a></li>'+
-      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="runes-button">Runes</a></li>'+
-      '<li class="menu"><a href="#" class="btn btn-info" role="button" id="masteries-button">Masteries</a></li>'+
-    '</ul>'+
+    '<div id="summoner-overall">'+
+      '<form id="search">'+
+        '<input type="text" name="summoner" class="summoner-submit">'+
+        '<input type="submit" value="Submit" class="submit">'+
+      '</form>'+
+    '</div>'+
+      '<ul class="menu">'+
+        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="summary-button">Summary</a></li>'+
+        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="champions-button">Champions</a></li>'+
+        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="league-button">League</a></li>'+
+        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="matches-button">Matches</a></li>'+
+        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="runes-button">Runes</a></li>'+
+        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="masteries-button">Masteries</a></li>'+
+      '</ul>'+
     '</div>'+
     '<div id="summary-info">'+
     '</div>';
@@ -135,9 +139,29 @@
     });
   }
 
+    function getParameterByName(name, url) {
+      if (!url) {
+        url = window.location.href;
+      }
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function summonerSearch(summoner){
+      if(getParameterByName(summoner)){
+        summonerBase.search = getParameterByName(summoner).toLowerCase();
+      }
+    }
+
   summonerBase.load = function(cfg){
     var dataAPISummoner = lolSummonerData(cfg);
     saveConfig(cfg);
+    summonerSearch('summoner');
+    console.log(summonerBase.search);
     dataAPISummoner.summonerSummary(summonerBase.search,'SEASON2016',function(res){
       dataModel.summonerSummary = res;
       //console.log(res);
@@ -147,12 +171,6 @@
       //console.log(JSON.stringify(dataModel));
       buildSummonerView();
     });
-    /*dataAPISummoner.runes(summonerBase.search,function(res){
-      dataModel.runes = res;
-    });
-    dataAPISummoner.masteries(summonerBase.search,function(res){
-      dataModel.masteries = res;
-    });*/
     buildUIFrame();
     bindevent();
   };

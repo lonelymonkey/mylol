@@ -12,11 +12,17 @@ body {
 
 .menu {
   list-style: none;
-      float: left;
-      margin: 0px;
-      position: relative;
-      top: 67px;
-      right: 100px;
+  float: left;
+  margin: 0px;
+  position: relative;
+  right: 87px;
+}
+
+#search{
+  float: left;
+position: absolute;
+top: 10px;
+left: 700;
 }
 
 #summary-info{
@@ -42,6 +48,16 @@ body {
 }
 /*summary*/
 
+#summary-left{
+  width: 250px;
+  float: left;
+}
+
+#summary-right{
+  width: 750px;
+  float: left;
+}
+
 #summoner {
     width: 1000px;
     height: 245px;
@@ -53,6 +69,10 @@ body {
     transition: background-image 2s ease-in-out;
 }
 
+#summoner-overall{
+  height: 187px;
+}
+
 #summoner-icon-div{
   float: left;
   position: relative;
@@ -61,7 +81,7 @@ body {
   left: 30px;
 }
 
-#summoner-name, #summoner-level{
+#summoner-name{
   float: left;
   position: relative;
   color: whitesmoke;
@@ -71,13 +91,8 @@ body {
 }
 
 #summoner-name{
-    top: 15px;
-      left: 44px;
-}
-
-#summoner-level{
-  top: 62px;
-right: 187px;
+  top: 15px;
+  left: 15px;
 }
 
 #menu {
@@ -94,14 +109,14 @@ right: 187px;
 }
 
 #summary,#recent-summoner {
-  width: 250px;
-  height: 151px;
   background: black;
   float: left;
   border-top: solid grey;
   color: white;
   border-bottom: solid grey;
   border-left: solid grey;
+  padding: 5px 0px;
+  width: 250px;
 }
 
 #tier-icon{
@@ -120,13 +135,10 @@ right: 187px;
 }
 
 #champion-summary {
-  width: 250px;
   background: black;
-  float: left;
-  position: relative;
-  top: 151px;
-  right: 250px;
-  color: white;
+      float: left;
+      color: white;
+      width: inherit;
 }
 
 .ranked-stats-div{
@@ -152,25 +164,19 @@ right: 187px;
 }
 
 #summoner-summary {
-  width: 750px;
-      height: 280px;
+  width: inherit;
       background: black;
       float: left;
-      position: relative;
-      bottom: 1000px;
-      left: 250px;
       border: solid grey;
       color: white;
+      height: 290px;
 }
 
 #summoner-mastery{
   width: 750px;
-      height: 250px;
       background: black;
       float: left;
       position: relative;
-      bottom: 1000px;
-      left: 250px;
       border: solid grey;
       color: white;
 }
@@ -223,12 +229,9 @@ right: 187px;
 }
 
 #game-stat {
-  width: 750px;
+  width: inherit;
   background: black;
-  position: relative;
   float: left;
-  bottom: 1000px;
-  left: 250px;
   color: white;
   padding: 22px 0px;
   border: solid grey;
@@ -316,7 +319,7 @@ right: 187px;
 
 .player-div{
   float:left;
-  font-size: 6px;
+  font-size: 12px;
 }
 
 .player-img{
@@ -478,6 +481,19 @@ ul.champion-row > li.champion-list-name{
 }
 
 /*league-stats*/
+#league-series{
+  border: white solid;
+}
+
+#league-series-title{
+  text-align: center;
+      border-bottom: white 1px solid;
+      padding: 9px 0px;
+      font-size: 15px;
+      color: white;
+      font-weight: bold;
+}
+
 .league-column {
   list-style: none;
       padding: 0px 0px;
@@ -714,6 +730,29 @@ ul.rune-list-group > li:hover{
     background: #483D8B;
 }
 
+.total-count{
+  float: left;
+      position: relative;
+      top: 27px;
+      left: 112px;
+      font-size: 17px;
+      font-weight: bold;
+      padding: 0px 5px;
+      color: white;
+}
+
+#total-count-ferocity{
+  background:rgb(32,9,0);
+}
+
+#total-count-cunning{
+  background:rgb(25,15,25);
+}
+
+#total-count-resolve{
+  background:rgb(6,13,19);
+}
+
 #masteries-list{
   width: inherit;
   background: black;
@@ -803,7 +842,6 @@ ul.rune-list-group > li:hover{
   background: black;
   width: 27px;
   text-align: center;
-  font-size: 8px;
   border: solid 1px red;
   border-radius: 4px;
 }
@@ -821,14 +859,14 @@ ul.rune-list-group > li:hover{
 }
 
 .rank-detail{
-  position: absolute;
+  position: relative;
   visibility: hidden;
-top: 72px;
-    background: black;
-    color: white;
-    font-size: 8px;
-    z-index: 1;
-    width: 100px
+  top: 10px;
+  background: black;
+  color: white;
+  font-size: 12px;
+  z-index: 1;
+  width: 150px;
 }
 
 /*match*/
@@ -906,13 +944,20 @@ ul.recent-data > li {
 }
 
 /*match detail*/
-.match-detail-row{
+.match-detail-row,.match-detail-row-title{
   list-style: none;
   padding: 0px;
   position: relative;
   width: inherit;
   height: 44px;
   color:rgb(85, 77, 77);
+}
+
+ul.match-detail-row-title > li {
+  float: left;
+  text-align: center;
+  font-size: 10px;
+  padding: 7px 0px;
 }
 
 .game-detail-won{
@@ -922,6 +967,11 @@ ul.recent-data > li {
 
 .game-detail-loss{
   background: rgb(226,182,179);
+    margin: 2px 22px;
+}
+
+.game-detail-title{
+  background: white;
     margin: 2px 22px;
 }
 
@@ -952,6 +1002,7 @@ ul.match-detail-row > li.match-detail-name-div {
     border: solid rgba(0,0,0,0.7) 1px;
     border-radius: 12px;
     font-size: 12;
+    color: white;
 }
 
 .match-detail-spell2{
@@ -994,4 +1045,12 @@ ul.match-detail-items > li{
   padding: 11px 0px;
   font-size: 8px;
   width: 36px;
+}
+
+.game-detail-button{
+  cursor: pointer;
+}
+
+.game-detail-erase{
+  cursor: pointer;
 }

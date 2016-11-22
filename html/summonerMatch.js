@@ -13,11 +13,13 @@
       $('#game-detail-button'+gameId).click(function(){
         $('#game-detail-won-'+gameId).empty();
         $('#game-detail-loss-'+gameId).empty();
+        $('#game-detail-title-'+gameId).empty();
         matchDetail(gameId);
       });
       $('#game-detail-erase'+gameId).click(function(){
         $('#game-detail-won-'+gameId).empty();
         $('#game-detail-loss-'+gameId).empty();
+        $('#game-detail-title-'+gameId).empty();
       });
     });
 
@@ -57,33 +59,37 @@
     //if unchanged return
     var view = '';
     view += '' +
-    '<div id="recent-summoner">'+
-      '<div id="recent-summoner-title">Recently Played With (Recent 10 Games)</div>'+
-      '<div id="recent-summoner-detail">'+
-        '<div id="recent-summoner-detail-title"></div>'+
-        '<div id="recent-summoner-detail-row"></div>'+
-      '</div>'+
-    '</div>'+
-    '<div id="champion-summary">'+
-    '</div>'+
-    '<div id="summoner-summary">'+
-    '<div id="summoner-summary-title">Summoner Summary</div>'+
-    '<div>'+
-        '<div id="recent-winrate-div">'+
-          '<canvas id="recent-winrate" width="100px" height="100px"></canvas>'+
-          '<div id="recent-winrate-title">Recent Winrate</div>'+
-        '</div>'+
-        '<div id="recent-kda-div">'+
-          '<canvas id="recent-kda" width="100px" height="100px"></canvas>'+
-          '<div id="recent-kda-title">Recent KDA</div>'+
-        '</div>'+
-        '<div id="champion-winrate-div">'+
-          '<canvas id="champion-winrate" width="100px" height="100px"></canvas>'+
-          '<div id="champion-winrate-title">Champion Winrate</div>'+
+    '<div id="summary-left">'+
+      '<div id="recent-summoner">'+
+        '<div id="recent-summoner-title">Recently Played With (Recent 10 Games)</div>'+
+        '<div id="recent-summoner-detail">'+
+          '<div id="recent-summoner-detail-title"></div>'+
+          '<div id="recent-summoner-detail-row"></div>'+
         '</div>'+
       '</div>'+
+      '<div id="champion-summary">'+
+      '</div>'+
     '</div>'+
-    '<div id="game-stat">'+
+    '<div id="summary-right">'+
+      '<div id="summoner-summary">'+
+      '<div id="summoner-summary-title">Summoner Summary</div>'+
+      '<div>'+
+          '<div id="recent-winrate-div">'+
+            '<canvas id="recent-winrate" width="100px" height="100px"></canvas>'+
+            '<div id="recent-winrate-title">Recent Winrate</div>'+
+          '</div>'+
+          '<div id="recent-kda-div">'+
+            '<canvas id="recent-kda" width="100px" height="100px"></canvas>'+
+            '<div id="recent-kda-title">Recent KDA</div>'+
+          '</div>'+
+          '<div id="champion-winrate-div">'+
+            '<canvas id="champion-winrate" width="100px" height="100px"></canvas>'+
+            '<div id="champion-winrate-title">Champion Winrate</div>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      '<div id="game-stat">'+
+      '</div>'+
     '</div>';
 
     $('#summary-info').append(view);
@@ -167,7 +173,7 @@
     $.each(data,function(key,rankedStats){
       championStats = '';
       jQuery('<div/>',{
-        id: rankedStats.name+'-info',
+        id: rankedStats.id+'-info',
         class: 'ranked-stats-div'
       }).appendTo('#champion-summary');
       totalSession = Number(rankedStats.stats.totalSessionsPlayed);
@@ -189,17 +195,17 @@
       '</div>';
 
       jQuery('<div/>',{
-        id: rankedStats.name+'-image',
+        id: rankedStats.id+'-image',
         class: 'ranked-stats-pic',
-      }).appendTo('#'+rankedStats.name+'-info');
+      }).appendTo('#'+rankedStats.id+'-info');
 
-      $('#'+rankedStats.name+'-image').css(
+      $('#'+rankedStats.id+'-image').css(
         'background-image', 'url(http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+rankedStats.image+')'
       );
 
-      $('#'+rankedStats.name+'-image').addClass("ranked-stats-pic-style");
+      $('#'+rankedStats.id+'-image').addClass("ranked-stats-pic-style");
 
-      $('#'+rankedStats.name+'-info').append(championStats);
+      $('#'+rankedStats.id+'-info').append(championStats);
     });
   }
 
@@ -405,6 +411,11 @@
       }).appendTo('#game-'+match.gameId);
 
       jQuery('<div/>',{
+        id:'game-detail-title-'+match.gameId,
+        class: 'game-detail-title'
+      }).appendTo('#game-detail-'+match.gameId);
+
+      jQuery('<div/>',{
         id:'game-detail-won-'+match.gameId,
         class: 'game-detail-won'
       }).appendTo('#game-detail-'+match.gameId);
@@ -504,6 +515,16 @@
         class: 'fellow-players'
       }).appendTo('#game-members-'+match.gameId);
 
+      var yourNameAbbre = summonerBase.search.substring(0,6)+'.....';
+      var yourChamp = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+'" class="player-img">  '+yourNameAbbre+'</div>';
+
+        if(match.teamId == 100){
+            $('#blue-'+match.gameId).append(yourChamp);
+        }
+        else{
+          $('#purple-'+match.gameId).append(yourChamp);
+        }
+
       $.each(match.fellowPlayers,function(index,player){
         fellowPlayerName = player.summonerName.substring(0,6)+'.....';
         gameMembers = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+player.image+'" class="player-img">  '+fellowPlayerName+'</div>';
@@ -551,12 +572,32 @@
     var participants = data.matchDetail.participants;
     var matchId = data.matchDetail.matchId;
     var view = '';
+    view += '<ul class="match-detail-row-title">'+
+      '<li style="width:110px">Champion</li>'+
+      '<li style="width:125px">Summoner Name</li>'+
+      '<li style="width:181px">Items</li>'+
+      '<li style="width:61px">KDA</li>'+
+      '<li style="width:48px">Damage Dealt</li>'+
+      '<li style="width:62px">Damage Taken</li>'+
+      '<li style="width:41px">Wards</li>'+
+      '<li style="width:59px">CS</li>'+
+    '</ul>';
+    var playerName;
+
+    $('#game-detail-title-'+matchId).append(view);
+    console.log(data);
     for(var i=0; i<10; i++){
+      if(participantIdentities[i].player){
+        playerName = participantIdentities[i].player.summonerName.substr(0,10)+'...';
+      }
+      else{
+        playerName = participants[i].championName;
+      }
       view = '';
       view += '<ul class="match-detail-row">'+
       '<li><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+participants[i].image+'" class="match-detail-row-champ-img"><div class="match-detail-row-champ-level">'+participants[i].stats.champLevel+'</div></li>'+
       '<li class="match-detail-spell-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+participants[i].spellImg1+'" class="match-detail-spell1 match-detail-img"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+participants[i].spellImg2+'" class="match-detail-spell2 match-detail-img"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/spell/'+participants[i].spellImg2+'" class="match-detail-mastery match-detail-img"></li>'+
-      '<li class="match-detail-name-div"><div class="match-detail-name">'+participantIdentities[i].player.summonerName.substr(0,10)+'...</div></li>'+
+      '<li class="match-detail-name-div"><div class="match-detail-name">'+playerName+'</div></li>'+
       '<li>'+
         '<ul class="match-detail-items">'+
           '<li></li>'+
@@ -572,7 +613,7 @@
       '<li class="match-detail-num">'+participants[i].stats.kills+'/'+participants[i].stats.deaths+'/'+participants[i].stats.assists+'</li>'+
       '<li class="match-detail-num">'+participants[i].stats.totalDamageDealtToChampions+'</li>'+
       '<li class="match-detail-num">'+participants[i].stats.totalDamageTaken+'</li>'+
-      '<li class="match-detail-num">'+participants[i].stats.wardsPlaced+participants[i].stats.wardsKilled+'</li>'+
+      '<li class="match-detail-num">'+participants[i].stats.wardsPlaced+'/'+participants[i].stats.wardsKilled+'</li>'+
       '<li class="match-detail-num">'+participants[i].stats.minionsKilled+'</li>'+
       '</ul>';
       if(participants[i].stats.winner){

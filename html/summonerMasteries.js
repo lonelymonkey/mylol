@@ -28,7 +28,7 @@
   }
 
   function buildMasteriesView(){
-    console.log('buildMasteriesView');
+    //console.log('buildMasteriesView');
     var view = '';
     view += '' +
       '<div id="masteries-list">'+
@@ -42,7 +42,7 @@
             '<div id="resolve" class="group"></div>'+
         '</div>'+
       '</div>';
-      console.log(view);
+      //console.log(view);
 
     $('#summary-info').append(view);
   }
@@ -50,12 +50,12 @@
   function buildMasteriesList(){
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.masteries.summonerMasteries[id]['pages'];
-    console.log(data);
+    //console.log(data);
     var list = '<ul class="nav nav-pills">';
     var detail = '';
 
     $.each(data,function(key, masteriesPage){
-      console.log(masteriesPage);
+      //console.log(masteriesPage);
       list += '<li><a class="rune-page">'+masteriesPage.name+'</a></li>';
     });
 
@@ -68,10 +68,10 @@
     //console.log(data);
     $('.img').each(function(){
       var masteryId = $(this).attr('id').replace('img','');
-      console.log(masteryId);
+      //console.log(masteryId);
       $(this).hover(function(){
         hoverTimer = setTimeout(function(){
-          console.log(masteryId);
+          //console.log(masteryId);
           $('#rank-detail'+masteryId).css({'visibility':'visible'})
         }, 500);
       },function(){
@@ -94,7 +94,7 @@
   }
 
   function masteryImagePlacement(data,res){
-    console.log(res);
+    //console.log(res);
     var onMasteries = {};
     var cunning = [6311,6312,6321,6322,6323,6331,6332,6341,6342,6351,6352,6361,6362,6363];
     var ferocity = [6111,6114,6121,6122,6123,6131,6134,6141,6142,6151,6154,6161,6162,6164];
@@ -108,7 +108,7 @@
       //console.log(mastery);
       onMasteries[mastery.id] = mastery.rank;
     });
-    console.log(onMasteries);
+    //console.log(onMasteries);
     constructGroup(ferocity,'ferocity',ferocityAndCunningRows);
     constructGroup(cunning,'cunning',ferocityAndCunningRows);
     constructGroup(resolve,'resolve',resolveRows);
@@ -120,9 +120,11 @@
       switch(group){
         case '61':
           ferocityTotal += rank;
+          break;
         case '63':
           cunningTotal += rank;
-        case '62':
+          break;
+        default:
           resolveTotal += rank;
       }
 
@@ -144,6 +146,9 @@
       }
     });
 
+      $('#total-count-ferocity').append(ferocityTotal);
+      $('#total-count-cunning').append(cunningTotal);
+      $('#total-count-resolve').append(resolveTotal);
   }
 
   function constructGroup(list,groupName,rowOrder){
@@ -180,12 +185,13 @@
       }
       row++;
     });
+    view += '<div id="total-count-'+groupName+'" class="total-count"></div>';
 
     $('#'+groupName).append(view);
   }
 
   summonerBase.registerEvent('masteries',function(data){
-    console.log('build summoner runes view');
+    //console.log('build summoner runes view');
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var firstPage = dataModel.masteries.summonerMasteries[id]['pages'][0];
     buildMasteriesView();
