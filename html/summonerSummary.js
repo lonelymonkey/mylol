@@ -221,7 +221,7 @@
     var data= dataModel.summonerSummary.championMastery.championMastery.slice(0,6);
     var championMasteryDetail;
     var championMasteryImg;
-    console.log(data);
+    //console.log(data);
 
     $.each(data,function(index,champion){
       championMasteryDetail = '';
@@ -373,7 +373,7 @@
         class: 'fellow-players'
       }).appendTo('#game-members-'+match.gameId);
       var yourNameAbbre = summonerBase.search.substring(0,6)+'.....';
-      var yourChamp = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+'" class="player-img">  '+yourNameAbbre+'</div>';
+      var yourChamp = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+'" class="player-img"><a href="index.html?summoner='+summonerBase.search+'">'+yourNameAbbre+'</a></div>';
 
         if(match.teamId == 100){
             $('#blue-'+match.gameId).append(yourChamp);
@@ -384,7 +384,7 @@
 
       $.each(match.fellowPlayers,function(index,player){
         fellowPlayerName = player.summonerName.substring(0,6)+'.....';
-        gameMembers = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+player.image+'" class="player-img">  '+fellowPlayerName+'</div>';
+        gameMembers = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+player.image+'" class="player-img"><a href="index.html?summoner='+player.summonerName+'">'+fellowPlayerName+'</a></div>';
         //console.log(gameMembers);
         if(player.teamColor == 'blue'){
           $('#blue-'+match.gameId).append(gameMembers);

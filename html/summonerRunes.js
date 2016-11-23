@@ -23,7 +23,7 @@
   }
 
   function buildRunesDetail(data){
-    console.log(data);
+    //console.log(data);
     $('#rune-page-name').append(data.name);
     var runes = {};
     //var detail = '<ul>';
@@ -71,7 +71,7 @@
   }
 
   function buildRunesImage(data){
-    console.log(data);
+    //console.log(data);
     var top = [442,442,445,375,371,389,315,320,268,216,211,158,131,77,45,24,2,61,5,64,5,108,52,5,46,93,156,30,254,193];
     var left = [27,99,186,11,83,148,38,132,87,42,125,77,143,179,247,314,390,423,470,510,548,566,602,646,703,656,682,44,227,501];
     var runePage = document.createElement("img");
@@ -185,7 +185,7 @@
       allpages.push(runePage);
     });
     list += '</ul>';
-    console.log(allpages);
+  //  console.log(allpages);
     $('#runes-list').append(list);
   }
 

@@ -71,6 +71,7 @@ left: 700;
 
 #summoner-overall{
   height: 187px;
+  position: relative;
 }
 
 #summoner-icon-div{

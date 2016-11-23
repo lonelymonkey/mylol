@@ -9,7 +9,7 @@
 
     $('.game-detail-button').each(function(){
       var gameId = $(this).attr('id').replace($(this).attr('class'),'');
-      console.log(gameId);
+      //console.log(gameId);
       $('#game-detail-button'+gameId).click(function(){
         $('#game-detail-won-'+gameId).empty();
         $('#game-detail-loss-'+gameId).empty();
@@ -105,7 +105,7 @@
     var displayData;
     var view = '';
     var title = '';
-    console.log(data);
+    //console.log(data);
     data.forEach(function(game){
       var outcome = game.stats.win;
       var side = game.teamId;
@@ -142,7 +142,7 @@
   });
 
   displayData = playersArray.slice(0,5);
-  console.log(displayData);
+  //console.log(displayData);
   title += '<ul class="recent-data">' +
   '<li class="recent-name">Summoner</li>'+
   '<li class="recent-num">Played</li>'+
@@ -169,7 +169,7 @@
     var averageKill,averageDeath,averageAssists,averageCS;
     var totalSession;
 
-    console.log(data);
+    //console.log(data);
     $.each(data,function(key,rankedStats){
       championStats = '';
       jQuery('<div/>',{
@@ -219,7 +219,7 @@
       win : 0,
       loss : 0
     };
-    console.log(championData);
+    //console.log(championData);
     var view = '';
     var ctxKDA = document.getElementById('recent-kda');
     var ctxWinRate = document.getElementById('recent-winrate');
@@ -374,7 +374,7 @@
   function buildMatchListView(res) {
     var data = dataModel.summonerSummary.matchList.matchList.games;
     var summonerSpell = res.data;
-    console.log(data);
+    //console.log(data);
     //console.log(res);
     var view = '';
     var gameType = '';
@@ -516,7 +516,7 @@
       }).appendTo('#game-members-'+match.gameId);
 
       var yourNameAbbre = summonerBase.search.substring(0,6)+'.....';
-      var yourChamp = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+'" class="player-img">  '+yourNameAbbre+'</div>';
+      var yourChamp = '<div title="'+summonerBase.search+'" class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+match.image+'" class="player-img"><a href="index.html?summoner='+summonerBase.search+'">'+yourNameAbbre+'</a></div>';
 
         if(match.teamId == 100){
             $('#blue-'+match.gameId).append(yourChamp);
@@ -527,7 +527,7 @@
 
       $.each(match.fellowPlayers,function(index,player){
         fellowPlayerName = player.summonerName.substring(0,6)+'.....';
-        gameMembers = '<div class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+player.image+'" class="player-img">  '+fellowPlayerName+'</div>';
+        gameMembers = '<div title="'+player.summonerName+'" class="player-div"><img src="http://ddragon.leagueoflegends.com/cdn/6.22.1/img/champion/'+player.image+'" class="player-img"><a href="index.html?summoner='+player.summonerName+'">'+fellowPlayerName+'</a></div>';
         //console.log(gameMembers);
         if(player.teamColor == 'blue'){
           $('#blue-'+match.gameId).append(gameMembers);

@@ -135,8 +135,8 @@
   function buildLeagueListView(){
     var id = dataModel.summonerSummary.summonerInfo[summonerBase.search]['id'];
     var data = dataModel.summonerSummary.league.summonerLeague[id];
-    console.log(id);
-    console.log(data);
+    //console.log(id);
+    //console.log(data);
     var array = {
       rank1 : [],
       rank2 : [],

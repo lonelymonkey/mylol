@@ -73,18 +73,18 @@
     view += '' +
     '<div id="summoner">'+
     '<div id="summoner-overall">'+
-      '<form id="search">'+
-        '<input type="text" name="summoner" class="summoner-submit">'+
+      '<form id="search" action="index.html" method="get">'+
+        '<input type="text" name="summoner" class="summoner-submit" placeholder="Enter Summoner Name">'+
         '<input type="submit" value="Submit" class="submit">'+
       '</form>'+
     '</div>'+
       '<ul class="menu">'+
         '<li class="menu"><a href="#" class="btn btn-info" role="button" id="summary-button">Summary</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="champions-button">Champions</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="league-button">League</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="matches-button">Matches</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="runes-button">Runes</a></li>'+
-        '<li class="menu"><a href="#" class="btn btn-info" role="button" id="masteries-button">Masteries</a></li>'+
+        '<li class="menu"><a href="#champions" class="btn btn-info" role="button" id="champions-button">Champions</a></li>'+
+        '<li class="menu"><a href="#league" class="btn btn-info" role="button" id="league-button">League</a></li>'+
+        '<li class="menu"><a href="#matches" class="btn btn-info" role="button" id="matches-button">Matches</a></li>'+
+        '<li class="menu"><a href="#runes" class="btn btn-info" role="button" id="runes-button">Runes</a></li>'+
+        '<li class="menu"><a href="#masteries" class="btn btn-info" role="button" id="masteries-button">Masteries</a></li>'+
       '</ul>'+
     '</div>'+
     '<div id="summary-info">'+
@@ -153,7 +153,45 @@
 
     function summonerSearch(summoner){
       if(getParameterByName(summoner)){
-        summonerBase.search = getParameterByName(summoner).toLowerCase();
+        var expression = new RegExp(/^[\w\. ]+$/);
+        if(expression.test(getParameterByName(summoner))){
+          summonerBase.search = getParameterByName(summoner).replace('+','').replace(/\s+/g, '').toLowerCase();
+        }
+        else{
+          summonerBase.search = 'epiccookierawr';
+        }
+      }
+    }
+
+    function currentPage(res){
+      var page = location.hash.substr(1);
+      //console.log(page);
+      switch (page) {
+        case '':
+          executeRegisteredCallbacks('onLoad',res);
+          break;
+          case 'champions':
+            executeRegisteredCallbacks('champions',res);
+            break;
+            case 'league':
+              executeRegisteredCallbacks('league',res);
+              break;
+              case 'matches':
+                executeRegisteredCallbacks('matches',res);
+                break;
+                case 'runes':
+                var dataAPISummoner = lolSummonerData(config);
+                dataAPISummoner.runes(summonerBase.search,function(res){
+                  dataModel.runes = res;
+                  executeRegisteredCallbacks('runes',res);
+                });
+                  break;
+        default:
+        var dataAPISummoner = lolSummonerData(config);
+        dataAPISummoner.masteries(summonerBase.search,function(res){
+          dataModel.masteries = res;
+          executeRegisteredCallbacks('masteries',res);
+        });
       }
     }
 
@@ -161,14 +199,10 @@
     var dataAPISummoner = lolSummonerData(cfg);
     saveConfig(cfg);
     summonerSearch('summoner');
-    console.log(summonerBase.search);
+    //console.log(summonerBase.search);
     dataAPISummoner.summonerSummary(summonerBase.search,'SEASON2016',function(res){
       dataModel.summonerSummary = res;
-      //console.log(res);
-      //summonerBase.buildView(res);
-      executeRegisteredCallbacks('onLoad',res);
-      //console.log(JSON.stringify(summonerBase.dataModel));
-      //console.log(JSON.stringify(dataModel));
+      currentPage(res);
       buildSummonerView();
     });
     buildUIFrame();
