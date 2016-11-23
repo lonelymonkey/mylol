@@ -1,6 +1,8 @@
 <?php
 include 'database.class.inc';
 
+date_default_timezone_set('America/Vancouver');
+
 if (!class_exists('lolWebAPICache')) {
   class lolWebAPICache {
       private $db;

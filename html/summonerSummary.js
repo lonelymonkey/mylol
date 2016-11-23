@@ -107,7 +107,7 @@
     }*/
 
     $('#tier-info').append(summary);
-    $('#tier-icon').append('<div><img src="images/tier_icons/'+rank+'.png" style="width: 100px"></div>');
+    $('#tier-icon').append('<div><img src="images/tier_icons/'+rank.toLowerCase()+'.png" style="width: 100px"></div>');
     $('#tier-league').append(leagueName);
   }
 

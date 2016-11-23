@@ -122,13 +122,8 @@
       '<div>'+playerInfo.wins+'W/'+playerInfo.losses+'L</div>' +
       '<div>Win Rate: '+Math.floor(winRate)+'%</div>';
 
-    /*if(playerInfo.miniSeries){
-      //this needs graphical representation
-      summary += '<div>'+JSON.stringify(playerInfo.miniSeries)+'</div>';
-    }*/
-
     $('#tier-info').append(summary);
-    $('#tier-icon').append('<div><img src="images/tier_icons/'+rank+'.png" style="width: 100px"></div>');
+    $('#tier-icon').append('<div><img src="images/tier_icons/'+rank.toLowerCase()+'.png" style="width: 100px"></div>');
     $('#league-league-name').append(leagueName);
   }
 
